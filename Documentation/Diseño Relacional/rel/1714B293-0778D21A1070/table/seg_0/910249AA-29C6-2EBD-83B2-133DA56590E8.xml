@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="910249AA-29C6-2EBD-83B2-133DA56590E8" name="accion_usuario">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:26:23 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<ordsAlias>table_5</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_accion_usuario" id="074C28BC-01CC-9CE0-4A2E-E89071C33793">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_aplicacion_error" id="FFE08E41-3DC6-ED67-4017-65E26DB18869">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_nivel_error" id="031A96AB-1FED-8111-22DB-9CC843886263">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_tipo_accion" id="CFDD2C79-08DC-FBB2-408F-03D5F945EF8E">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fecha_hora_accion" id="4454213C-58CA-FED8-7D4B-182675524889">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="accion_usuario" id="5E92BC94-C6A0-DA6B-3717-61CB8A31804D">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:49:26 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="aplicacion_error_id_aplicacion_error" id="84711D6B-E605-15BE-56EE-C19C90D39DED">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:16:51 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="39FBB087-B0DB-E0DF-E2C2-AE05F8F9D99D" name="pk_user_action">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:50:04 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="074C28BC-01CC-9CE0-4A2E-E89071C33793"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
