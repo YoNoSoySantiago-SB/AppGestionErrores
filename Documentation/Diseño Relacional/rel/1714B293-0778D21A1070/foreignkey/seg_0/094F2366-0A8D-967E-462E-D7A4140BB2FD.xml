@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="094F2366-0A8D-967E-462E-D7A4140BB2FD" containerWithKeyObject="910249AA-29C6-2EBD-83B2-133DA56590E8" localFKIndex="064F587F-3A2D-C72B-0D94-721A8FB71BB3" name="fk_accion_usuario_ref_aplicacion_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:22:37 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<referredTableLongName>aplicacion_error</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>9BACB848-361E-6A93-EA4A-E0D4C27222AD</referredTableID>
+<keyObject>D7E50125-37D4-6C04-8B57-396A404392AA</keyObject>
+<referredKeyID>D7E50125-37D4-6C04-8B57-396A404392AA</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_aplicacion_error</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

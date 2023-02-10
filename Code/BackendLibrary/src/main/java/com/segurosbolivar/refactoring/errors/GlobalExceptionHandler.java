@@ -1,5 +1,10 @@
 package com.segurosbolivar.refactoring.errors;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	/**
-     * Handles all the exceptions of type Exception.
+     * Handles all uncaught exception persisting in the database without generating a report yet.
      * 
      * @param ex The exception to be handled.
      * @param request The web request associated with the exception.
@@ -28,10 +33,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     	System.out.println("==============================");
     	System.out.println("Exception catched in library");
     	System.out.println("==============================");
+
+    	Map<String,Long> responseMap = new HashMap<>();
     	
-        String bodyOfResponse = "This is an exception message.";
+    	Long errorId = catchException(ex);
+    	responseMap.put("id_application_error", errorId);
+    	String bodyOfResponse = "";
+        try {
+        	ObjectMapper mapper = new ObjectMapper();
+        	bodyOfResponse = mapper.writeValueAsString(responseMap);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
         
-        catchException(ex);
         return handleExceptionInternal(ex, bodyOfResponse, 
           new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
@@ -41,10 +55,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * 
      * @param ex The exception to be reported.
      */
-    public static void catchException(Exception ex) {
-    	StackTraceElement[] elements = ex.getStackTrace();
-    	System.out.println(elements[0].getFileName());
-    	System.out.println("///////////// FIN \\\\\\\\\\\\");
+    public Long catchException(Exception ex) {
+    	ex.printStackTrace();
+		return Long.valueOf(12+1);
     }
     
 //    // TODO

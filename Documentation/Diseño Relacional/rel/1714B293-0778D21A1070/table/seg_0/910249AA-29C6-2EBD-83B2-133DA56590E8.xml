@@ -27,6 +27,9 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="094F2366-0A8D-967E-462E-D7A4140BB2FD" referredColumn="B592AE4A-FF57-14C0-BA74-9C3B4F9C94FF"/>
+</associations>
 </Column>
 <Column name="id_nivel_error" id="031A96AB-1FED-8111-22DB-9CC843886263">
 <createdBy>santi</createdBy>
@@ -37,6 +40,9 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="23D2B96D-EFC9-5578-A807-055F2A2CEA4B" referredColumn="70AC68C2-3C9F-5D24-EF88-D7BA16436C68"/>
+</associations>
 </Column>
 <Column name="id_tipo_accion" id="CFDD2C79-08DC-FBB2-408F-03D5F945EF8E">
 <createdBy>santi</createdBy>
@@ -47,6 +53,9 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A40062BD-4BEE-2359-4EE4-1C6BCDD63685" referredColumn="0F7A01A0-8ED5-9FD5-9BA4-9E3A28E79377"/>
+</associations>
 </Column>
 <Column name="fecha_hora_accion" id="4454213C-58CA-FED8-7D4B-182675524889">
 <createdBy>santi</createdBy>
@@ -66,18 +75,8 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="aplicacion_error_id_aplicacion_error" id="84711D6B-E605-15BE-56EE-C19C90D39DED">
-<createdBy>santi</createdBy>
-<createdTime>2023-02-09 22:16:51 UTC</createdTime>
-<ownerDesignName>Diseño Relacional</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<previousColumn>false</previousColumn>
+<dataTypeSize>300</dataTypeSize>
+<ownDataTypeParameters>300,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -91,6 +90,45 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="074C28BC-01CC-9CE0-4A2E-E89071C33793"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4D53C8BB-EFBE-7C85-73B9-8F6A1B561935" name="ix_accion_usuario_ref_aplicacion_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:40:50 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FFE08E41-3DC6-ED67-4017-65E26DB18869"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="064F587F-3A2D-C72B-0D94-721A8FB71BB3" name="fk_accion_usuario_ref_aplicacion_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:22:37 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FFE08E41-3DC6-ED67-4017-65E26DB18869"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="BBFE33EC-F1C3-F432-469E-3E002A741370" name="fk_accion_usuario_ref_tipo_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:25:03 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CFDD2C79-08DC-FBB2-408F-03D5F945EF8E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="7FF1EB10-AA03-81E7-D66D-305D8C7D39BC" name="fk_accion_usuario_ref_nivel_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:25:22 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="031A96AB-1FED-8111-22DB-9CC843886263"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

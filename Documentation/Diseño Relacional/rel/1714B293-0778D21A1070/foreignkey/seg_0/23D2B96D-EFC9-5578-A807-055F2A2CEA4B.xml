@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="23D2B96D-EFC9-5578-A807-055F2A2CEA4B" containerWithKeyObject="910249AA-29C6-2EBD-83B2-133DA56590E8" localFKIndex="7FF1EB10-AA03-81E7-D66D-305D8C7D39BC" name="fk_accion_usuario_ref_nivel_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:25:22 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<referredTableLongName>nivel_error</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>EFE2CC25-980D-E97D-E49D-EB215926E032</referredTableID>
+<keyObject>DA767AF9-B55E-CA24-BE86-915C76285513</keyObject>
+<referredKeyID>DA767AF9-B55E-CA24-BE86-915C76285513</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_nivel_error</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>
