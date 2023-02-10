@@ -1,5 +1,7 @@
 package com.segurosbolivar.refactoring.errors;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,17 +58,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex The exception to be reported.
      */
     public Long catchException(Exception ex) {
-    	ex.printStackTrace();
+    	StringWriter stackTraceWriter = new StringWriter();
+    	ex.printStackTrace(new PrintWriter(stackTraceWriter));
+    	String stackTrace = stackTraceWriter.toString();
+    	
+    	
 		return Long.valueOf(12+1);
     }
     
-//    // TODO
-//    private void persistException() {
-//    	
-//    }
-//    
-//    // TODO
-//    private void somthingToProcessFile() {
-//    	
-//    }
+    // TODO
+    private void persistException() {
+    	
+    }
+
 }
