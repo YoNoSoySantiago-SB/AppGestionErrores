@@ -1,13 +1,32 @@
 package com.segurosbolivar.refactoring.errors.model;
 
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
 @Data
+@Entity 
 public class AplicacionError {
 	
+	@Id
+	@SequenceGenerator(name = "id_aplicacion_error_generator", allocationSize = 1, sequenceName = "seq_aplicacion_error")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_aplicacion_error_generator")
 	private Long idAplicacionError;
+	
 	private String tituloError;
-	private String descriptionError;
+	private String descripcionError;
 	private String nombreAplicacion;
 	private String correoUsuario;
+	
+	@OneToMany(mappedBy = "aplicacionError")
+	private List<TrazabilidadCodigo> trazas_codigo;
+	
+	@OneToMany(mappedBy = "aplicacionError")
+	private List<AccionUsuario> accion_usuario;
 }

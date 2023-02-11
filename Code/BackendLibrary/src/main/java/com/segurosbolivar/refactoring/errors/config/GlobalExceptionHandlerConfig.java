@@ -1,24 +1,39 @@
 package com.segurosbolivar.refactoring.errors.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import javax.sql.DataSource;
 
 import com.segurosbolivar.refactoring.errors.GlobalExceptionHandler;
+import com.segurosbolivar.refactoring.errors.repository.AplicacionErrorRepository;
+import com.segurosbolivar.refactoring.errors.service.AplicacionErrorService;
 
-/**
- * Configuration class for registering the {@link GlobalExceptionHandler} as a Bean.
- */
- 
-//@Configuration
-//public class GlobalExceptionHandlerConfig {
-//
-//	/**
-//     * Creates and returns a new instance of {@link GlobalExceptionHandler}.
-//     * 
-//     * @return an instance of {@link GlobalExceptionHandler}.
-//     */
-//    @Bean
-//    public GlobalExceptionHandler globalExceptionHandler() {
-//        return new GlobalExceptionHandler();
-//    }
-//}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@Configuration
+@ComponentScan("com.segurosbolivar.refactoring.errors")
+@EntityScan("com.segurosbolivar.refactoring.errors.model")
+@PropertySource("classpath:library.properties")
+@EnableJpaRepositories("com.segurosbolivar.refactoring.errors.repository")
+public class GlobalExceptionHandlerConfig {
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public DataSource dataSource() {
+		DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+	    
+		dataSourceBuilder.url(env.getProperty("spring.datasource.url"));
+	    dataSourceBuilder.username(env.getProperty("spring.datasource.username"));
+	    dataSourceBuilder.password(env.getProperty("spring.datasource.password"));
+	    dataSourceBuilder.driverClassName(env.getProperty("spring.datasource.driver-class-name"));
+	    return dataSourceBuilder.build();
+	}
+	
+}

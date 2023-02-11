@@ -18,10 +18,22 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
+<Column name="nombre_applicacion" id="9B9138BB-EBE0-EB8E-227E-92C37EBB55F7">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:06:16 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>80</dataTypeSize>
+<ownDataTypeParameters>80,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 <Column name="titulo_error" id="2D4F55B5-E8BB-0F5B-B948-581C7C72EBDC">
 <createdBy>santi</createdBy>
 <createdTime>2023-02-09 21:06:16 UTC</createdTime>
 <ownerDesignName>Diseño Relacional</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
@@ -33,32 +45,12 @@
 <createdBy>santi</createdBy>
 <createdTime>2023-02-09 21:06:16 UTC</createdTime>
 <ownerDesignName>Diseño Relacional</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>3500</dataTypeSize>
 <ownDataTypeParameters>3500,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="traza_error" id="119B028E-13A2-B2D9-ACE9-5BAD27FCA8D4">
-<createdBy>santi</createdBy>
-<createdTime>2023-02-09 21:06:16 UTC</createdTime>
-<ownerDesignName>Diseño Relacional</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT028</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="nombre_applicacion" id="9B9138BB-EBE0-EB8E-227E-92C37EBB55F7">
-<createdBy>santi</createdBy>
-<createdTime>2023-02-09 21:06:16 UTC</createdTime>
-<ownerDesignName>Diseño Relacional</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>80</dataTypeSize>
-<ownDataTypeParameters>80,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="correo_usuario" id="FCAE41B8-A6C6-C435-FF07-A9B8F13D838C">
