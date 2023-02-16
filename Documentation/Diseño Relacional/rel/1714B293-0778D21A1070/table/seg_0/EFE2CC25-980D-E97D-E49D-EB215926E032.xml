@@ -1,0 +1,46 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="EFE2CC25-980D-E97D-E49D-EB215926E032" name="nivel_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:57:46 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<ordsAlias>table_6</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_nivel_error" id="70AC68C2-3C9F-5D24-EF88-D7BA16436C68">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 21:58:02 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nombre_nivel" id="5315CAC8-BE3A-F8BB-173C-8C9781C65410">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:01:01 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="DA767AF9-B55E-CA24-BE86-915C76285513" name="pk_nivel_error">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:01:01 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="70AC68C2-3C9F-5D24-EF88-D7BA16436C68"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

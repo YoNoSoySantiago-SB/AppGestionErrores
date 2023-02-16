@@ -1,0 +1,48 @@
+##############################
+## IntelliJ
+##############################
+Code/BackendLibrary/out/
+Code/BackendLibrary/.idea/
+Code/BackendLibrary/.idea_modules/
+Code/BackendLibrary/*.iml
+Code/BackendLibrary/*.ipr
+Code/BackendLibrary/*.iws
+
+##############################
+## Eclipse
+##############################
+Code/BackendLibrary/.settings/
+Code/BackendLibrary/bin/
+Code/BackendLibrary/tmp/
+Code/BackendLibrary/.metadata
+Code/BackendLibrary/.classpath
+Code/BackendLibrary/.project
+*.tmp
+*.bak
+*.swp
+*~.nib
+Code/BackendLibrary/local.properties
+Code/BackendLibrary/.loadpath
+Code/BackendLibrary/.factorypath
+
+##############################
+## NetBeans
+##############################
+Code/BackendLibrary/nbproject/private/
+Code/BackendLibrary/build/
+Code/BackendLibrary/nbbuild/
+Code/BackendLibrary/dist/
+Code/BackendLibrary/nbdist/
+Code/BackendLibrary/nbactions.xml
+Code/BackendLibrary/nb-configuration.xml
+
+##############################
+## Visual Studio Code
+##############################
+*.vscode/
+*.code-workspace
+
+##############################
+## OS X
+##############################
+.DS_Store

@@ -1,0 +1,46 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FD55DE77-62CC-A413-9A4E-E64C69D39100" name="tipo_accion">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:02:56 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<ordsAlias>table_7</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_tipo_accion" id="0F7A01A0-8ED5-9FD5-9BA4-9E3A28E79377">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:03:39 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nombre_accion" id="A71C7163-70B3-B632-C72E-F94DBE4367D4">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:03:39 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2695337D-CD48-4B73-EEF6-EE8144EF675C" name="pk_tipo_accion">
+<createdBy>santi</createdBy>
+<createdTime>2023-02-09 22:03:39 UTC</createdTime>
+<ownerDesignName>Diseño Relacional</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0F7A01A0-8ED5-9FD5-9BA4-9E3A28E79377"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
