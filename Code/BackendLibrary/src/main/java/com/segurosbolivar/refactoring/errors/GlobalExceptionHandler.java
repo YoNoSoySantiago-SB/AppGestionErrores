@@ -5,9 +5,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.segurosbolivar.refactoring.errors.service.AplicacionErrorService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @Autowired
-    private AplicacionErrorService aplicacionErrorService;
+   
 	/**
      * Handles all uncaught exception persisting in the database without generating a report yet.
      * 
@@ -58,11 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex The exception to be reported.
      */
     public Long catchException(Exception ex) {
-    	
-    	System.out.println("==============================");
-    	System.out.println("Exception catched in library");
-    	System.out.println("==============================");
-    	
-		return aplicacionErrorService.persistAplicacionError(ex);
+    	return Long.valueOf(-1);
+//		return aplicacionErrorService.persistAplicacionError(ex);
     }
 }
