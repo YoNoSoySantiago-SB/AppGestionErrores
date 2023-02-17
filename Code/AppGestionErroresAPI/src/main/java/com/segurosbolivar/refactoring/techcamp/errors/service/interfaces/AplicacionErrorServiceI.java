@@ -10,5 +10,9 @@ public interface AplicacionErrorServiceI {
 	
 	public Long persistAplicacionErrorBackend(Exception ex);
 
-	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,List<TrazabilidadCodigo> trazabilidadCodigo, List<AccionUsuario> accionesUsuario);
+	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario);
+	
+	public Long saveTrazabilitiyandUserevents(Long idAplicationError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario);
+	
+	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario);
 }

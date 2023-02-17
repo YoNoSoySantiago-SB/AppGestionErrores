@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,15 +28,21 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@RequestMapping(value = "/aplicacionBackendError/save", method = RequestMethod.POST)
-	public ResponseEntity<Long> saveBackendError(Exception ex) {
+	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex) {
 		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorBackend(ex);
 		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
 	}
 
 	@Override
 	@RequestMapping(value = "/aplicacionFrontEndError/save", method = RequestMethod.POST)
-	public ResponseEntity<Long> saveFrontEndError(AplicacionError aplicacionError,
-			List<TrazabilidadCodigo> trazabilidadCodigo, List<AccionUsuario> accionesUsuario) {
+	public ResponseEntity<Long> saveFrontEndError(@RequestBody AplicacionError aplicacionError,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) {
+		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(aplicacionError,trazabilidadCodigo,accionesUsuario);
+		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+	}
+
+	@Override
+	@RequestMapping(value = "/saveTrazabilitiyandUserevents/{idAplicationError}", method = RequestMethod.POST)
+	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) {
 		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(aplicacionError,trazabilidadCodigo,accionesUsuario);
 		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
 	}

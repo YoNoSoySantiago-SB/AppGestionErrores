@@ -3,6 +3,7 @@ package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Optional;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
@@ -70,19 +71,44 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,
-			List<TrazabilidadCodigo> trazabilidadCodigo, List<AccionUsuario> accionesUsuario) {
+	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario) {
 		
 		aplicacionError = aplicacionErrorRespository.save(aplicacionError);
 		OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
 		
-		for(TrazabilidadCodigo trazabilidad : trazabilidadCodigo) {
-		    trazabilidad.setAplicacionError(aplicacionError);
-		    trazabilidad.setOrigenError(origenError);
-		}
+		trazabilidadCodigo.setAplicacionError(aplicacionError);
+		trazabilidadCodigo.setOrigenError(origenError);
 		
-		trazabilidadCodigoRepository.saveAll(trazabilidadCodigo);
+		trazabilidadCodigoRepository.save(trazabilidadCodigo);
 		
+		List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+		
+		accionUsuarioRepository.saveAll(acciones);
+		
+		return aplicacionError.getIdAplicacionError();
+	}
+
+	@Override
+	public Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigo trazabilidadCodigo,
+			List<AccionUsuario> accionesUsuario) {
+		
+		Optional<AplicacionError> aplicacionError = aplicacionErrorRespository.findById(idAplicationError);
+		
+		trazabilidadCodigo.setAplicacionError(aplicacionError.get());
+		OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
+		trazabilidadCodigo.setOrigenError(origenError);
+		
+		trazabilidadCodigoRepository.save(trazabilidadCodigo);
+		
+		List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+		
+		accionUsuarioRepository.saveAll(acciones);
+		
+		return null;
+	}
+
+	@Override
+	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) {
 		for(AccionUsuario acciones : accionesUsuario) {
 			if(acciones.getNivelError().getNombreNivel().equals(NivelError.NIVEL_ERROR_INFO)) {
 				NivelError nivelError = nivelErrorRepository.findByNombreNivel(NivelError.NIVEL_ERROR_INFO);
@@ -112,8 +138,6 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 				acciones.setTipoAccion(tipoAccion);
 			}
 		}
-		accionUsuarioRepository.saveAll(accionesUsuario);
-		
-		return aplicacionError.getIdAplicacionError();
+		return accionesUsuario;
 	}
 }
