@@ -41,6 +41,7 @@ jspm_packages/
 .rts2_cache_umd/
 .cache
 .parcel-cache
+*.log
 
 ##############################
 ## DotEnv

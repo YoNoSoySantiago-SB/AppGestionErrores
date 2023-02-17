@@ -14,6 +14,10 @@ public interface AplicacionErrorControllerI {
 	
 	public ResponseEntity<Long> saveFrontEndError(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo,List<AccionUsuario> accionesUsuario);
 	
-	public ResponseEntity<Long> saveTrazabilitiyandUserevents(Long idAplicationError,TrazabilidadCodigo trazabilidadCodigo,List<AccionUsuario> accionesUsuario);
+	public void saveTrazabilitiyandUserevents(Long idAplicationError,TrazabilidadCodigo trazabilidadCodigo,List<AccionUsuario> accionesUsuario);
+	
+	public void generateReport(Long idAplicationError);
+	
+
 
 }

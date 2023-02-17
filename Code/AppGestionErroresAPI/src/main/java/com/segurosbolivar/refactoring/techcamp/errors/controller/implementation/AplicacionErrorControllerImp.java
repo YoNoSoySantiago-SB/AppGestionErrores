@@ -42,9 +42,15 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@RequestMapping(value = "/saveTrazabilitiyandUserevents/{idAplicationError}", method = RequestMethod.POST)
-	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(aplicacionError,trazabilidadCodigo,accionesUsuario);
-		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+	public void saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) {
+		aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigo,accionesUsuario);
+	}
+
+	@Override
+	@RequestMapping(value = "/generateReport/{idAplicationError}", method = RequestMethod.POST)
+	public void generateReport(@PathVariable("id") Long idAplicationError) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

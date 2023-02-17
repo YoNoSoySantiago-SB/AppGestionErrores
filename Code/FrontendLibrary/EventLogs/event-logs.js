@@ -68,7 +68,11 @@ const amount = 20;
       return events.slice(-amount);
     }
   }
-
+/**
+ * Esta función obtiene la peticion http y la envia a categorizar
+ * @param {string} request - Peticion http enviada al servidor.
+ * @returns {void}
+ */
   export function saveRequestHTTP(request){
     categorizeEvent(request,"Request")
   }

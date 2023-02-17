@@ -89,7 +89,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigo trazabilidadCodigo,
+	public void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigo trazabilidadCodigo,
 			List<AccionUsuario> accionesUsuario) {
 		
 		Optional<AplicacionError> aplicacionError = aplicacionErrorRespository.findById(idAplicationError);
@@ -103,8 +103,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
 		
 		accionUsuarioRepository.saveAll(acciones);
-		
-		return null;
+
 	}
 
 	@Override
