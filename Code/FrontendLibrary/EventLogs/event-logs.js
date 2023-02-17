@@ -4,11 +4,11 @@ const amount = 20;
 (function() { 
   window.addEventListener('click', function (e) {
     if (e.target.tagName === 'BUTTON') {
-      let buttonEventDescription="Se clickeo el botón con nombre: " + (e.target.name || "Desconocido") +
-       "\nInformación: " +
-       "\nId: " + (e.target.id || "Desconocido") +
-       "\nType: " + (e.target.type || "Desconocido")+
-       "\nText Content: " + (e.target.textContent || "Desconocido");
+        let buttonEventDescription="Se clickeo el botón con id: " + (e.target.id || "Desconocido") +
+        "\nInformación Adicional: " +
+        "\nName: " + (e.target.name || "Desconocido") +
+        "\nType: " + (e.target.type || "Desconocido")+
+        "\nText Content: " + (e.target.textContent || "Desconocido");
        categorizeEvent(buttonEventDescription,"Button")
        ;
     }
@@ -22,7 +22,7 @@ const amount = 20;
       }else{
         e.target.addEventListener('blur', function (e) {
           let inputEventDescription="Se digitó el input: " + (e.target.value ? e.target.value : "No se digitó nada") +
-          "\nInformación: " +
+          "\nInformación Adicional: " +
           "\nId: " + (e.target.id || "Desconocido")
           categorizeEvent(inputEventDescription,"Input")
         });
@@ -73,9 +73,10 @@ const amount = 20;
     categorizeEvent(request,"Request")
   }
 
-  export function saveError(id,error){
+  export function saveError(error){
     categorizeEvent(error,"Exception")
-    saveEvent(id)
+    saveEvent()
+    events.splice(0, events.length);
   }
 
   export function saveNavigation(navigation){
@@ -86,7 +87,7 @@ const amount = 20;
     events.push(event);
   }
 
-  async function saveEvent(id) {
+  async function saveEvent() {
     // Obtener los últimos eventos
     const events = getLastEvents(amount);
   
