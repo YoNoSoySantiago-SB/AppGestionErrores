@@ -1,104 +1,164 @@
-const events = [];
-const amount = 20;
+/**
+ * An array that contains user events.
+ * @type {Array}
+ */
+let events =  [];
 
+/**
+ * The amount of user events to be retrieved.
+ * @type {number}
+ */
+let amount = 20;
+
+/**
+ * Anonymous function that adds two event listeners to the window to register click and text input events.
+ */
 (function() { 
+  /**
+   * Event listener for button click event or for the text input event on an input.
+   * Logs the ID and name of the button clicked, and sends to categorise the event as a "Button" or logs the value and ID of the input and sends to categorise the event as an "Input".
+   *
+   * @param {Object} e - The object of the click event or of the text input (blur) event.
+   */
   window.addEventListener('click', function (e) {
     if (e.target.tagName === 'BUTTON') {
-      let buttonEventDescription="Se clickeo el botón con nombre: " + (e.target.name || "Desconocido") +
-       "\nInformación: " +
-       "\nId: " + (e.target.id || "Desconocido") +
-       "\nType: " + (e.target.type || "Desconocido")+
-       "\nText Content: " + (e.target.textContent || "Desconocido");
-       categorizeEvent(buttonEventDescription,"Button")
-       ;
+      if(e.target.id!='description-dialog-errores' && e.target.id!='email-dialog-errores' && e.target.id!='name-dialog-errores'){
+        let buttonEventDescription = "Se clickeó el botón con id: " + (e.target.id || "Desconocido") + " y con nombre: " + (e.target.name || "Desconocido");
+        categorizeEvent(buttonEventDescription,"Button");
+      }
     }
     if (e.target.tagName === 'INPUT') {
-      console.log(typeof e.target.dataset.inputType);
-      if (e.target.dataset.inputType === "false") {
-        e.target.addEventListener('blur', function (e) {
-          let inputEventDescription= '[Filtrado]';
-          categorizeEvent(inputEventDescription,"Input")
-        });
-      }else{
-        e.target.addEventListener('blur', function (e) {
-          let inputEventDescription="Se digitó el input: " + (e.target.value ? e.target.value : "No se digitó nada") +
-          "\nInformación: " +
-          "\nId: " + (e.target.id || "Desconocido")
-          categorizeEvent(inputEventDescription,"Input")
-        });
+      if(e.target.id!='reportar-dialog-errores' && e.target.id!='noreportar-dialog-errores' ){
+        if (e.target.dataset.inputType === "false") {
+          e.target.addEventListener('blur', function (e) {
+            let inputEventDescription= '[Filtrado]';
+            categorizeEvent(inputEventDescription,"Input")
+          });
+        }else{
+          e.target.addEventListener('blur', function (e) {
+            let inputEventDescription = e.target.value ? "Se digitó: " + e.target.value + " en el input con id " (e.target.id || "Desconocido") : "No se digitó nada";
+            categorizeEvent(inputEventDescription,"Input")
+          });
+        }
       }
     }
   });
 
   })();
   
-  function categorizeEvent(event,type) {
-    let level;
-    let action;
+  /**
+  * Categorises the logged event, whether it was a button click, an http request, a navigation, an exception or a write to an input.
+  *
+  * @param {string} description - Description of the event.
+  * @param {string} type  - The type of event.
+  */
+  export function categorizeEvent(description,type) {
+    let tipoAccion;
+    let nivelError;
     if(type==="Button"){
-      level=2
-      action=5
+      tipoAccion= {
+        nombreAccion:"Boton"
+      }
+      nivelError= {
+        nombreNivel:"Info"
+      }
     }else if(type==="Input"){
-      level=2
-      action=4
+      tipoAccion= {
+        nombreAccion:"Input"
+      }
+      nivelError= {
+        nombreNivel:"Info"
+      }
     }else if(type==="Request"){
-      level=2
-      action=3
+      tipoAccion= {
+        nombreAccion:"Request"
+      }
+      nivelError= {
+        nombreNivel:"Info"
+      }
     }else if(type==="Navigation"){
-      level=2
-      action=2
+      tipoAccion= {
+        nombreAccion:"Navegacion"
+      }
+      nivelError= {
+        nombreNivel:"Info"
+      }
     }
     else if(type==="Exception"){
-      level=1
-      action=1
+      tipoAccion= {
+        nombreAccion:"Excepcion"
+      }
+      nivelError= {
+        nombreNivel:"Excepcion"
+      }
     }
-    const eventObject = {
-      nombre_accion:action,
-      accion_usuario:event,
-      level,
-      fecha_hora_accion: new Date(),
+    const accionUsuario = {
+      fechaHoraAccion: new Date(),
+      accionUsuario:description,
+      nivelError,
+      tipoAccion
     };  
-    pushEvent(eventObject);
+    pushEvent(accionUsuario);
   }
 
-  function getLastEvents(amount) {
+  /**
+  * Returns the last events in the specified amount.
+  *
+  * @param {number} amount - The number of events to retrieve.
+  * @returns {array} - An array of the last events in the specified amount.
+  */
+  export function getLastEvents(amount) {
     if (amount >= events.length) {
       return events;
     }else{
-      return events.slice(-amount);
+      return events.slice(-amount);;
     }
   }
 
+  /**
+  * Receives an http request and sends it to categorise it.
+  *
+  * @param {string} request - The string with the http method and the url.
+  */
   export function saveRequestHTTP(request){
     categorizeEvent(request,"Request")
   }
 
-  export function saveError(id,error){
-    categorizeEvent(error,"Exception")
-    saveEvent(id)
+  /**
+  * Receives the generated error and sends it to categorise.
+  *
+  * @param {string} error - Controlled or uncontrolled error.
+  * @returns {array} - An array of the last events.
+  */
+  export function saveError(error){
+    categorizeEvent(error,"Exception");
+    let savedEvents = getLastEvents(amount);
+    let copiedEvents = [...savedEvents];
+    clearEvents()
+    return copiedEvents;
   }
 
+  /**
+  * Receives page navigation and sends it to categorise it.
+  *
+  * @param {string} navigation - The string with the navigation page url.
+  */
   export function saveNavigation(navigation){
     categorizeEvent(navigation,"Navigation")
   }
 
-  function pushEvent(event) {
+  /**
+  * Adds a user event to the list.
+  *
+  * @param {Object} event - The user-generated event
+  */
+  export function pushEvent(event) {
     events.push(event);
   }
-
-  async function saveEvent(id) {
-    // Obtener los últimos eventos
-    const events = getLastEvents(amount);
-  
-    // Conectar a la base de datos
-    //await client.connect();
-  
-      // Iterar sobre los eventos y guardarlos en la base de datos
-      for (const event of events) {
-        /*await client.query({
-          text: 'INSERT INTO accion_usuario(id_aplicacion_error, id_nivel_error,id_tipo_accion, fecha_hora_accion, accion_usuario) VALUES($1, $2, $3, $4, $5)',
-          values: [id, event.level, event.nombre_accion, event.fecha_hora_accion, event.accion_usuario]
-        });*/
-        console.log(event)
-      }
+  /**
+  * Clear the list of events to test it.
+  *
+  */
+  export function clearEvents() {
+    events = [];
   }
