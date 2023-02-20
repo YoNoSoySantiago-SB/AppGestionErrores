@@ -16,7 +16,6 @@ import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.Apli
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.TrazabilidadCodigo;
-import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AccionUsuarioServiceI;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
 
 @RestController
@@ -28,8 +27,8 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@RequestMapping(value = "/aplicacionBackendError/save", method = RequestMethod.POST)
-	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex) {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorBackend(ex);
+	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex, @RequestBody String applicationName) {
+		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
 		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
 	}
 
@@ -44,13 +43,6 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	@RequestMapping(value = "/saveTrazabilitiyandUserevents/{idAplicationError}", method = RequestMethod.POST)
 	public void saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) {
 		aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigo,accionesUsuario);
-	}
-
-	@Override
-	@RequestMapping(value = "/generateReport/{idAplicationError}", method = RequestMethod.POST)
-	public void generateReport(@PathVariable("id") Long idAplicationError) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

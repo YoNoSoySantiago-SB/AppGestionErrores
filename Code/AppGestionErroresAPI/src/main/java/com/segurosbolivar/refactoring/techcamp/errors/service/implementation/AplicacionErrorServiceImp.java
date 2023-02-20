@@ -20,16 +20,12 @@ import com.segurosbolivar.refactoring.techcamp.errors.repository.TrazabilidadCod
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
-	
-	@Autowired
-    private Environment environment;
 	
 	@Autowired
 	private AplicacionErrorRepository aplicacionErrorRespository;
@@ -44,14 +40,27 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	@Autowired
 	private AccionUsuarioRepository accionUsuarioRepository;
 	
+	public AplicacionErrorServiceImp(
+			AplicacionErrorRepository aer,
+			OrigenErrorRepository oer,
+			TrazabilidadCodigoRepository tcr,
+			NivelErrorRepository ner,
+			TipoAccionRepository tar,
+			AccionUsuarioRepository aur) {
+		
+		this.aplicacionErrorRespository = aer;
+		this.origenErrorRepository = oer;
+		this.trazabilidadCodigoRepository = tcr;
+		this.nivelErrorRepository = ner;
+		this.tipoAccionRepository = tar;
+		this.accionUsuarioRepository = aur;
+	}
+	
 	@Override
 	@Transactional
-	public Long persistAplicacionErrorBackend(Exception ex) {
+	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) {
 		AplicacionError aplicacionError = new AplicacionError();
 		TrazabilidadCodigo trazabilidadCodigo = new TrazabilidadCodigo();
-    	
-    	String applicationName = environment.getProperty("spring.application.name");
-		applicationName = applicationName==null || applicationName=="null" ? "Desconocido":applicationName;
 		
 		aplicacionError.setNombreAplicacion(applicationName);
 		aplicacionError = aplicacionErrorRespository.save(aplicacionError);

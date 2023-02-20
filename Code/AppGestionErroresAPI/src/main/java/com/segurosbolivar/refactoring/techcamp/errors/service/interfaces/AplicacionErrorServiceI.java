@@ -8,7 +8,7 @@ import com.segurosbolivar.refactoring.techcamp.errors.model.TrazabilidadCodigo;
 
 public interface AplicacionErrorServiceI {
 	
-	public Long persistAplicacionErrorBackend(Exception ex);
+	public Long persistAplicacionErrorBackend(Exception ex, String applicationName);
 
 	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario);
 	
