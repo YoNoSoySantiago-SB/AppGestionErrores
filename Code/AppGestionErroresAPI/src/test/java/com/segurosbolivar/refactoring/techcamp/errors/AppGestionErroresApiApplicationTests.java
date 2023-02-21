@@ -13,7 +13,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
@@ -48,9 +50,10 @@ class AppGestionErroresApiApplicationTests {
 	private TipoAccionRepository tipoAccionRepository;
 	@Mock
 	private AccionUsuarioRepository accionUsuarioRepository;
-	
+	@InjectMocks
 	private AplicacionErrorServiceI aplicacionErrorService;
 	
+
 	public AppGestionErroresApiApplicationTests() {
 		aplicacionErrorService = new AplicacionErrorServiceImp(aplicacionErrorRespository, origenErrorRepository, trazabilidadCodigoRepository, nivelErrorRepository, tipoAccionRepository, accionUsuarioRepository);
 	}
@@ -102,9 +105,12 @@ class AppGestionErroresApiApplicationTests {
 		List<AccionUsuario> userEventsType = setUpUserEventList();
 		
 		AccionUsuario accionWithBadType = new AccionUsuario();
+		NivelError nivel = new NivelError();
+		nivel.setNombreNivel("Info");
 		TipoAccion actionType = new TipoAccion();
 		actionType.setNombreAccion("Not Exist");
 		accionWithBadType.setTipoAccion(actionType);
+		accionWithBadType.setNivelError(nivel);
 		
 		userEventsType.add(accionWithBadType);
 		
@@ -142,11 +148,16 @@ class AppGestionErroresApiApplicationTests {
 	void testCategorizeUserEvents() {
 		List<AccionUsuario> userEventsType = setUpUserEventList();
 		
-		AccionUsuario accionWithBadType = new AccionUsuario();
+		AccionUsuario accion = new AccionUsuario();
 		TipoAccion actionType = new TipoAccion();
-		accionWithBadType.setTipoAccion(actionType);
+		actionType.setNombreAccion("Boton");
+		NivelError nivel = new NivelError();
+		nivel.setNombreNivel("Info");
+		accion.setNivelError(nivel);
 		
-		userEventsType.add(accionWithBadType);
+		accion.setTipoAccion(actionType);
+		
+		userEventsType.add(accion);
 		
 		assertDoesNotThrow(()->{
 			aplicacionErrorService.categorizeUserEvents(userEventsType);
@@ -227,6 +238,10 @@ class AppGestionErroresApiApplicationTests {
 	@Test
 	void testPersistAplicacionErrorFrontEnd() {
 		AplicacionError appError = new AplicacionError();
+		appError.setIdAplicacionError((long) 1);
+		
+		when(aplicacionErrorRespository.save(appError)).thenReturn(appError);
+		
 		TrazabilidadCodigo traza = new TrazabilidadCodigo();
 		List<AccionUsuario> userEvents = setUpUserEventList();
 		assertDoesNotThrow(()->{
