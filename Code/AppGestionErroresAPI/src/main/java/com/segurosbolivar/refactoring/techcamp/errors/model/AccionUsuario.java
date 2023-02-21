@@ -10,10 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class AccionUsuario {
+	
+	public AccionUsuario(TipoAccion tipoAccion, NivelError nivelError) {
+		this.nivelError = nivelError;
+		this.tipoAccion = tipoAccion;
+	}
+	
 	@Id
 	@SequenceGenerator(name = "id_accion_ususario_generator", allocationSize = 1, sequenceName = "seq_accion_usuario")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_accion_ususario_generator")

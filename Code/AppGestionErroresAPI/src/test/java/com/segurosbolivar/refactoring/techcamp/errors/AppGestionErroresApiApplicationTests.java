@@ -1,13 +1,14 @@
 package com.segurosbolivar.refactoring.techcamp.errors;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -48,17 +49,26 @@ class AppGestionErroresApiApplicationTests {
 	@Mock
 	private AccionUsuarioRepository accionUsuarioRepository;
 	
-	
 	private AplicacionErrorServiceI aplicacionErrorService;
 	
 	public AppGestionErroresApiApplicationTests() {
 		aplicacionErrorService = new AplicacionErrorServiceImp(aplicacionErrorRespository, origenErrorRepository, trazabilidadCodigoRepository, nivelErrorRepository, tipoAccionRepository, accionUsuarioRepository);
 	}
 	
-	private List<AccionUsuario> setUpUserEventList(){
-		List<AccionUsuario> userEvents = new ArrayList<>();
-		
-		return userEvents;
+	private List<AccionUsuario> setUpUserEventList() {
+	    AccionUsuario[] array = {
+	        new AccionUsuario(new TipoAccion(TipoAccion.TIPO_ACCION_BOTON), new NivelError(NivelError.NIVEL_ERROR_INFO)),
+	        new AccionUsuario(new TipoAccion(TipoAccion.TIPO_ACCION_EXCEPCION), new NivelError(NivelError.NIVEL_ERROR_EXCEPTION)),
+	        new AccionUsuario(new TipoAccion(TipoAccion.TIPO_ACCION_INPUT), new NivelError(NivelError.NIVEL_ERROR_INFO)),
+	        new AccionUsuario(new TipoAccion(TipoAccion.TIPO_ACCION_NAVEGACION), new NivelError(NivelError.NIVEL_ERROR_INFO)),
+	        new AccionUsuario(new TipoAccion(TipoAccion.TIPO_ACCION_REQUEST), new NivelError(NivelError.NIVEL_ERROR_INFO))
+	    };
+	    List<AccionUsuario> userActions = new ArrayList<>();
+	    
+	    for(AccionUsuario userAction : array) {
+	    	userActions.add(userAction);
+	    }
+	    return userActions;
 	}
 	
 	@BeforeAll
@@ -82,31 +92,21 @@ class AppGestionErroresApiApplicationTests {
 		when(origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_BACKEND)).thenReturn(or);
 		when(origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND)).thenReturn(or);
 		
-		when(aplicacionErrorRespository.save(null)).thenThrow(SQLException.class);
-		when(trazabilidadCodigoRepository.save(null)).thenThrow(SQLException.class);
-		when(accionUsuarioRepository.saveAll(null)).thenThrow(SQLException.class);
+		when(aplicacionErrorRespository.save(null)).thenThrow(new RuntimeException());
+		when(trazabilidadCodigoRepository.save(null)).thenThrow(new RuntimeException());
+		when(accionUsuarioRepository.saveAll(null)).thenThrow(new RuntimeException());
 	}
-	
-	/**
-	 * If i call the categorizeUserEvents from AplicacionErrorServiceI
-	 * With the parameter as null
-	 * It would throw a BadRequestDataException
-	 */
+
 	@Test
 	void testCategorizeUserEventsForNullList() {
-		
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.categorizeUserEvents(null);
 		});
 	}
 	
-	/**
-	 * If i call the categorizeUserEvents from AplicacionErrorServiceI
-	 * With the parameter with NivelError and TipoAccion that no exist
-	 * It would throw a BadRequestDataException
-	 */
+	
 	@Test
-	void testCategorizeUserEventsThatNotExist() {
+	void testCategorizeUserEventsThatTypeNotExist() {
 		List<AccionUsuario> userEventsType = setUpUserEventList();
 		
 		AccionUsuario accionWithBadType = new AccionUsuario();
@@ -119,7 +119,10 @@ class AppGestionErroresApiApplicationTests {
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.categorizeUserEvents(userEventsType);
 		});
-		
+	}
+	
+	@Test
+	void testCategorizeUserEventsThatNivelNotExist() {
 		List<AccionUsuario> userEventNivel = setUpUserEventList();
 		
 		AccionUsuario accionWithBadNivel = new AccionUsuario();
@@ -135,18 +138,41 @@ class AppGestionErroresApiApplicationTests {
 	}
 	
 	@Test
-	void testSaveTrazabilitiyAndUsereventsWithNullParameters() {
+	void testCategorizeUserEvents() {
+		List<AccionUsuario> userEventsType = setUpUserEventList();
+		
+		AccionUsuario accionWithBadType = new AccionUsuario();
+		TipoAccion actionType = new TipoAccion();
+		accionWithBadType.setTipoAccion(actionType);
+		
+		userEventsType.add(accionWithBadType);
+		
+		assertDoesNotThrow(()->{
+			aplicacionErrorService.categorizeUserEvents(userEventsType);
+		});
+	}
+	
+	@Test
+	void testSaveTrazabilitiyAndUsereventsWithNullAppId() {
 		TrazabilidadCodigo traza = new TrazabilidadCodigo();
 		List<AccionUsuario> userEvents = setUpUserEventList();
 		
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(null, traza, userEvents);
 		});
-		
+	}
+	
+	@Test
+	void testSaveTrazabilitiyAndUsereventsWithNullTraza() {
+		List<AccionUsuario> userEvents = setUpUserEventList();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), null, userEvents);
 		});
-		
+	}
+	
+	@Test
+	void testSaveTrazabilitiyAndUsereventsWithNullUserEvents() {
+		TrazabilidadCodigo traza = new TrazabilidadCodigo();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, null);
 		});
@@ -154,26 +180,80 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNoExistAplicacionError() {
+		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		List<AccionUsuario> userEvents = setUpUserEventList();
 		assertThrows(BadRequestDataException.class, ()->{
-			List<AccionUsuario> userEvents = setUpUserEventList();
-			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(-1), null, userEvents);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(-1), traza, userEvents);
 		});
 	}
 	
 	@Test
-	void testPersistAplicacionErrorFrontEndWithNullParameters() {
-		AplicacionError appError = new AplicacionError();
+	void testSaveTrazabilitiyAndUserevents() {
+		List<AccionUsuario> userEvents = setUpUserEventList();
+		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		assertThrows(BadRequestDataException.class, ()->{
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, userEvents);
+		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorFrontEndWithNullAppError() {
 		TrazabilidadCodigo traza = new TrazabilidadCodigo();
 		List<AccionUsuario> userEvents = setUpUserEventList();
-		
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(null, traza, userEvents);
 		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorFrontEndWithNullTraza() {
+		AplicacionError appError = new AplicacionError();
+		List<AccionUsuario> userEvents = setUpUserEventList();
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, null, userEvents);
 		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorFrontEndWithNullUserEvents() {
+		AplicacionError appError = new AplicacionError();
+		TrazabilidadCodigo traza = new TrazabilidadCodigo();
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, traza, null);
+		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorFrontEnd() {
+		AplicacionError appError = new AplicacionError();
+		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		List<AccionUsuario> userEvents = setUpUserEventList();
+		assertDoesNotThrow(()->{
+			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, traza, userEvents);
+		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorBackendWithNullException() {
+		String applicationName = "APP NAME";
+		assertThrows(BadRequestDataException.class,()->{
+			aplicacionErrorService.persistAplicacionErrorBackend(null, applicationName);
+		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorBackendWithNullAplicationName() {
+		Exception ex = new RuntimeException();
+		assertThrows(BadRequestDataException.class,()->{
+			aplicacionErrorService.persistAplicacionErrorBackend(ex, null);
+		});
+	}
+	
+	@Test
+	void testPersistAplicacionErrorBackendWithEmptyAplicationName() {
+		Exception ex = new RuntimeException();
+		assertThrows(BadRequestDataException.class,()->{
+			aplicacionErrorService.persistAplicacionErrorBackend(ex, "");
 		});
 	}
 	
@@ -181,14 +261,8 @@ class AppGestionErroresApiApplicationTests {
 	void testPersistAplicacionErrorBackend() {
 		Exception ex = new RuntimeException();
 		String applicationName = "APP NAME";
-		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(null, applicationName);
-		});
-		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(ex, "");
-		});
-		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(ex, null);
+		assertDoesNotThrow(()->{
+			aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
 		});
 	}
 }

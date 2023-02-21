@@ -17,6 +17,13 @@ public class NivelError {
 	public final static String NIVEL_ERROR_INFO ="Info";
 	public final static String NIVEL_ERROR_EXCEPTION = "Excepcion";
 	
+	public NivelError() {
+		
+	}
+	
+	public NivelError(String nombreNivel) {
+		this.nombreNivel = nombreNivel;
+	}
 	@Id
 	@SequenceGenerator(name = "id_nivel_error_generator", allocationSize = 1, sequenceName = "seq_nivel_error")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_nivel_error_generator")

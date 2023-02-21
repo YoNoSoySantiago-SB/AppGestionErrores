@@ -20,7 +20,12 @@ public class TipoAccion {
 	public final static String TIPO_ACCION_NAVEGACION = "Navegacion";
 	public final static String TIPO_ACCION_EXCEPCION = "Excepcion";
 	
-	
+	public TipoAccion() {
+		
+	}
+	public TipoAccion(String nombreAccion) {
+		this.nombreAccion = nombreAccion;
+	}
 	
 	@Id
 	@SequenceGenerator(name = "id_tipo_accion_generator", allocationSize = 1, sequenceName = "seq_tipo_accion")
