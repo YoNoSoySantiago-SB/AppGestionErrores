@@ -98,14 +98,6 @@ class AppGestionErroresApiApplicationTests {
 	}
 
 	@Test
-	void testCategorizeUserEventsForNullList() {
-		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.categorizeUserEvents(null);
-		});
-	}
-	
-	
-	@Test
 	void testCategorizeUserEventsThatTypeNotExist() {
 		List<AccionUsuario> userEventsType = setUpUserEventList();
 		
@@ -136,6 +128,15 @@ class AppGestionErroresApiApplicationTests {
 			aplicacionErrorService.categorizeUserEvents(userEventNivel);
 		});
 	}
+	
+	@Test
+	void testCategorizeUserEventsForNullList() {
+		assertThrows(BadRequestDataException.class, ()->{
+			aplicacionErrorService.categorizeUserEvents(null);
+		});
+	}
+	
+	
 	
 	@Test
 	void testCategorizeUserEvents() {
@@ -264,5 +265,6 @@ class AppGestionErroresApiApplicationTests {
 		assertDoesNotThrow(()->{
 			aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
 		});
-	}
+	}	
+	
 }

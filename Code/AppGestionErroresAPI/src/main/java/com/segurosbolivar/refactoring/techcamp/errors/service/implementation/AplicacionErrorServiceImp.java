@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Optional;
 
+import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -80,72 +81,93 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario) {
-		
-		aplicacionError = aplicacionErrorRespository.save(aplicacionError);
-		OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
-		
-		trazabilidadCodigo.setAplicacionError(aplicacionError);
-		trazabilidadCodigo.setOrigenError(origenError);
-		
-		trazabilidadCodigoRepository.save(trazabilidadCodigo);
-		
-		List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
-		
-		accionUsuarioRepository.saveAll(acciones);
+	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
+		if(aplicacionError==null || trazabilidadCodigo== null || accionesUsuario==null) {
+			throw new BadRequestDataException();
+		}else {
+			aplicacionError = aplicacionErrorRespository.save(aplicacionError);
+			OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
+			trazabilidadCodigo.setAplicacionError(aplicacionError);
+			trazabilidadCodigo.setOrigenError(origenError);
+			
+			trazabilidadCodigoRepository.save(trazabilidadCodigo);
+			List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+			
+			accionUsuarioRepository.saveAll(acciones);
+		}
 		
 		return aplicacionError.getIdAplicacionError();
 	}
 
 	@Override
 	public void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigo trazabilidadCodigo,
-			List<AccionUsuario> accionesUsuario) {
-		
-		Optional<AplicacionError> aplicacionError = aplicacionErrorRespository.findById(idAplicationError);
-		
-		trazabilidadCodigo.setAplicacionError(aplicacionError.get());
-		OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
-		trazabilidadCodigo.setOrigenError(origenError);
-		
-		trazabilidadCodigoRepository.save(trazabilidadCodigo);
-		
-		List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
-		
-		accionUsuarioRepository.saveAll(acciones);
+			List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
+		if(idAplicationError==null || trazabilidadCodigo== null || accionesUsuario==null) {
+			throw new BadRequestDataException();
+		}else {
+			Optional<AplicacionError> aplicacionError = aplicacionErrorRespository.findById(idAplicationError);
+			if(aplicacionError.isEmpty()) {
+				throw new BadRequestDataException();
+			}else {
+				trazabilidadCodigo.setAplicacionError(aplicacionError.get());
+				OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
+				trazabilidadCodigo.setOrigenError(origenError);
+				
+				trazabilidadCodigoRepository.save(trazabilidadCodigo);
+				
+				List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+				
+				accionUsuarioRepository.saveAll(acciones);
+			}
+			
+		}
 
 	}
 
 	@Override
-	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) {
-		for(AccionUsuario acciones : accionesUsuario) {
-			if(acciones.getNivelError().getNombreNivel().equals(NivelError.NIVEL_ERROR_INFO)) {
-				NivelError nivelError = nivelErrorRepository.findByNombreNivel(NivelError.NIVEL_ERROR_INFO);
-				acciones.setNivelError(nivelError);
-			}else{
-				NivelError nivelError = nivelErrorRepository.findByNombreNivel(NivelError.NIVEL_ERROR_EXCEPTION);
-				acciones.setNivelError(nivelError);
+	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
+		if (accionesUsuario == null) {
+	        throw new BadRequestDataException();
+	    }else {
+	    	for(AccionUsuario acciones : accionesUsuario) {
+	        	if(acciones.getNivelError().getNombreNivel().equals(NivelError.NIVEL_ERROR_INFO) || acciones.getNivelError().getNombreNivel().equals(NivelError.NIVEL_ERROR_EXCEPTION)) {
+					if(acciones.getNivelError().getNombreNivel().equals(NivelError.NIVEL_ERROR_INFO)) {
+						NivelError nivelError = nivelErrorRepository.findByNombreNivel(NivelError.NIVEL_ERROR_INFO);
+						acciones.setNivelError(nivelError);
+					}else{
+						NivelError nivelError = nivelErrorRepository.findByNombreNivel(NivelError.NIVEL_ERROR_EXCEPTION);
+						acciones.setNivelError(nivelError);
+					}
+		    	}else {
+		    		 throw new BadRequestDataException();
+		    	}
+				if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_BOTON) || acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_INPUT) ||
+				acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_REQUEST) || acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_NAVEGACION) ||
+				acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_EXCEPCION)) {
+					if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_BOTON)) {
+						TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_BOTON);
+						acciones.setTipoAccion(tipoAccion);
+					}
+					else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_INPUT)) {
+						TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_INPUT);
+						acciones.setTipoAccion(tipoAccion);
+					}else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_REQUEST)) {
+						TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_REQUEST);
+						acciones.setTipoAccion(tipoAccion);
+					}
+					else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_NAVEGACION)) {
+						TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_NAVEGACION);
+						acciones.setTipoAccion(tipoAccion);
+					}
+					else {
+						TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_EXCEPCION);
+						acciones.setTipoAccion(tipoAccion);
+					}
+				}else {
+					 throw new BadRequestDataException();
+				}
 			}
-			
-			if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_BOTON)) {
-				TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_BOTON);
-				acciones.setTipoAccion(tipoAccion);
-			}
-			else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_INPUT)) {
-				TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_INPUT);
-				acciones.setTipoAccion(tipoAccion);
-			}else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_REQUEST)) {
-				TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_REQUEST);
-				acciones.setTipoAccion(tipoAccion);
-			}
-			else if(acciones.getTipoAccion().getNombreAccion().equals(TipoAccion.TIPO_ACCION_NAVEGACION)) {
-				TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_NAVEGACION);
-				acciones.setTipoAccion(tipoAccion);
-			}
-			else {
-				TipoAccion tipoAccion = tipoAccionRepository.findByNombreAccion(TipoAccion.TIPO_ACCION_EXCEPCION);
-				acciones.setTipoAccion(tipoAccion);
-			}
-		}
+	    }
 		return accionesUsuario;
 	}
 }
