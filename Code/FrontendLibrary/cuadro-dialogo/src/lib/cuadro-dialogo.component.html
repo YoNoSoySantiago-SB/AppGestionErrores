@@ -1,0 +1,59 @@
+<mat-dialog-content>
+  <div>Ha ocurrido un error, ¿Desea reportarlo?</div>
+  <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
+    icon | lowercase
+  }}</mat-icon>
+  <form>
+    <div class="form-group-dialog-errore">
+      <label for="name">Nombre:</label>
+      <input
+        [(ngModel)]="nombre"
+        type="text"
+        id="name-dialog-errores"
+        name="name"
+        placeholder="Ingrese su nombre"
+        required
+      />
+    </div>
+    <div class="form-group-dialog-errore">
+      <label for="email">Correo electronico:</label>
+      <input
+        [(ngModel)]="email"
+        type="email"
+        id="email-dialog-errores"
+        name="email"
+        placeholder="Ingrese su correo electrónico"
+        required
+      />
+    </div>
+    <div class="form-group-dialog-errore">
+      <label for="description">Descripción de lo sucedido:</label>
+      <textarea
+        [(ngModel)]="descripcion"
+        id="description-dialog-errores"
+        name="description"
+        placeholder="Ingrese una descripción"
+      ></textarea>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    id="reportar-dialog-errores"
+    mat-raised-button
+    color="primary"
+    (click)="reportar()"
+  >
+    {{ buttonText }}
+  </button>
+
+  <button
+    id="noreportar-dialog-errores"
+    mat-button
+    (click)="cerrar()"
+    mat-raised-button
+    color="primary"
+  >
+    No reportar
+  </button>
+</mat-dialog-actions>
