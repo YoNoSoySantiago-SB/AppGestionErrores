@@ -58,7 +58,7 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
   override handleError(err: any): void {
     console.log(err);
     // Obtiene la hora actual y la información del navegador
-    let time = new Date().toLocaleString();
+    let time = new Date();
     let navegator = navigator.userAgent;
     let trazabilidad: any;
     let mensajeError: any;
@@ -67,53 +67,55 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
     const instancia = new getIpJs();
     instancia.obtenerDireccionIP((direcionIp) => {
       this.ip = direcionIp;
-    });
-    // Obtiene la trazabilidad del error y los eventos de usuario
-    const eventosUsuario = saveError(err.message);
-    let status: number;
-    //Si es de backend mando trazabilidad ,eventos y id recibido en mensaje
+      // Obtiene la trazabilidad del error y los eventos de usuario
+      const eventosUsuario = saveError(err.message);
+      let status: number;
+      //Si es de backend mando trazabilidad ,eventos y id recibido en mensaje
 
-    if (getCallStackhtpp().length > 0 && err instanceof HttpErrorResponse) {
-      status = err.status;
-      if (status === 409) {
-        console.log('error 409 backend');
-        idBackend = err.error;
-        trazabilidad = getCallStackhtpp();
+      if (getCallStackhtpp().length > 0 && err instanceof HttpErrorResponse) {
+        status = err.status;
+        if (status === 409) {
+          idBackend = err.error;
+          trazabilidad = getCallStackhtpp();
 
-        mensajeError = '';
-        console.log(mensajeError);
+          mensajeError = '';
+        } else {
+          console.log('otro error');
+
+          trazabilidad = getCallStackhtpp();
+          mensajeError = createError().handleError(err)[1];
+        }
       } else {
-        console.log('otro error');
+        console.log('object error');
 
-        trazabilidad = getCallStackhtpp();
+        trazabilidad = createError().handleError(err)[0];
         mensajeError = createError().handleError(err)[1];
-        console.log(mensajeError);
       }
-    } else {
-      console.log('object error');
-
-      trazabilidad = createError().handleError(err)[0];
-      mensajeError = createError().handleError(err)[1];
-      console.log(mensajeError);
-    }
-    // Abre un diálogo modal para reportar el error al usuario
-
-    this.ngZone.run(() => {
-      this.dialog.open(AlertDialog, {
-        data: {
-          icon: 'Error',
-          message: err.message,
-          buttonText: 'Reportar',
-          ip: '',
-          trazabilidad: trazabilidad,
-          mensajeobject: mensajeError,
-          tiempo: time,
-          navegador: navegator,
-          eventosUsuario: eventosUsuario,
-          status: status,
-        },
+      // Abre un diálogo modal para reportar el error al usuario
+      this.ngZone.run(() => {
+        this.dialog.open(AlertDialog, {
+          data: {
+            icon: 'Error',
+            message: err.message,
+            buttonText: 'Reportar',
+            ip: this.ip,
+            trazabilidad: trazabilidad,
+            mensajeobject: mensajeError,
+            tiempo:
+              time.getHours() +
+              ':' +
+              time.getMinutes() +
+              ':' +
+              time.getSeconds(),
+            navegador: navegator,
+            eventosUsuario: eventosUsuario,
+            status: status,
+            idBackend: idBackend,
+          },
+        });
       });
     });
+
     // Limpia la trazabilidad del error para evitar errores en futuras solicitudes HTTP
 
     setCallStackHttp('');

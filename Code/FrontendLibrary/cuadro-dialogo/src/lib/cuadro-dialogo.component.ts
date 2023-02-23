@@ -3,7 +3,7 @@ import { Component, Inject, Injectable, OnInit } from '@angular/core';
 import { aplicacion_error, trazabilidad_codigo } from './interfaces';
 import { ServicehttpAPIError } from './httpservice';
 import { HttpClient, HttpBackend, HttpXhrBackend } from '@angular/common/http';
-import { XhrFactory } from '@angular/common';
+import { Time, XhrFactory } from '@angular/common';
 
 @Component({
   selector: 'app-alert-dialog',
@@ -28,7 +28,10 @@ export class AlertDialog {
   //Mensaje del objeto
   mensajeobject: string = '';
   //Tiempo en el que sucedio el problema
-  tiempo: string = '';
+  tiempo: Time = {
+    hours: 0,
+    minutes: 0,
+  };
   //navegador y sistema operativo que ocurrio
   navegador: string = '';
   //Eventos de usuario que hizo antes del error
@@ -41,6 +44,7 @@ export class AlertDialog {
   descripcion: string = '';
   //Status
   status: number = -1;
+  idBackend: number = -1;
 
   /**
 
@@ -57,10 +61,11 @@ Crea una nueva instancia de AlertDialog.
       ip: string;
       mensajeobject: string;
       trazabilidad: string;
-      tiempo: string;
+      tiempo: Time;
       navegador: string;
       eventosUsuario: any;
       status: number;
+      idBackend: number;
     },
     private dialogRef: MatDialogRef<AlertDialog>
   ) {
@@ -74,64 +79,92 @@ Crea una nueva instancia de AlertDialog.
     if (data?.navegador) this.navegador = data.navegador;
     if (data?.eventosUsuario) this.eventosUsuario = data.eventosUsuario;
     if (data?.status) this.status = data.status;
+    if (data?.idBackend) this.idBackend = data.idBackend;
   }
 
   //Metodo que se ejecuta para mandar la información al backend y el reporte
   reportar() {
-    console.log(this.data);
     let aplicacionError: aplicacion_error;
     aplicacionError = {
-      titulo_error: this.message,
-      descripcion_error: this.descripcion,
-      nombre_aplicacion: '',
-      correo_usuario: this.email,
+      tituloError: this.message,
+      descripcionError: this.descripcion,
+      nombreAplicacion: '',
+      correoUsuario: this.email,
+      ip: this.ip,
+      navegador: this.navegador,
     };
 
     let trazabilidadCodigo: trazabilidad_codigo;
     trazabilidadCodigo = {
-      time: this.tiempo,
-      frame: this.trazabilidad,
-      category: '',
+      tiempo: this.tiempo,
+      trazaError: this.trazabilidad,
+      categoria: '',
     };
 
     if (this.status == 409) {
-      sendAPIBackend(aplicacionError, trazabilidadCodigo, this.eventosUsuario);
+      console.log(sendAPIBackend(1, trazabilidadCodigo, this.eventosUsuario));
     } else {
-      sendAPIFront(1, trazabilidadCodigo, this.eventosUsuario);
+      sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario);
     }
 
-    console.log(aplicacionError);
     console.log(trazabilidadCodigo);
+    console.log(aplicacionError);
     this.dialogRef.close();
   }
   //Metodo que se ejecuta para cerrar el dialogo y mandar la información del error al backend
-
   cerrar() {
     let aplicacionError: aplicacion_error;
     aplicacionError = {
-      titulo_error: this.message,
-      descripcion_error: this.descripcion,
-      nombre_aplicacion: '',
-      correo_usuario: this.email,
+      tituloError: this.message,
+      descripcionError: this.descripcion,
+      nombreAplicacion: '',
+      correoUsuario: this.email,
+      ip: this.ip,
+      navegador: this.navegador,
     };
 
     let trazabilidadCodigo: trazabilidad_codigo;
     trazabilidadCodigo = {
-      time: this.tiempo,
-      frame: this.trazabilidad,
-      category: '',
+      tiempo: this.tiempo,
+      trazaError: this.trazabilidad,
+      categoria: '',
     };
+
+    if (this.status == 409) {
+      console.log(
+        sendAPIBackend(this.idBackend, trazabilidadCodigo, this.eventosUsuario)
+      );
+    } else {
+      console.log(
+        sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario)
+      );
+    }
 
     this.dialogRef.close();
   }
 }
 
+/**
+ * Clase que implementa la interfaz XhrFactory para proporcionar una fábrica personalizada para HttpClient de Angular.
+ */
 class MyXhrFactory implements XhrFactory {
+  /**
+   * Crea y devuelve una nueva instancia de XMLHttpRequest.
+   * @returns Una nueva instancia de XMLHttpRequest.
+   */
   build(): XMLHttpRequest {
     return new XMLHttpRequest();
   }
 }
-function sendAPIBackend(
+
+/**
+ * Envía una solicitud de API para guardar los errores de la aplicación y los eventos del usuario en la parte frontal.
+ * @param aplicacionError - Objeto que contiene información sobre el error de la aplicación.
+ * @param trazabilidad_codigo - Código de trazabilidad para el seguimiento del error.
+ * @param eventosUsuario - Objeto que contiene información sobre los eventos del usuario.
+ * @returns Un Observable que emite una respuesta de la API.
+ */
+function sendAPIFront(
   aplicacionError: aplicacion_error,
   trazabilidad_codigo: trazabilidad_codigo,
   eventosUsuario: any
@@ -139,14 +172,30 @@ function sendAPIBackend(
   const xhrFactory = new MyXhrFactory();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi.persistAplicacionErrorFrontEnd(
-    aplicacionError,
-    trazabilidad_codigo,
-    eventosUsuario
-  );
+  return serviceApi
+    .persistAplicacionErrorFrontEnd(
+      aplicacionError,
+      trazabilidad_codigo,
+      eventosUsuario
+    )
+    .subscribe({
+      next: (response) => {
+        response;
+      },
+      error: (err) => {
+        err;
+      },
+    });
 }
 
-function sendAPIFront(
+/**
+ * Envía una solicitud de API para guardar los eventos del usuario en el backend.
+ * @param idaplicacionError - ID del error de la aplicación.
+ * @param trazabilidad_codigo - Código de trazabilidad para el seguimiento del error.
+ * @param eventosUsuario - Objeto que contiene información sobre los eventos del usuario.
+ * @returns Un Observable que emite una respuesta de la API.
+ */
+function sendAPIBackend(
   idaplicacionError: number,
   trazabilidad_codigo: trazabilidad_codigo,
   eventosUsuario: any
@@ -154,9 +203,18 @@ function sendAPIFront(
   const xhrFactory = new MyXhrFactory();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi.saveTrazabilitiyandUserevents(
-    idaplicacionError,
-    trazabilidad_codigo,
-    eventosUsuario
-  );
+  return serviceApi
+    .saveTrazabilitiyandUserevents(
+      idaplicacionError,
+      trazabilidad_codigo,
+      eventosUsuario
+    )
+    .subscribe({
+      next: (response) => {
+        response;
+      },
+      error: (err) => {
+        err;
+      },
+    });
 }
