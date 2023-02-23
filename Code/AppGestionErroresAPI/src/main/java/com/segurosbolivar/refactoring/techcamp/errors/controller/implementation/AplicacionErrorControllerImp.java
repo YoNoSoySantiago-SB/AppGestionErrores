@@ -7,9 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.AplicacionErrorControllerI;
@@ -27,21 +26,26 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	AplicacionErrorServiceI aplicacionErrorService;
 
 	@Override
-	@RequestMapping(value = "/aplicacionBackendError/save", method = RequestMethod.POST)
+	@PostMapping("/aplicacionBackendError/save")
 	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex, @RequestBody String applicationName) {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
-		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+		Long newAplicacionError;
+		try {
+			newAplicacionError = aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
+		} catch (BadRequestDataException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
 	}
 
 	@Override
-	@RequestMapping(value = "/aplicacionFrontEndError/save", method = RequestMethod.POST)
+	@PostMapping("/aplicacionFrontEndError/save")
 	public ResponseEntity<Long> saveFrontEndError(@RequestBody AplicacionError aplicacionError,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
 		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(aplicacionError,trazabilidadCodigo,accionesUsuario);
-		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
 	}
 
 	@Override
-	@RequestMapping(value = "/saveTrazabilitiyandUserevents/{idAplicationError}", method = RequestMethod.POST)
+	@PostMapping("/saveTrazabilitiyandUserevents/{idAplicationError}")
 	public void saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
 		aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigo,accionesUsuario);
 	}

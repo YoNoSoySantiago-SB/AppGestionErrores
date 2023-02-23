@@ -59,7 +59,12 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	
 	@Override
 	@Transactional
-	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) {
+	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) throws BadRequestDataException {
+		
+		if(applicationName==null || applicationName.isEmpty() || ex == null) {
+			throw new BadRequestDataException();
+		}
+		
 		AplicacionError aplicacionError = new AplicacionError();
 		TrazabilidadCodigo trazabilidadCodigo = new TrazabilidadCodigo();
 		
@@ -119,9 +124,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 				
 				accionUsuarioRepository.saveAll(acciones);
 			}
-			
 		}
-
 	}
 
 	@Override
