@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,19 +32,22 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	AplicacionErrorServiceI aplicacionErrorService;
 
 	@Override
-	@RequestMapping(value = "/aplicacionBackendError/save", method = RequestMethod.POST)
+	@PostMapping("/aplicacionBackendError/save")
 	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex, @RequestBody String applicationName) {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
-		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+		Long newAplicacionError;
+		try {
+			newAplicacionError = aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
+		} catch (BadRequestDataException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
 	}
 
 	@Override
 	@RequestMapping(value = "/aplicacionFrontEndError/save", method = RequestMethod.POST)
 	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
-		System.out.println("ENTRA C:");
-		System.out.println(errorRequest);
 		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
-		return new ResponseEntity("ola", HttpStatus.CREATED);
+		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
 	}
 
 	@Override

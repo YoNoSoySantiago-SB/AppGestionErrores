@@ -11,7 +11,7 @@ import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 
 public interface AplicacionErrorServiceI {
 	
-	public Long persistAplicacionErrorBackend(Exception ex, String applicationName);
+	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) throws BadRequestDataException;
 
 	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) throws BadRequestDataException;
 
