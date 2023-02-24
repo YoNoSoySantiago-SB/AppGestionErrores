@@ -1,5 +1,6 @@
 package com.segurosbolivar.refactoring.techcamp.errors.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -23,6 +24,10 @@ public class AplicacionError {
 	private String descripcionError;
 	private String nombreAplicacion;
 	private String correoUsuario;
+	
+	private Date horaError;
+	private String navegadorUsuario;
+	private String ipUsuario;
 	
 	@OneToMany(mappedBy = "aplicacionError")
 	private List<TrazabilidadCodigo> trazas_codigo;

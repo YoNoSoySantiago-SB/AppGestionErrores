@@ -30,7 +30,7 @@ public class AccionUsuario {
 	private String accionUsuario;
 	
 	@ManyToOne
-	@JoinColumn(name="id_applicacion_error")
+	@JoinColumn(name="id_aplicacion_error")
 	private AplicacionError aplicacionError;
 	
 	@ManyToOne

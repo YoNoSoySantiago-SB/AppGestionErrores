@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.AplicacionErrorControllerI;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.TrazabilidadCodigo;
+import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequest;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
 
 @RestController
@@ -35,15 +39,17 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@RequestMapping(value = "/aplicacionFrontEndError/save", method = RequestMethod.POST)
-	public ResponseEntity<Long> saveFrontEndError(@RequestBody AplicacionError aplicacionError,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(aplicacionError,trazabilidadCodigo,accionesUsuario);
-		return new ResponseEntity(newAplicacionError, HttpStatus.CREATED);
+	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
+		System.out.println("ENTRA C:");
+		System.out.println(errorRequest);
+		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
+		return new ResponseEntity("ola", HttpStatus.CREATED);
 	}
 
 	@Override
 	@RequestMapping(value = "/saveTrazabilitiyandUserevents/{idAplicationError}", method = RequestMethod.POST)
-	public void saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigo trazabilidadCodigo,@RequestBody List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
-		aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigo,accionesUsuario);
+	public void saveTrazabilitiyandUserevents(@PathVariable("id") Long idAplicationError ,@RequestBody TrazabilidadCodigoDTO trazabilidadCodigoDto,@RequestBody List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
+		aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigoDto,accionesUsuarioDto);
 	}
 
 }

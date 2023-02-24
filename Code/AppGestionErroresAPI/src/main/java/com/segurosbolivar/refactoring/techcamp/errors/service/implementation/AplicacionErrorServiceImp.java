@@ -1,11 +1,16 @@
 package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 
 import java.io.PrintWriter;
+
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -81,41 +86,68 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long persistAplicacionErrorFrontEnd(AplicacionError aplicacionError,TrazabilidadCodigo trazabilidadCodigo, List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
-		if(aplicacionError==null || trazabilidadCodigo== null || accionesUsuario==null) {
+	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionErrorDto,TrazabilidadCodigoDTO trazabilidadCodigoDto, List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
+		if(aplicacionErrorDto==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
+			AplicacionError aplicacionError=new AplicacionError();
+			aplicacionError=aplicacionErrorDto.setInfo(aplicacionError);
+			System.out.println(aplicacionError.getNavegadorUsuario());
 			aplicacionError = aplicacionErrorRespository.save(aplicacionError);
 			OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
+			TrazabilidadCodigo trazabilidadCodigo=new TrazabilidadCodigo();
+			trazabilidadCodigo=trazabilidadCodigoDto.setInfo(trazabilidadCodigo);
 			trazabilidadCodigo.setAplicacionError(aplicacionError);
 			trazabilidadCodigo.setOrigenError(origenError);
 			
 			trazabilidadCodigoRepository.save(trazabilidadCodigo);
-			List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+			List<AccionUsuario> acciones=new ArrayList<AccionUsuario>();
+			for(AccionUsuarioDTO accionDto : accionesUsuarioDto) {
+				AccionUsuario accion= new AccionUsuario();
+				NivelError nivelError=new NivelError();
+				TipoAccion tipoAccion= new TipoAccion();
+				accion.setNivelError(nivelError);
+				accion.setTipoAccion(tipoAccion);
+				accion=accionDto.setInfo(accion);
+				accion.setAplicacionError(aplicacionError);
+				acciones.add(accion);				
+			}
+			acciones=categorizeUserEvents(acciones);
 			
 			accionUsuarioRepository.saveAll(acciones);
+			return aplicacionError.getIdAplicacionError();
 		}
 		
-		return aplicacionError.getIdAplicacionError();
 	}
 
 	@Override
-	public void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigo trazabilidadCodigo,
-			List<AccionUsuario> accionesUsuario) throws BadRequestDataException {
-		if(idAplicationError==null || trazabilidadCodigo== null || accionesUsuario==null) {
+	public void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
+		if(idAplicationError==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
 			Optional<AplicacionError> aplicacionError = aplicacionErrorRespository.findById(idAplicationError);
 			if(aplicacionError.isEmpty()) {
 				throw new BadRequestDataException();
 			}else {
+				TrazabilidadCodigo trazabilidadCodigo=new TrazabilidadCodigo();
+				trazabilidadCodigo=trazabilidadCodigoDto.setInfo(trazabilidadCodigo);
 				trazabilidadCodigo.setAplicacionError(aplicacionError.get());
 				OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
 				trazabilidadCodigo.setOrigenError(origenError);
 				
 				trazabilidadCodigoRepository.save(trazabilidadCodigo);
-				
-				List<AccionUsuario> acciones=categorizeUserEvents(accionesUsuario);
+				List<AccionUsuario> acciones=new ArrayList<AccionUsuario>();
+				for(AccionUsuarioDTO accionDto : accionesUsuarioDto) {
+					AccionUsuario accion= new AccionUsuario();
+					NivelError nivelError=new NivelError();
+					TipoAccion tipoAccion= new TipoAccion();
+					accion.setNivelError(nivelError);
+					accion.setTipoAccion(tipoAccion);
+					accion=accionDto.setInfo(accion);
+					acciones.add(accion);				
+				}
+				acciones=categorizeUserEvents(acciones);
 				
 				accionUsuarioRepository.saveAll(acciones);
 			}

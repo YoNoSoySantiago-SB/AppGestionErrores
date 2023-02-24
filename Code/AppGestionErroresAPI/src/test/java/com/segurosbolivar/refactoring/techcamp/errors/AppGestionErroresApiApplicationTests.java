@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -69,6 +72,21 @@ class AppGestionErroresApiApplicationTests {
 	    List<AccionUsuario> userActions = new ArrayList<>();
 	    
 	    for(AccionUsuario userAction : array) {
+	    	userActions.add(userAction);
+	    }
+	    return userActions;
+	}
+	private List<AccionUsuarioDTO> setUpUserEventListDTOS() {
+		AccionUsuarioDTO[] array = {
+				new AccionUsuarioDTO(NivelError.NIVEL_ERROR_INFO,TipoAccion.TIPO_ACCION_BOTON),
+				new AccionUsuarioDTO(NivelError.NIVEL_ERROR_EXCEPTION,TipoAccion.TIPO_ACCION_EXCEPCION),
+				new AccionUsuarioDTO(NivelError.NIVEL_ERROR_INFO,TipoAccion.TIPO_ACCION_INPUT),
+				new AccionUsuarioDTO(NivelError.NIVEL_ERROR_INFO,TipoAccion.TIPO_ACCION_NAVEGACION),
+				new AccionUsuarioDTO(NivelError.NIVEL_ERROR_INFO,TipoAccion.TIPO_ACCION_REQUEST)
+	    };
+	    List<AccionUsuarioDTO> userActions = new ArrayList<>();
+	    
+	    for(AccionUsuarioDTO userAction : array) {
 	    	userActions.add(userAction);
 	    }
 	    return userActions;
@@ -166,8 +184,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNullAppId() {
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(null, traza, userEvents);
@@ -176,7 +194,7 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNullTraza() {
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), null, userEvents);
 		});
@@ -184,7 +202,7 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNullUserEvents() {
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, null);
 		});
@@ -192,8 +210,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNoExistAplicacionError() {
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(-1), traza, userEvents);
 		});
@@ -201,8 +219,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testSaveTrazabilitiyAndUserevents() {
-		List<AccionUsuario> userEvents = setUpUserEventList();
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		assertThrows(BadRequestDataException.class, ()->{
 			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, userEvents);
 		});
@@ -210,8 +228,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testPersistAplicacionErrorFrontEndWithNullAppError() {
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(null, traza, userEvents);
 		});
@@ -219,8 +237,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testPersistAplicacionErrorFrontEndWithNullTraza() {
-		AplicacionError appError = new AplicacionError();
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, null, userEvents);
 		});
@@ -228,8 +246,8 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testPersistAplicacionErrorFrontEndWithNullUserEvents() {
-		AplicacionError appError = new AplicacionError();
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		assertThrows(BadRequestDataException.class,()->{
 			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, traza, null);
 		});
@@ -237,15 +255,17 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testPersistAplicacionErrorFrontEnd() {
-		AplicacionError appError = new AplicacionError();
-		appError.setIdAplicacionError((long) 1);
+		AplicacionErrorDTO appErrorDto = new AplicacionErrorDTO();
+		AplicacionError aplicacionError = new AplicacionError();
 		
-		when(aplicacionErrorRespository.save(appError)).thenReturn(appError);
+		aplicacionError.setIdAplicacionError((long) 1);
 		
-		TrazabilidadCodigo traza = new TrazabilidadCodigo();
-		List<AccionUsuario> userEvents = setUpUserEventList();
+		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
+		
+		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertDoesNotThrow(()->{
-			aplicacionErrorService.persistAplicacionErrorFrontEnd(appError, traza, userEvents);
+			aplicacionErrorService.persistAplicacionErrorFrontEnd(appErrorDto, traza, userEvents);
 		});
 	}
 	
