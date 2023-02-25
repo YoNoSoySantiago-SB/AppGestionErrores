@@ -1,15 +1,2 @@
-com\segurosbolivar\refactoring\errors\model\OrigenError.class
-com\segurosbolivar\refactoring\errors\repository\NivelErrorRepository.class
-com\segurosbolivar\refactoring\errors\repository\TipoAccionRepository.class
-com\segurosbolivar\refactoring\errors\service\AplicacionErrorService.class
-com\segurosbolivar\refactoring\errors\repository\AccionUsuarioRepository.class
-com\segurosbolivar\refactoring\errors\model\TipoAccion.class
-com\segurosbolivar\refactoring\errors\repository\OrigenErrorRepository.class
-com\segurosbolivar\refactoring\errors\repository\TrazabilidadCodigoRepository.class
-com\segurosbolivar\refactoring\errors\model\AccionUsuario.class
-com\segurosbolivar\refactoring\errors\model\TrazabilidadCodigo.class
-com\segurosbolivar\refactoring\errors\model\AplicacionError.class
-com\segurosbolivar\refactoring\errors\GlobalExceptionHandler.class
-com\segurosbolivar\refactoring\errors\repository\AplicacionErrorRepository.class
 com\segurosbolivar\refactoring\errors\config\GlobalExceptionHandlerConfig.class
-com\segurosbolivar\refactoring\errors\model\NivelError.class
+com\segurosbolivar\refactoring\errors\GlobalExceptionHandler.class

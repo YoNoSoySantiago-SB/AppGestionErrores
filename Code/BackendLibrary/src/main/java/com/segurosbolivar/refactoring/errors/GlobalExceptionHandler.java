@@ -6,11 +6,14 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -53,9 +56,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Generate a custom report of any exception received.
      * 
      * @param ex The exception to be reported.
+     * @return The id of the generated report
      */
-    public Long catchException(Exception ex) {
-    	return Long.valueOf(-1);
-//		return aplicacionErrorService.persistAplicacionError(ex);
+    public static Long catchException(Exception ex) {
+    	RestTemplate restTemplate = new RestTemplate();
+        String url = "localhost:8080/aplicacionBackendError/save";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Exception> request = new HttpEntity<>(ex, headers);
+
+        Long response = restTemplate.postForObject(url, request, Long.class);
+        System.out.println(response);
+    	return response;
     }
 }
