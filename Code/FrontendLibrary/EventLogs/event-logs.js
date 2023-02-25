@@ -53,50 +53,30 @@ let amount = 20;
   * @param {string} type  - The type of event.
   */
   export function categorizeEvent(description,type) {
-    let tipoAccion;
-    let nivelError;
+    let nombreAccion='';
+    let nombreNivel='';
     if(type==="Button"){
-      tipoAccion= {
-        nombreAccion:"Boton"
-      }
-      nivelError= {
-        nombreNivel:"Info"
-      }
+      nombreAccion="Boton"
+      nombreNivel="Info"
     }else if(type==="Input"){
-      tipoAccion= {
-        nombreAccion:"Input"
-      }
-      nivelError= {
-        nombreNivel:"Info"
-      }
+      nombreAccion="Input"
+      nombreNivel="Info"
     }else if(type==="Request"){
-      tipoAccion= {
-        nombreAccion:"Request"
-      }
-      nivelError= {
-        nombreNivel:"Info"
-      }
+      nombreAccion="Request"
+      nombreNivel="Info"
     }else if(type==="Navigation"){
-      tipoAccion= {
-        nombreAccion:"Navegacion"
-      }
-      nivelError= {
-        nombreNivel:"Info"
-      }
+      nombreAccion="Navegacion"
+      nombreNivel="Info"
     }
     else if(type==="Exception"){
-      tipoAccion= {
-        nombreAccion:"Excepcion"
-      }
-      nivelError= {
-        nombreNivel:"Excepcion"
-      }
+      nombreAccion="Excepcion"
+      nombreNivel="Excepcion"
     }
     const accionUsuario = {
       fechaHoraAccion: new Date(),
       accionUsuario:description,
-      nivelError,
-      tipoAccion
+      nombreNivel:nombreNivel,
+      nombreAccion:nombreAccion
     };  
     pushEvent(accionUsuario);
   }
