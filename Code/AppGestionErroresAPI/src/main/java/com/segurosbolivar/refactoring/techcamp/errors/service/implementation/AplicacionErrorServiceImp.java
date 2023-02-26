@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
@@ -64,7 +65,10 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	
 	@Override
 	@Transactional
-	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) throws BadRequestDataException {
+	public Long persistAplicacionErrorBackend(ExceptionDto exceptionDto) throws BadRequestDataException {
+		
+		String applicationName = exceptionDto.getApplicationName();
+		Exception ex = exceptionDto.getException();
 		
 		if(applicationName==null || applicationName.isEmpty() || ex == null) {
 			throw new BadRequestDataException();

@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
@@ -272,34 +273,42 @@ class AppGestionErroresApiApplicationTests {
 	
 	@Test
 	void testPersistAplicacionErrorBackendWithNullException() {
-		String applicationName = "APP NAME";
+		ExceptionDto exceptionDto = new ExceptionDto();
+		exceptionDto.setApplicationName("APP NAME");
 		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(null, applicationName);
+			aplicacionErrorService.persistAplicacionErrorBackend(exceptionDto);
 		});
 	}
 	
 	@Test
 	void testPersistAplicacionErrorBackendWithNullAplicationName() {
+		ExceptionDto exceptionDto = new ExceptionDto();
 		Exception ex = new RuntimeException();
+		exceptionDto.setException(ex);
 		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(ex, null);
+			aplicacionErrorService.persistAplicacionErrorBackend(exceptionDto);
 		});
 	}
 	
 	@Test
 	void testPersistAplicacionErrorBackendWithEmptyAplicationName() {
+		ExceptionDto exceptionDto = new ExceptionDto();
 		Exception ex = new RuntimeException();
+		exceptionDto.setException(ex);
+		exceptionDto.setApplicationName("");
 		assertThrows(BadRequestDataException.class,()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(ex, "");
+			aplicacionErrorService.persistAplicacionErrorBackend(exceptionDto);
 		});
 	}
 	
 	@Test
 	void testPersistAplicacionErrorBackend() {
+		ExceptionDto exceptionDto = new ExceptionDto();
 		Exception ex = new RuntimeException();
-		String applicationName = "APP NAME";
+		exceptionDto.setException(ex);
+		exceptionDto.setApplicationName("APP NAME");
 		assertDoesNotThrow(()->{
-			aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
+			aplicacionErrorService.persistAplicacionErrorBackend(exceptionDto);
 		});
 	}	
 	

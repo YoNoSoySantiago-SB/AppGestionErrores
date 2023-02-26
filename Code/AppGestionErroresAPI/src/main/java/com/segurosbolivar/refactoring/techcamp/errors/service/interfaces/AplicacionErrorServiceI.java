@@ -6,12 +6,13 @@ import java.util.List;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 
 public interface AplicacionErrorServiceI {
 	
-	public Long persistAplicacionErrorBackend(Exception ex, String applicationName) throws BadRequestDataException;
+	public Long persistAplicacionErrorBackend(ExceptionDto exceptionDto) throws BadRequestDataException;
 
 	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) throws BadRequestDataException;
 

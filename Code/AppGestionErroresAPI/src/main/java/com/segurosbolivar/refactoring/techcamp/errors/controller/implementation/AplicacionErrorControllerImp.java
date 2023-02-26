@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.AplicacionErrorControllerI;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequest;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
@@ -27,10 +28,10 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@PostMapping("/aplicacionBackendError/save")
-	public ResponseEntity<Long> saveBackendError(@RequestBody Exception ex, @RequestBody String applicationName) {
+	public ResponseEntity<Long> saveBackendError(@RequestBody ExceptionDto exceptionDto) {
 		Long newAplicacionError;
 		try {
-			newAplicacionError = aplicacionErrorService.persistAplicacionErrorBackend(ex, applicationName);
+			newAplicacionError = aplicacionErrorService.persistAplicacionErrorBackend(exceptionDto);
 		} catch (BadRequestDataException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}

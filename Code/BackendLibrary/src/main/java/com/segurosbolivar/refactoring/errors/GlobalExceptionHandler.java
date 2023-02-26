@@ -60,15 +60,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     public static Long catchException(Exception ex) {
     	RestTemplate restTemplate = new RestTemplate();
-        String url = "localhost:8080/aplicacionBackendError/save";
+    	String url = "http://localhost:8080/aplicacionBackendError/save";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        String applicationName = "Test By Now";
+        
+        ErrorPayload errorPayload = new ErrorPayload();
+        errorPayload.setException(ex);
+        errorPayload.setApplicationName(applicationName);
 
-        HttpEntity<Exception> request = new HttpEntity<>(ex, headers);
+        HttpEntity<ErrorPayload> request = new HttpEntity<>(errorPayload, headers);
 
         Long response = restTemplate.postForObject(url, request, Long.class);
         System.out.println(response);
     	return response;
+    }
+    
+    private static class ErrorPayload {
+        private Exception exception;
+        private String applicationName;
+
+        public void setException(Exception exception) {
+            this.exception = exception;
+        }
+
+        public void setApplicationName(String applicationName) {
+            this.applicationName = applicationName;
+        }
     }
 }

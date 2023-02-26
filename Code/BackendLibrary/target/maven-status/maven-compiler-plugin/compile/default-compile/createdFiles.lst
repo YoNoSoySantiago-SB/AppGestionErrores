@@ -1,2 +1,3 @@
-com\segurosbolivar\refactoring\errors\config\GlobalExceptionHandlerConfig.class
+com\segurosbolivar\refactoring\errors\GlobalExceptionHandler$ErrorPayload.class
 com\segurosbolivar\refactoring\errors\GlobalExceptionHandler.class
+com\segurosbolivar\refactoring\errors\config\GlobalExceptionHandlerConfig.class
