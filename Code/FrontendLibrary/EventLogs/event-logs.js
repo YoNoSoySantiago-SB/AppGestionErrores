@@ -36,7 +36,7 @@ let amount = 20;
           });
         }else{
           e.target.addEventListener('blur', function (e) {
-            let inputEventDescription = e.target.value ? "Se digitó: " + e.target.value + " en el input con id " (e.target.id || "Desconocido") : "No se digitó nada";
+            let inputEventDescription = e.target.value ? "Se digitó: " + e.target.value + " en el input con id " +(e.target.id || "Desconocido") : "No se digitó nada";
             categorizeEvent(inputEventDescription,"Input")
           });
         }

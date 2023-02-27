@@ -264,6 +264,8 @@ class AppGestionErroresApiApplicationTests {
 		
 		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
 		
+		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
+		
 		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		assertDoesNotThrow(()->{
