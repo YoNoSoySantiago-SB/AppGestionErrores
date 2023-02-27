@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	
 	@Autowired
@@ -64,7 +65,6 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 	
 	@Override
-	@Transactional
 	public Long persistAplicacionErrorBackend(ExceptionDto exceptionDto) throws BadRequestDataException {
 		
 		String applicationName = exceptionDto.getApplicationName();

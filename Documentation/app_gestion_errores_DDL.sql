@@ -26,10 +26,13 @@ ALTER TABLE accion_usuario ADD CONSTRAINT pk_user_action PRIMARY KEY ( id_accion
 
 CREATE TABLE aplicacion_error (
     id_aplicacion_error INTEGER NOT NULL DEFAULT nextval('seq_aplicacion_error'),
-    nombre_aplicacion  VARCHAR(80) NOT NULL,
-    titulo_error        VARCHAR(30),
+    nombre_aplicacion  	VARCHAR(80) NOT NULL,
+    titulo_error        VARCHAR(80),
     descripcion_error   VARCHAR(3500),
-    correo_usuario      VARCHAR(50)
+    correo_usuario      VARCHAR(50),
+    hora_error 			DATE,
+	navegador_usuario 	VARCHAR(150),
+	ip_usuario 			VARCHAR(50)
 );
 
 ALTER TABLE aplicacion_error ADD CONSTRAINT pk_application_error PRIMARY KEY ( id_aplicacion_error );
@@ -84,3 +87,4 @@ ALTER TABLE accion_usuario
 ALTER TABLE trazabilidad_codigo
     ADD CONSTRAINT fk_trazabilidad_codigo_ref_origen_error FOREIGN KEY ( id_origen_error )
         REFERENCES origen_error ( id_origen_error );
+
