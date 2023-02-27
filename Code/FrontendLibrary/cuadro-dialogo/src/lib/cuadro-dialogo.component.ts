@@ -1,6 +1,6 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { aplicacion_error, trazabilidad_codigo } from './interfaces';
+import { AplicacionErrorDto, TrazabilidadCodigoDto } from './interfaces';
 import { ServicehttpAPIError } from './httpservice';
 import { HttpClient, HttpBackend, HttpXhrBackend } from '@angular/common/http';
 import { Time, XhrFactory } from '@angular/common';
@@ -22,18 +22,15 @@ export class AlertDialog {
   //Texto del boton por defecto
   buttonText = 'Ok';
   //Ip del usuario que presento el error
-  ip: string = '';
+  ipUsuario: string = '';
   //Trazabilidad del error
   trazabilidad: string = '';
   //Mensaje del objeto
   mensajeobject: string = '';
   //Tiempo en el que sucedio el problema
-  tiempo: Time = {
-    hours: 0,
-    minutes: 0,
-  };
+  tiempo: Date = new Date();
   //navegador y sistema operativo que ocurrio
-  navegador: string = '';
+  navegadorUsuario: string = '';
   //Eventos de usuario que hizo antes del error
   eventosUsuario: any;
   //Nombre del usuario
@@ -58,11 +55,11 @@ Crea una nueva instancia de AlertDialog.
       message: string;
       icon: string;
       buttonText: string;
-      ip: string;
+      ipUsuario: string;
       mensajeobject: string;
       trazabilidad: string;
-      tiempo: Time;
-      navegador: string;
+      tiempo: Date;
+      navegadorUsuario: string;
       eventosUsuario: any;
       status: number;
       idBackend: number;
@@ -72,11 +69,11 @@ Crea una nueva instancia de AlertDialog.
     if (data?.icon) this.icon = data.icon;
     if (data?.message) this.message = data.message;
     if (data?.buttonText) this.buttonText = data.buttonText;
-    if (data?.ip) this.ip = data.ip;
+    if (data?.ipUsuario) this.ipUsuario = data.ipUsuario;
     if (data?.trazabilidad) this.trazabilidad = data.trazabilidad;
     if (data?.mensajeobject) this.mensajeobject = data.mensajeobject;
     if (data?.tiempo) this.tiempo = data.tiempo;
-    if (data?.navegador) this.navegador = data.navegador;
+    if (data?.navegadorUsuario) this.navegadorUsuario = data.navegadorUsuario;
     if (data?.eventosUsuario) this.eventosUsuario = data.eventosUsuario;
     if (data?.status) this.status = data.status;
     if (data?.idBackend) this.idBackend = data.idBackend;
@@ -84,21 +81,20 @@ Crea una nueva instancia de AlertDialog.
 
   //Metodo que se ejecuta para mandar la información al backend y el reporte
   reportar() {
-    let aplicacionError: aplicacion_error;
+    let aplicacionError: AplicacionErrorDto;
     aplicacionError = {
       tituloError: this.message,
       descripcionError: this.descripcion,
       nombreAplicacion: '',
       correoUsuario: this.email,
-      ip: this.ip,
-      navegador: this.navegador,
+      horaError: this.tiempo,
+      ipUsuario: this.ipUsuario,
+      navegadorUsuario: this.navegadorUsuario,
     };
 
-    let trazabilidadCodigo: trazabilidad_codigo;
+    let trazabilidadCodigo: TrazabilidadCodigoDto;
     trazabilidadCodigo = {
-      tiempo: this.tiempo,
       trazaError: this.trazabilidad,
-      categoria: '',
     };
 
     if (this.status == 409) {
@@ -108,26 +104,27 @@ Crea una nueva instancia de AlertDialog.
     }
 
     console.log(trazabilidadCodigo);
+
     console.log(aplicacionError);
+
     this.dialogRef.close();
   }
   //Metodo que se ejecuta para cerrar el dialogo y mandar la información del error al backend
   cerrar() {
-    let aplicacionError: aplicacion_error;
+    let aplicacionError: AplicacionErrorDto;
     aplicacionError = {
       tituloError: this.message,
       descripcionError: this.descripcion,
       nombreAplicacion: '',
       correoUsuario: this.email,
-      ip: this.ip,
-      navegador: this.navegador,
+      horaError: this.tiempo,
+      ipUsuario: this.ipUsuario,
+      navegadorUsuario: this.navegadorUsuario,
     };
 
-    let trazabilidadCodigo: trazabilidad_codigo;
+    let trazabilidadCodigo: TrazabilidadCodigoDto;
     trazabilidadCodigo = {
-      tiempo: this.tiempo,
       trazaError: this.trazabilidad,
-      categoria: '',
     };
 
     if (this.status == 409) {
@@ -165,8 +162,8 @@ class MyXhrFactory implements XhrFactory {
  * @returns Un Observable que emite una respuesta de la API.
  */
 function sendAPIFront(
-  aplicacionError: aplicacion_error,
-  trazabilidad_codigo: trazabilidad_codigo,
+  aplicacionError: AplicacionErrorDto,
+  trazabilidad_codigo: TrazabilidadCodigoDto,
   eventosUsuario: any
 ) {
   const xhrFactory = new MyXhrFactory();
@@ -197,7 +194,7 @@ function sendAPIFront(
  */
 function sendAPIBackend(
   idaplicacionError: number,
-  trazabilidad_codigo: trazabilidad_codigo,
+  trazabilidad_codigo: TrazabilidadCodigoDto,
   eventosUsuario: any
 ) {
   const xhrFactory = new MyXhrFactory();

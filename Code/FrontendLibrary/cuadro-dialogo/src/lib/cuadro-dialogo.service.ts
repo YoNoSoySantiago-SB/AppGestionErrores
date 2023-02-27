@@ -59,10 +59,13 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
     console.log(err);
     // Obtiene la hora actual y la información del navegador
     let time = new Date();
-    let navegator = navigator.userAgent;
+
     let trazabilidad: any;
     let mensajeError: any;
     let idBackend: any;
+    let navegator = navigator.userAgent;
+
+    console.log(navegator);
     // Obtiene la dirección IP del usuario usando un servicio externo
     const instancia = new getIpJs();
     instancia.obtenerDireccionIP((direcionIp) => {
@@ -77,20 +80,17 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
         if (status === 409) {
           idBackend = err.error;
           trazabilidad = getCallStackhtpp();
-
           mensajeError = '';
         } else {
-          console.log('otro error');
-
           trazabilidad = getCallStackhtpp();
           mensajeError = createError().handleError(err)[1];
         }
       } else {
-        console.log('object error');
-
         trazabilidad = createError().handleError(err)[0];
+        trazabilidad = trazabilidad.stack;
         mensajeError = createError().handleError(err)[1];
       }
+
       // Abre un diálogo modal para reportar el error al usuario
       this.ngZone.run(() => {
         this.dialog.open(AlertDialog, {
@@ -98,16 +98,11 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
             icon: 'Error',
             message: err.message,
             buttonText: 'Reportar',
-            ip: this.ip,
+            ipUsuario: this.ip,
             trazabilidad: trazabilidad,
             mensajeobject: mensajeError,
-            tiempo:
-              time.getHours() +
-              ':' +
-              time.getMinutes() +
-              ':' +
-              time.getSeconds(),
-            navegador: navegator,
+            tiempo: time,
+            navegadorUsuario: navegator,
             eventosUsuario: eventosUsuario,
             status: status,
             idBackend: idBackend,

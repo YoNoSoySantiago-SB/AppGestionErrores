@@ -1,14 +1,13 @@
 import { Time } from '@angular/common';
-export interface aplicacion_error {
+export interface AplicacionErrorDto {
   tituloError: string;
   descripcionError: string;
   nombreAplicacion: string;
   correoUsuario?: string;
-  ip: string;
-  navegador: string;
+  horaError: Date;
+  ipUsuario: string;
+  navegadorUsuario: string;
 }
-export interface trazabilidad_codigo {
-  tiempo?: Time;
+export interface TrazabilidadCodigoDto {
   trazaError: string;
-  categoria: string;
 }
