@@ -78,7 +78,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     	return response;
     }
     
-    private static class ErrorPayload {
+    public static class ErrorPayload {
         private Exception exception;
         private String applicationName;
 
