@@ -10,5 +10,5 @@ import { RouterModule } from '@angular/router';
 export class AppComponent {
   title = 'FrontAppGestionErrores';
 
-  constructor(/*private readonly auth: AuthService*/){}
+  constructor(private readonly auth: AuthService){}
 }

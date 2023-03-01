@@ -2,16 +2,15 @@ import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environment/environment';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route } from '@angular/router';
 
 
 const oAuthConfig: AuthConfig = {
   issuer: environment.GOOGLE_ISSUER,
   strictDiscoveryDocumentValidation: false,
-  redirectUri: window.location.origin+'/auth/google',
+  redirectUri: window.location.origin+'/dashboard',
   clientId: environment.GOOGLE_CLIENT_ID,
-  responseType: 'code',
-  scope: 'openid profile email',
+  scope: 'openid profile email'
 }
 
 @Injectable({
@@ -19,8 +18,20 @@ const oAuthConfig: AuthConfig = {
 })
 export class AuthService {
 
-  constructor(private readonly oAuthService: OAuthService, private router: Router) {
-
+  constructor(private readonly oAuthService: OAuthService, private route: ActivatedRoute) {
+    this.oAuthService.configure(oAuthConfig)
+    this.oAuthService.logoutUrl = "https://www.google.com/accounts/Logout"
+    this.oAuthService.loadDiscoveryDocument().then(()=>{
+      this.oAuthService.tryLoginImplicitFlow().then(() => {
+        if (!this.oAuthService.hasValidAccessToken()) {
+          this.oAuthService.initLoginFlow()
+        } else {
+          this.oAuthService.loadUserProfile().then( (userProfile) => {
+            console.log(userProfile)
+          })
+        }
+      })
+    })
   }
 
   isLoggedIn(): boolean {
@@ -28,33 +39,16 @@ export class AuthService {
   }
 
   checkLogIn() {
-    if (this.oAuthService.hasValidAccessToken()) {
-      this.oAuthService.loadUserProfile().then((userProfile) => {
-        console.log(JSON.stringify(userProfile))
-        window.sessionStorage.setItem('userProfile', JSON.stringify(userProfile))
-      })
-    }
+    // this.oAuthService.tryLogin()
+    this.route.queryParams.subscribe(params => {
+      const state = params['state'];
+      const code = params['code']
+
+    });
   }
 
   signIn() {
-    console.log("1")
-    this.oAuthService.configure(oAuthConfig)
-    this.oAuthService.logoutUrl = "https://www.google.com/accounts/Logout"
-    this.oAuthService.loadDiscoveryDocument().then(()=>{
-      this.oAuthService.tryLoginCodeFlow().then(() => {
-        console.log("2")
-        if (!this.oAuthService.hasValidAccessToken()) {
-          console.log("3")
-          this.oAuthService.initLoginFlow()
-        } else {
-          console.log("4")
-          this.oAuthService.loadUserProfile().then((userProfile) => {
-            console.log(JSON.stringify(userProfile))
-            window.localStorage.setItem('userProfile', JSON.stringify(userProfile))
-          })
-        }
-      })
-    })
+
   }
 
   signOut() {
