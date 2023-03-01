@@ -10,6 +10,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AvatarModule } from 'primeng/avatar';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import { FormsModule } from '@angular/forms';
+import {ToastModule} from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -26,9 +33,17 @@ import { AvatarModule } from 'primeng/avatar';
     AvatarModule,
     InputTextModule,
     HttpClientModule,
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    InputTextModule,
+    HttpClientModule,
+    MessagesModule,
+    MessageModule,
+    FormsModule,
+    ToastModule,
+    BrowserAnimationsModule,
+    CardModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
