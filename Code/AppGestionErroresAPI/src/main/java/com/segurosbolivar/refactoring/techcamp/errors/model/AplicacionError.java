@@ -23,7 +23,6 @@ public class AplicacionError {
 	private String tituloError;
 	private String descripcionError;
 	private String nombreAplicacion;
-	private String correoUsuario;
 	
 	private Time horaError;
 	private String navegadorUsuario;

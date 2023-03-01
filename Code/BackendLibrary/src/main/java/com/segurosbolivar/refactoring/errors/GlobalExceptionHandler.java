@@ -35,7 +35,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
     	
-
+    	System.out.println("IS HEREEEE");
     	Map<String,Long> responseMap = new HashMap<>();
     	
     	Long errorId = catchException(ex);
@@ -81,6 +81,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static class ErrorPayload {
         private Exception exception;
         private String applicationName;
+        
+        public Exception getException() {
+        	return exception;
+        }
+        
+        public String getApplicationName() {
+        	return applicationName;
+        }
 
         public void setException(Exception exception) {
             this.exception = exception;
