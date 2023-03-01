@@ -1,11 +1,10 @@
 package com.segurosbolivar.refactoring.techcamp.errors.dtos;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +33,13 @@ public class AccionUsuarioDTO {
 		
 	}
 	
+	public AccionUsuarioDTO setInfoDTO(AccionUsuario accionUsuario) {
+		this.accionUsuario=accionUsuario.getAccionUsuario();
+		this.nombreAccion=accionUsuario.getTipoAccion().getNombreAccion();
+		this.nombreNivel=accionUsuario.getNivelError().getNombreNivel();
+		this.fechaHoraAccion=accionUsuario.getFechaHoraAccion();
+		return this;
+		
+	}
 
 }

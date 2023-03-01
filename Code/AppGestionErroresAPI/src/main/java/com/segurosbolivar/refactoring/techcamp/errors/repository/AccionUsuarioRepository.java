@@ -13,5 +13,4 @@ public interface AccionUsuarioRepository extends JpaRepository<AccionUsuario, Lo
 	@Query("SELECT au FROM AccionUsuario au WHERE au.aplicacionError.idAplicacionError=:idAplicationError")
 	public List<AccionUsuario> findAllByAplicacionErrorIdAplicacionError(@Param("idAplicationError") Long idAplicationError);
 
-
 }

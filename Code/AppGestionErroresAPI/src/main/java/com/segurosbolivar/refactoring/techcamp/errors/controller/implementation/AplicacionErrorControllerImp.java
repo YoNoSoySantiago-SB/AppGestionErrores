@@ -41,7 +41,12 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	@Override
 	@PostMapping("/aplicacionFrontEndError/save")
 	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
-		Long newAplicacionError=aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
+        Long newAplicacionError;
+		try {
+			newAplicacionError = aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
+		} catch (BadRequestDataException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
 	}
 

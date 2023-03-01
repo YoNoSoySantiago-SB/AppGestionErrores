@@ -19,6 +19,10 @@ public interface AplicacionErrorServiceI {
 	Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionError, TrazabilidadCodigoDTO trazabilidadCodigo,
 			List<AccionUsuarioDTO> accionesUsuario) throws BadRequestDataException;
 
-	void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+	Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuariodto) throws BadRequestDataException;
+
+	List<AccionUsuarioDTO> findAllActionsUserByAplicacionErrorIdAplicacionError(Long id);
+
+	List<TrazabilidadCodigoDTO> findAllTrazabilitiesByAplicacionErrorIdAplicacionError(Long id);
 }
