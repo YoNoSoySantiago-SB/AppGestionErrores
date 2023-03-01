@@ -7,12 +7,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 export class getIpJs {
   /**
-   * Método que permite obtener la dirección IP del cliente
-   * utilizando una solicitud AJAX a la API de ipify.
-   *
-   * @param callback - función que se llamará una vez que se haya obtenido la dirección IP
-   * @returns void
-   */
+
+Method that allows to obtain the client's IP address
+using an AJAX request to the ipify API.
+@param callback - function that will be called once the IP address has been obtained
+@returns void
+*/
   obtenerDireccionIP(callback: (direccionIP: string) => void) {
     const solicitud = new XMLHttpRequest();
     solicitud.onreadystatechange = () => {
@@ -30,21 +30,23 @@ let callstack: string = '';
 @Injectable()
 /**
 
-Servicio de manejo de errores personalizado para la aplicación.
-Extiende el servicio ErrorHandler provisto por Angular y
-sobrescribe el método handleError().
+Custom error handling service for the application.
+Extends the ErrorHandler service provided by Angular and
+overrides the handleError() method.
 */
 export class ErrorHandlerService extends ErrorHandler {
   /*
-Dirección IP del usuario.
+User's IP address.
 */
   ip: any;
 
   /**
 
-Crea una instancia del servicio.
-@param dialog Servicio MatDialog de Angular para mostrar un diálogo modal.
-@param ngZone Servicio NgZone de Angular para ejecutar código dentro de la zona Angular.
+/**
+
+Creates an instance of the service.
+@param dialog Angular's MatDialog service to display a modal dialog.
+@param ngZone Angular's NgZone service to execute code within the Angular zone.
 */
   constructor(private dialog: MatDialog, private ngZone: NgZone) {
     super();
@@ -52,46 +54,50 @@ Crea una instancia del servicio.
 
   /**
 
-Maneja un error y muestra un diálogo modal al usuario para reportar el error.
-@param err Objeto Error o HttpErrorResponse que se produjo.
+Handles an error and displays a modal dialog to the user to report the error.
+@param err Error object or HttpErrorResponse that occurred.
 */
   override handleError(err: any): void {
-    console.log(err);
     // Obtiene la hora actual y la información del navegador
     let time = new Date();
-
     let trazabilidad: any;
     let mensajeError: any;
     let idBackend: any;
     let navegator = navigator.userAgent;
-
-    console.log(navegator);
-    // Obtiene la dirección IP del usuario usando un servicio externo
+    let trazaStatus = getCallStackhtpp();
+    let origen: string;
+    // get Id addres
     const instancia = new getIpJs();
     instancia.obtenerDireccionIP((direcionIp) => {
       this.ip = direcionIp;
-      // Obtiene la trazabilidad del error y los eventos de usuario
       const eventosUsuario = saveError(err.message);
       let status: number;
-      //Si es de backend mando trazabilidad ,eventos y id recibido en mensaje
 
       if (getCallStackhtpp().length > 0 && err instanceof HttpErrorResponse) {
         status = err.status;
         if (status === 409) {
           idBackend = err.error;
-          trazabilidad = getCallStackhtpp();
+          trazabilidad = trazaStatus;
           mensajeError = '';
         } else {
-          trazabilidad = getCallStackhtpp();
+          trazabilidad = trazaStatus;
           mensajeError = createError().handleError(err)[1];
         }
+        origen = 'Backend';
       } else {
         trazabilidad = createError().handleError(err)[0];
-        trazabilidad = trazabilidad.stack;
+        if (trazabilidad.status === 0) {
+          trazabilidad = trazaStatus;
+          origen = 'Frontend';
+        } else {
+          trazabilidad = trazabilidad.stack;
+          origen = 'Frontend';
+        }
         mensajeError = createError().handleError(err)[1];
       }
 
-      // Abre un diálogo modal para reportar el error al usuario
+      // Opens a modal dialog to report the error to the user.
+
       this.ngZone.run(() => {
         this.dialog.open(AlertDialog, {
           data: {
@@ -106,40 +112,41 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
             eventosUsuario: eventosUsuario,
             status: status,
             idBackend: idBackend,
+            origen: origen,
           },
         });
       });
+      // Clears the error traceability to prevent errors in future HTTP requests.
+
+      setCallStackHttp('');
     });
-
-    // Limpia la trazabilidad del error para evitar errores en futuras solicitudes HTTP
-
-    setCallStackHttp('');
   }
 }
 
 /**
- * Metodo que recibe  el callstack  del error http para almacenar
- * @param callStackhtpp  call stack almacenado de un error http
- */
+
+Method that receives the call stack of the http error to store.
+@param callStackHttp The call stack of a http error to be stored.
+*/
 export function setCallStackHttp(callStackhtpp: string) {
   callstack = callStackhtpp;
 }
 /**
- *  Metodo que retorna el call stack del error http
- * @returns Retorna el callstack del error http
- */
+
+Method that returns the call stack of the http error.
+@returns Returns the call stack of the http error.
+*/
 export function getCallStackhtpp() {
   return callstack;
 }
 
 /**
 
-Crea un cuadro de diálogo de error utilizando el servicio MatDialog y el objeto NgZone.
-Si se proporciona un rastro de error, se establece en el servicio ErrorHandlerService antes de crear el cuadro de diálogo.
-@param dialog El servicio MatDialog utilizado para crear el cuadro de diálogo de error.
-@param ngZone El objeto NgZone utilizado para ejecutar el cuadro de diálogo de error dentro de la zona de Angular.
-@param errorTraz Un rastro de error opcional que se establece en el servicio ErrorHandlerService antes de crear el cuadro de diálogo.
-@returns Un nuevo objeto ErrorHandlerService que se utiliza para crear el cuadro de diálogo de error.
+Create an error dialog using the MatDialog service and the NgZone object. If an error trace is provided, it is set in the ErrorHandlerService before creating the dialog.
+@param dialog The MatDialog service used to create the error dialog.
+@param ngZone The NgZone object used to execute the error dialog within the Angular zone.
+@param errorTrace An optional error trace that is set in the ErrorHandlerService before creating the dialog.
+@returns A new ErrorHandlerService object that is used to create the error dialog.
 */
 export function crearCuadroError(
   dialog: MatDialog,

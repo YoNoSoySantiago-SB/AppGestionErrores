@@ -26,9 +26,22 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Installing and use in your app
 
+ve a la consola e instala esta libreria
+
 npm i cuadro-dialogo
 
-Once installed, in your app.module.ts file you must configure the following modules in the @NgModule:
+Adicionalmente, debes instalar estas librerias :
+
+npm i @angular/material
+npm i @angular/cdk
+npm i event-logs
+npm i control-errores
+
+En el archivo angular.json debes agregar a los estilos esta linea:
+
+"node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+
+Una vez instalada las librerias debes ir al app.module.ts de tu aplicacion, en el @NgModule agregar al imports estos modulos:
 
 ControlErroresModule,
 HttpClientModule,
@@ -36,7 +49,7 @@ BrowserAnimationsModule,
 MatDialogModule,
 CuadroDialogoModule,
 
-and in the providers section, the following providers:
+Y en la sección de providers del mismo archivo agregar:
 
 providers: [
 { provide: ErrorHandler, useClass: ErrorHandlerService },
@@ -44,29 +57,48 @@ providers: [
 RouterEvents,
 ],
 
-Finally, in the root app.component.ts of your project, add to the constructor:
+Finalmente en el archivo app.component.ts de tu aplicacion , en el constructor agregar estos parametros :
 
 private router: Router, private routerEvents: RouterEvents
 
-Once this procedure is done, any non-Http error that occurs in your application will be captured and a matDialog will be presented to report or not report the error, sending the necessary information about said error.
+E implementar en la clase OnInit
 
-To use it in an http response, do the following:
+dentro del metodo ngOnInit agregar:
 
-In your component constructor, enter the following parameters
+nameApp('Nombre de la aplicación');
+
+ejemplo:
+
+export class AppComponent implements OnInit {
+constructor(private router: Router, private routerEvents: RouterEvents) {}
+
+ngOnInit() {
+nameApp('Aplicación prueba');
+}
+title = 'library';
+}
+
+Una vez que se complete este procedimiento, cualquier error que no sea de Http que ocurra en tu aplicación será capturado y se presentará un matDialog para informar o no informar del error, enviando la información necesaria sobre dicho error.
+
+Para usarlo en una respuesta http, haz lo siguiente:
+
+En el constructor de tu componente, ingresa los siguientes parámetros.
+
 private matDialog: MatDialog,
 private ngzone: NgZone
 
-In the error part of the http response, add the line
+En la sección de error de la respuesta http, agrega la línea.
 
 crearCuadroError(matDialog,ngzone,Error(err).stack).handleError(err);
 
-Example:
+Ejemplo:
 
 this.serviceHttp.getUsuario().subscribe({
 next: (resp) => {
 console.log(resp);
 },
 error: (err) => {
+//This line
 crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
 },
 });
