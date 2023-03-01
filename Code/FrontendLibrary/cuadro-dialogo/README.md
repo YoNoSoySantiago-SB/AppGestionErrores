@@ -33,7 +33,7 @@
 
 5. Finalmente en el archivo app.component.ts de tu aplicacion , en el constructor agregar estos parametros :
 
-    private router: Router, private routerEvents: RouterEvents  
+        private router: Router, private routerEvents: RouterEvents  
 
   E implementar en la clase OnInit
 
