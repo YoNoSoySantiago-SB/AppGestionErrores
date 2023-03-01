@@ -57,8 +57,8 @@ Ejemplo:
 7. Para usarlo en una respuesta http, haz lo siguiente:
   En el constructor de tu componente, ingresa los siguientes parámetros.
 
-    private matDialog: MatDialog,
-    private ngzone: NgZone
+        private matDialog: MatDialog,
+        private ngzone: NgZone
 
   En la sección de error de la respuesta http, agrega la línea.
 
