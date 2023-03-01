@@ -25,7 +25,9 @@ pids
 ##############################
 ## Dependency directories
 ##############################
-node_modules/
+control-errores/node_modules/
+cuadro-dialogo/node_modules/
+EventLogs/node_modules/
 jspm_packages/
 
 ##############################

@@ -1,4 +1,6 @@
+import { AuthService } from './services/auth.service'
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'FrontAppGestionErrores';
+
+  constructor(private readonly auth: AuthService){}
 }

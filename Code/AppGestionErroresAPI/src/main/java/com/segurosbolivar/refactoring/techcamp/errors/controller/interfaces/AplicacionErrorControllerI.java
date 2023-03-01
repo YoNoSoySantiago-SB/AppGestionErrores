@@ -2,21 +2,23 @@ package com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces;
 
 import java.util.List;
 
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import org.springframework.http.ResponseEntity;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
 import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequest;
 
 public interface AplicacionErrorControllerI {
 	
-	public ResponseEntity<Long> saveBackendError(ExceptionDto exceptionDto);
+	ResponseEntity<Long> saveBackendError(ExceptionDto exceptionDto);
 
-	void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+	ResponseEntity<Long> saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException;
 
 	ResponseEntity<Long> saveFrontEndError(ErrorRequest errorRequest) throws BadRequestDataException;
+
+	ResponseEntity<AplicacionErrorResponseDTO> getApplicationError(Long idAplicationError)
+			throws BadRequestDataException, NoResultException;
 	
 }
