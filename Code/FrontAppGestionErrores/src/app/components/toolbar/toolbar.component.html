@@ -1,0 +1,10 @@
+<p-toolbar>
+  <div class="p-toolbar-group-start">
+    <p-avatar [image]="userLogged ? userLogged.avatar : 'default'"></p-avatar>
+    <h4>{{userLogged?.avatar}}</h4>
+  </div>
+
+  <div class="p-toolbar-group-end">
+    <p-button label="Cerrar sesión" icon="pi pi-sign-out" class="p-button-rounded p-button-secondary p-button-text" (click)="logout()"></p-button>
+  </div>
+</p-toolbar>
