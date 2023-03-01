@@ -1,6 +1,12 @@
 package com.segurosbolivar.refactoring.techcamp.errors.customexceptions;
 
 public class BadRequestDataException extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	public BadRequestDataException(String message) {
 		super(message);
 	}

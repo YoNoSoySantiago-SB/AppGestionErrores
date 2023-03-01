@@ -3,15 +3,15 @@ package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 import java.io.PrintWriter;
 
 
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -211,27 +211,19 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		return accionesUsuario;
 	}
 	@Override
-	public List<AccionUsuarioDTO> findAllActionsUserByAplicacionErrorIdAplicacionError(Long id) {
-		List<AccionUsuarioDTO> actions= new ArrayList<AccionUsuarioDTO>();;
-		List<AccionUsuario> list=accionUsuarioRepository.findAllByAplicacionErrorIdAplicacionError(id);
-		for(int s=0;s<list.size();s++) {
-			AccionUsuarioDTO dto=new AccionUsuarioDTO();
-			dto=dto.setInfoDTO(list.get(s));
-			actions.add(dto);
+	public AplicacionErrorResponseDTO findById(Long id) throws BadRequestDataException,NoResultException {
+		if(id==null) {
+			throw new BadRequestDataException();
+		}else {
+			Optional<AplicacionError> error = aplicacionErrorRespository.findById(id);
+		    if(error.isPresent()){
+
+				AplicacionErrorResponseDTO dto=new AplicacionErrorResponseDTO();
+		    	dto=dto.setInfoDTO(error.get());
+		    	return dto;
+		    } else {
+		        throw new NoResultException();
+		    }
 		}
-		
-		return actions;
-	}
-	@Override
-	public List<TrazabilidadCodigoDTO> findAllTrazabilitiesByAplicacionErrorIdAplicacionError(Long id) {
-		List<TrazabilidadCodigoDTO> trazabilities= new ArrayList<TrazabilidadCodigoDTO>();;
-		List<TrazabilidadCodigo> list=trazabilidadCodigoRepository.findAllByAplicacionErrorIdAplicacionError(id);
-		for(int s=0;s<list.size();s++) {
-			TrazabilidadCodigoDTO dto=new TrazabilidadCodigoDTO();
-			dto=dto.setInfoDTO(list.get(s));
-			trazabilities.add(dto);
-		}
-		
-		return trazabilities;
 	}
 }

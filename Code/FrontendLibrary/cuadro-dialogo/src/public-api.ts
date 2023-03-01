@@ -3,6 +3,7 @@
  */
 // export * from './lib/ad.directive';
 export * from './lib/cuadro-dialogo.service';
+export * from './lib/getNameApp';
 export * from './lib/cuadro-dialogo.component';
 export * from './lib/cuadro-dialogo.module';
 export * from './lib/myInterceptor';

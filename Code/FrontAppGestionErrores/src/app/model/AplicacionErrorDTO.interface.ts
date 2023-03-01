@@ -1,9 +1,12 @@
-export interface AplicacionErrorDTO{
-    tituloError:string,
-    descripcionError :string,
-    nombreAplicacion:string,
-    correoUsuario:string,
-    horaError :Date,
-    navegadorUsuario:string,
-    ipUsuario:string
+import { Time } from '@angular/common';
+
+export interface AplicacionErrorDTO {
+  idAplicacionError: string;
+  tituloError: string;
+  descripcionError: string;
+  nombreAplicacion: string;
+  correoUsuario: string;
+  horaError: Time;
+  navegadorUsuario: string;
+  ipUsuario: string;
 }

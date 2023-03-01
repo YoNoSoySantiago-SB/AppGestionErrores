@@ -1,72 +1,78 @@
-# CuadroDialogo
+## Instalación de la libreria en tu aplicación
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.0.
+1.Para poder utilizar esta Dirigete a la consola de tu aplicación y escribe la siguiente linea de comando:
 
-## Code scaffolding
+    npm i cuadro-dialogo
 
-Run `ng generate component component-name --project cuadroDialogo` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project cuadroDialogo`.
+Adicionalmente, debes instalar estas librerias:
 
-> Note: Don't forget to add `--project cuadroDialogo` or else it will be added to the default project in your `angular.json` file.
+    npm i @angular/material
+    npm i @angular/cdk
+    npm i event-logs
+    npm i control-errores
 
-## Build
+2.En el archivo angular.json debes agregar a los estilos esta linea:
 
-Run `ng build cuadroDialogo` to build the project. The build artifacts will be stored in the `dist/` directory.
+    "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
 
-## Publishing
+3.Una vez instalada las librerias debes ir al app.module.ts de tu aplicacion importar y en el @NgModule agregar al imports estos modulos:
 
-After building your library with `ng build cuadroDialogo`, go to the dist folder `cd dist/cuadro-dialogo` and run `npm publish`.
+    ControlErroresModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    CuadroDialogoModule,
 
-## Running unit tests
+Y en la sección de providers del mismo archivo agregar:
 
-Run `ng test cuadroDialogo` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    providers: [
+    { provide: ErrorHandler, useClass: ErrorHandlerService },
+    {provide: HTTP_INTERCEPTORS,useClass: MyInterceptor,multi: true,},
+    RouterEvents,
+    ],
 
-## Further help
+4.Finalmente en el archivo app.component.ts de tu aplicacion , en el constructor agregar estos parametros:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    private router: Router, private routerEvents: RouterEvents
 
-## Installing and use in your app
+E implementar en la clase OnInit
 
-npm i cuadro-dialogo
+dentro del metodo ngOnInit agregar:
 
-Once installed, in your app.module.ts file you must configure the following modules in the @NgModule:
+    nameApp('Nombre de la aplicación');
 
-ControlErroresModule,
-HttpClientModule,
-BrowserAnimationsModule,
-MatDialogModule,
-CuadroDialogoModule,
+Ejemplo:
 
-and in the providers section, the following providers:
+    export class AppComponent implements OnInit {
+      constructor(private router: Router, private routerEvents: RouterEvents) {}
 
-providers: [
-{ provide: ErrorHandler, useClass: ErrorHandlerService },
-{provide: HTTP_INTERCEPTORS,useClass: MyInterceptor,multi: true,},
-RouterEvents,
-],
+      ngOnInit() {
+      nameApp('Tu nombre de aplicación');
+      }
+      title = 'library';
+      }
 
-Finally, in the root app.component.ts of your project, add to the constructor:
+5.Una vez que se complete este procedimiento, cualquier error que no sea de Http que ocurra en tu aplicación será capturado y se presentará un matDialog para informar o no informar del error, enviando la información necesaria sobre dicho error.
 
-private router: Router, private routerEvents: RouterEvents
+6.Para usarlo en una respuesta http, haz lo siguiente:
 
-Once this procedure is done, any non-Http error that occurs in your application will be captured and a matDialog will be presented to report or not report the error, sending the necessary information about said error.
+En el constructor de tu componente, ingresa los siguientes parámetros.
 
-To use it in an http response, do the following:
+    private matDialog: MatDialog,
+    private ngzone: NgZone
 
-In your component constructor, enter the following parameters
-private matDialog: MatDialog,
-private ngzone: NgZone
+En la sección de error de la respuesta http, agrega la línea.
 
-In the error part of the http response, add the line
+    crearCuadroError(matDialog,ngzone,Error(err).stack).handleError(err);
 
-crearCuadroError(matDialog,ngzone,Error(err).stack).handleError(err);
+Ejemplo:
 
-Example:
-
-this.serviceHttp.getUsuario().subscribe({
-next: (resp) => {
-console.log(resp);
-},
-error: (err) => {
-crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
-},
-});
+    this.serviceHttp.getUsuario().subscribe({
+    next: (resp) => {
+    console.log(resp);
+    },
+    error: (err) => {
+    //Este linea
+    crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
+    },
+    });
