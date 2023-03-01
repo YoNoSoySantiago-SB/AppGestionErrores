@@ -1,59 +1,96 @@
-<mat-dialog-content>
-  <div>Ha ocurrido un error, ¿Desea reportarlo?</div>
-  <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
-    icon | lowercase
-  }}</mat-icon>
-  <form>
-    <div class="form-group-dialog-errore">
-      <label for="name">Nombre:</label>
-      <input
-        [(ngModel)]="nombre"
-        type="text"
-        id="name-dialog-errores"
-        name="name"
-        placeholder="Ingrese su nombre"
-        required
-      />
+<ng-template #noAlert>
+  <ng-template #noError>
+    <div class="dialog-container">
+      <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
+        icon | lowercase
+      }}</mat-icon>
+      <h2 mat-dialog-title>Ha ocurrido un error</h2>
+      <mat-dialog-content>
+        <form>
+          <div class="form-group-dialog-errore">
+            <label for="name">Titulo del error:</label>
+            <input
+              [(ngModel)]="nombre"
+              type="text"
+              id="name-dialog-errores"
+              name="name"
+              placeholder="Ingrese el titulo"
+              required
+            />
+          </div>
+          <div class="form-group-dialog-errore">
+            <label for="description">Descripción de lo sucedido:</label>
+            <textarea
+              [(ngModel)]="descripcion"
+              id="description-dialog-errores"
+              name="description"
+              placeholder="Ingrese una descripción"
+            ></textarea>
+          </div>
+        </form>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button
+          id="noreportar-dialog-errores"
+          mat-button
+          (click)="enviar()"
+          mat-raised-button
+          color="primary"
+        >
+          Enviar
+        </button>
+      </mat-dialog-actions>
     </div>
-    <div class="form-group-dialog-errore">
-      <label for="email">Correo electronico:</label>
-      <input
-        [(ngModel)]="email"
-        type="email"
-        id="email-dialog-errores"
-        name="email"
-        placeholder="Ingrese su correo electrónico"
-        required
-      />
-    </div>
-    <div class="form-group-dialog-errore">
-      <label for="description">Descripción de lo sucedido:</label>
-      <textarea
-        [(ngModel)]="descripcion"
-        id="description-dialog-errores"
-        name="description"
-        placeholder="Ingrese una descripción"
-      ></textarea>
-    </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button
-    id="reportar-dialog-errores"
-    mat-raised-button
-    color="primary"
-    (click)="reportar()"
-  >
-    {{ buttonText }}
-  </button>
+  </ng-template>
 
-  <button
-    id="noreportar-dialog-errores"
-    mat-button
-    (click)="cerrar()"
-    mat-raised-button
-    color="primary"
-  >
-    No reportar
-  </button>
-</mat-dialog-actions>
+  <div *ngIf="errorDialog; else noError" class="alert">
+    <div class="dialog-container">
+      <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
+        icon | lowercase
+      }}</mat-icon>
+      <h2 mat-dialog-title>Informe del reporte</h2>
+
+      <mat-dialog-content class="dialog-content">
+        <p>No se ha logrado registrar el error</p>
+        <p>Puede comunicarse con ayuda para obtener mas información</p>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button
+          id="noreportar-dialog-errores"
+          mat-button
+          (click)="cerrar()"
+          mat-raised-button
+          color="primary"
+        >
+          Cerrar
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="showDialog; else noAlert" class="alert">
+  <div class="dialog-container">
+    <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
+      icon | lowercase
+    }}</mat-icon>
+    <h2 mat-dialog-title>Informe del reporte</h2>
+
+    <mat-dialog-content class="dialog-content">
+      <p>Se ha registrado el error con identificación:</p>
+      <p>{{ resp }}</p>
+      <p>Puede comunicarse con ayuda para obtener mas información</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        id="noreportar-dialog-errores"
+        mat-button
+        (click)="cerrar()"
+        mat-raised-button
+        color="primary"
+      >
+        Cerrar
+      </button>
+    </mat-dialog-actions>
+  </div>
+</div>

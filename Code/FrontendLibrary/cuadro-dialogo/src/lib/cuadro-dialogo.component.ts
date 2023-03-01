@@ -1,5 +1,9 @@
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, Inject, Injectable, OnInit } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { Component, Inject, Injectable, OnInit, NgZone } from '@angular/core';
 import { AplicacionErrorDto, TrazabilidadCodigoDto } from './interfaces';
 import { ServicehttpAPIError } from './httpservice';
 import { HttpClient, HttpBackend, HttpXhrBackend } from '@angular/common/http';
@@ -42,6 +46,9 @@ export class AlertDialog {
   //Status
   status: number = -1;
   idBackend: number = -1;
+  showDialog: boolean = false;
+  errorDialog: boolean = false;
+  public resp: any;
 
   /**
 
@@ -78,42 +85,11 @@ Crea una nueva instancia de AlertDialog.
     if (data?.status) this.status = data.status;
     if (data?.idBackend) this.idBackend = data.idBackend;
   }
-
-  //Metodo que se ejecuta para mandar la información al backend y el reporte
-  reportar() {
-    let aplicacionError: AplicacionErrorDto;
-    aplicacionError = {
-      tituloError: this.message,
-      descripcionError: this.descripcion,
-      nombreAplicacion: '',
-      correoUsuario: this.email,
-      horaError: this.tiempo,
-      ipUsuario: this.ipUsuario,
-      navegadorUsuario: this.navegadorUsuario,
-    };
-
-    let trazabilidadCodigo: TrazabilidadCodigoDto;
-    trazabilidadCodigo = {
-      trazaError: this.trazabilidad,
-    };
-
-    if (this.status == 409) {
-      console.log(sendAPIBackend(1, trazabilidadCodigo, this.eventosUsuario));
-    } else {
-      sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario);
-    }
-
-    console.log(trazabilidadCodigo);
-
-    console.log(aplicacionError);
-
-    this.dialogRef.close();
-  }
   //Metodo que se ejecuta para cerrar el dialogo y mandar la información del error al backend
-  cerrar() {
+  async enviar() {
     let aplicacionError: AplicacionErrorDto;
     aplicacionError = {
-      tituloError: this.message,
+      tituloError: this.nombre,
       descripcionError: this.descripcion,
       nombreAplicacion: '',
       correoUsuario: this.email,
@@ -127,16 +103,47 @@ Crea una nueva instancia de AlertDialog.
       trazaError: this.trazabilidad,
     };
 
+    //Evalua si el error viene de backend con status 409
     if (this.status == 409) {
-      console.log(
-        sendAPIBackend(this.idBackend, trazabilidadCodigo, this.eventosUsuario)
-      );
-    } else {
-      console.log(
-        sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario)
-      );
-    }
+      sendAPIBackend(
+        this.idBackend,
+        trazabilidadCodigo,
+        this.eventosUsuario
+      ).subscribe({
+        next: (response) => {
+          //Muestra la solicitud exitosa y el id del error
 
+          this.resp = this.idBackend;
+          response;
+          this.showDialog = true;
+        },
+        error: (err) => {
+          //Muestra la solicitud exitosa y el id del error
+          this.errorDialog = true;
+          err;
+        },
+      });
+    } else {
+      //En caso de que el error sea de front lo persistira como de front y hace el llamado al servicio necesario
+      sendAPIFront(
+        aplicacionError,
+        trazabilidadCodigo,
+        this.eventosUsuario
+      ).subscribe({
+        next: (response) => {
+          //Muestra la solicitud exitosa y el id del error
+          this.resp = response;
+          this.showDialog = true;
+        },
+        error: (err) => {
+          //Muestra que hubo error en la solicitud
+          this.errorDialog = true;
+        },
+      });
+    }
+  }
+
+  cerrar() {
     this.dialogRef.close();
   }
 }
@@ -169,20 +176,11 @@ function sendAPIFront(
   const xhrFactory = new MyXhrFactory();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi
-    .persistAplicacionErrorFrontEnd(
-      aplicacionError,
-      trazabilidad_codigo,
-      eventosUsuario
-    )
-    .subscribe({
-      next: (response) => {
-        response;
-      },
-      error: (err) => {
-        err;
-      },
-    });
+  return serviceApi.persistAplicacionErrorFrontEnd(
+    aplicacionError,
+    trazabilidad_codigo,
+    eventosUsuario
+  );
 }
 
 /**
@@ -200,18 +198,9 @@ function sendAPIBackend(
   const xhrFactory = new MyXhrFactory();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi
-    .saveTrazabilitiyandUserevents(
-      idaplicacionError,
-      trazabilidad_codigo,
-      eventosUsuario
-    )
-    .subscribe({
-      next: (response) => {
-        response;
-      },
-      error: (err) => {
-        err;
-      },
-    });
+  return serviceApi.saveTrazabilitiyandUserevents(
+    idaplicacionError,
+    trazabilidad_codigo,
+    eventosUsuario
+  );
 }
