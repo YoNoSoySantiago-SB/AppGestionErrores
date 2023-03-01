@@ -6,3 +6,6 @@
   .title {
     font-weight: bold;
   }
+  .custom-card {
+    width: 200px;
+  }

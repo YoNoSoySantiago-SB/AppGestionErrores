@@ -7,8 +7,14 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-
-
+import {HttpClientModule} from '@angular/common/http';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import { FormsModule } from '@angular/forms';
+import {ToastModule} from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -22,9 +28,16 @@ import {InputTextModule} from 'primeng/inputtext';
     ToolbarModule,
     TableModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    HttpClientModule,
+    MessagesModule,
+    MessageModule,
+    FormsModule,
+    ToastModule,
+    BrowserAnimationsModule,
+    CardModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

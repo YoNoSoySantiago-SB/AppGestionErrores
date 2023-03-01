@@ -1,3 +1,4 @@
 export interface TrazabilidadCodigoDTO{
-    trazaError :string
+    trazaError :string,
+    origen :string
 }

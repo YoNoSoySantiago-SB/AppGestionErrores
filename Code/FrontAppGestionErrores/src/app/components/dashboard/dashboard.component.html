@@ -1,85 +1,89 @@
 <div class="container">
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+    <p-toast></p-toast>
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;padding: 30px;">
         <form style="display: flex; align-items: center;">
-          <input type="text" pInputText style="margin-right: 10px;" />
-          <button pButton type="button" label="Buscar" class="custom-button"></button>
+          <input [(ngModel)]="idApplicationError" name="idApplicationError" type="text" pInputText style="margin-right: 10px;" inputmode="numeric" pattern="[0-9]*"/>
+          <button (click)="getApplicationError(idApplicationError)" pButton type="button" label="Buscar" class="custom-button"></button>
         </form>
     </div>
-      
-
-      <div style="padding: 30px;">
-        <h1 class="title">ID del Error:</h1>
-
-        <h2 class="title">Descripcion</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-        <h2 class="title">Trazabilidad Codigo FrontEnd</h2>
-        <p>Exception in thread "main" java.lang.NullPointerException<br>
-            at Example.method9(Example.java:100)<br>
-            at Example.method8(Example.java:90)<br>
-            at Example.method7(Example.java:80)<br>
-            at Example.method6(Example.java:70)<br>
-            at Example.method5(Example.java:60)<br>
-            at Example.method4(Example.java:50)<br>
-            at Example.method3(Example.java:40)<br>
-            at Example.method2(Example.java:30)<br>
-            at Example.method1(Example.java:20)<br>
-            at Example.main(Example.java:10)</p>
-
-        <h2 class="title">Trazabilidad Codigo Backend</h2>
-        <p>Exception in thread "main" java.lang.NullPointerException<br>
-            at Example.method9(Example.java:100)<br>
-            at Example.method8(Example.java:90)<br>
-            at Example.method7(Example.java:80)<br>
-            at Example.method6(Example.java:70)<br>
-            at Example.method5(Example.java:60)<br>
-            at Example.method4(Example.java:50)<br>
-            at Example.method3(Example.java:40)<br>
-            at Example.method2(Example.java:30)<br>
-            at Example.method1(Example.java:20)<br>
-            at Example.main(Example.java:10)</p>
-
-        <h2 class="title">Eventos del usuario</h2>
-
-        
-        <div style="display: flex; justify-content: center;">
-            <div class="card">
-                <p-table [value]="accionesUsuario" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [tableStyle]="{'min-width': '50rem'}"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th style="text-align: center;width:15%"></th>
-                            <th style="text-align: center;width:15%">Accion</th>
-                            <th style="text-align: center;width:45%">Descripcion</th>
-                            <th style="text-align: center;width:15%">Nivel</th>
-                            <th style="text-align: center;width:15%">Hora</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-action>
-                        <tr>
-                            <td style="text-align: center;">
-                                <img *ngIf="action.nombreAccion === 'Boton'" src="./assets/boton.png" width="20%" height="20%"/>
-                                <img *ngIf="action.nombreAccion === 'Input'" src="./assets/input.png" width="20%" height="20%"/>
-                                <img *ngIf="action.nombreAccion === 'Request'" src="./assets/http.png" width="20%" height="20%"/>
-                                <img *ngIf="action.nombreAccion === 'Navegacion'" src="./assets/url.png" width="20%" height="20%"/>
-                                <img *ngIf="action.nombreAccion === 'Excepcion'" src="./assets/error.png" width="20%" height="20%"/>
-                            </td>
-                            <td style="text-align: center;">{{action.nombreAccion}}</td>
-                            <td style="text-align: center;">{{action.accionUsuario}}</td>
-                            <td style="text-align: center;">{{action.nombreNivel}}</td>
-                            <td style="text-align: center;">{{action.accionUsuario}}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="paginatorleft">
-                        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-                    </ng-template>
-                    <ng-template pTemplate="paginatorright">
-                        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-                    </ng-template>
-                </p-table>
-        </div>
+   
+    <div *ngIf="!showInformation; else cardList">
+        <p-card [style]="{width: '960px',height:'300px','margin-top': '40px', 'margin-bottom': '20px','margin': 'auto'}" styleClass="p-card-shadow">
+       <div> Seleccione el identificador del error para ver la informacion relacionada</div>
+       <div style="padding: 30px;"></div>
+       <img  src="assets/lupa.png" width="10%" height="10%" style="display: block; margin: auto;">
+        </p-card>
     </div>
-      </div>
+
+    <ng-template #cardList>
+        <p-card [style]="{width: '960px','margin-top': '40px', 'margin-bottom': '20px','margin': 'auto'}" styleClass="p-card-shadow">
+            <div style="padding: 30px;">
+            <h1 class="title">ID del Error:</h1>
+    
+            <h2 class="title">Descripcion</h2>
+            <p>{{applicationError.descripcionError}}</p>
+    
+            <h2 class="title">Error detectado</h2>
+            <p>{{applicationError.tituloError}}</p>
+    
+            <h2 class="title">Navegador</h2>
+            <p>{{applicationError.navegadorUsuario}}</p>
+    
+            <h2 class="title">IP Usuario</h2>
+            <p>{{applicationError.ipUsuario}}</p>
+    
+        
+            <h2 class="title">Trazabilidad Codigo FrontEnd</h2>
+            <div [innerHTML]="trazaFrontend"></div>
+    
+            <div *ngIf="errorBackAndFront">
+                <h2 class="title">Trazabilidad Codigo Backend</h2>
+                <div [innerHTML]="trazaBackend"></div>
+            </div>
+            <h2 class="title">Eventos del usuario</h2>
+    
+            
+            <div style="display: flex; justify-content: center;">
+                <div class="card">
+                    <p-table [value]="actionsUser" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [tableStyle]="{'min-width': '50rem'}"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="text-align: center;width:15%"></th>
+                                <th style="text-align: center;width:15%">Accion</th>
+                                <th style="text-align: center;width:45%">Descripcion</th>
+                                <th style="text-align: center;width:15%">Nivel</th>
+                                <th style="text-align: center;width:15%">Hora</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-action>
+                            <tr>
+                                <td style="text-align: center;">
+                                    <img *ngIf="action.nombreAccion === 'Boton'" src="./assets/boton.png" width="20%" height="20%"/>
+                                    <img *ngIf="action.nombreAccion === 'Input'" src="./assets/input.png" width="20%" height="20%"/>
+                                    <img *ngIf="action.nombreAccion === 'Request'" src="./assets/http.png" width="20%" height="20%"/>
+                                    <img *ngIf="action.nombreAccion === 'Navegacion'" src="./assets/url.png" width="20%" height="20%"/>
+                                    <img *ngIf="action.nombreAccion === 'Excepcion'" src="./assets/error.png" width="20%" height="20%"/>
+                                </td>
+                                <td style="text-align: center;">{{action.nombreAccion}}</td>
+                                <td style="text-align: center;">{{action.accionUsuario}}</td>
+                                <td style="text-align: center;">{{action.nombreNivel}}</td>
+                                <td style="text-align: center;">{{action.fechaHoraAccion | date: 'h:mm:ss a Z'}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft">
+                            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorright">
+                            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+          </div>
+        </p-card>
+    </ng-template> 
+      
 </div>
 
 
