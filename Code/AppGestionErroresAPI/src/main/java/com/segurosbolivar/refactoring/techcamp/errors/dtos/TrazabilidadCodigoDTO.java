@@ -13,10 +13,18 @@ import lombok.NoArgsConstructor;
 public class TrazabilidadCodigoDTO {
 	
 	private String trazaError;
+	private String origen;
 	
 	public TrazabilidadCodigo setInfo(TrazabilidadCodigo trazabilidadCodigo) {
 		trazabilidadCodigo.setTrazaError(this.trazaError);
 		return trazabilidadCodigo;
+		
+	}
+	
+	public TrazabilidadCodigoDTO setInfoDTO(TrazabilidadCodigo trazabilidadCodigo) {
+		this.trazaError=trazabilidadCodigo.getTrazaError();
+		this.origen=trazabilidadCodigo.getOrigenError().getNombreOrigen();
+		return this;
 		
 	}
 

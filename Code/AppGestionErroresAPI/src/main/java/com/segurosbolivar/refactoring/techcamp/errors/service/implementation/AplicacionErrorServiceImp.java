@@ -2,16 +2,16 @@ package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 
 import java.io.PrintWriter;
 
+
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -130,7 +130,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public void saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+	public Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
 		if(idAplicationError==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
@@ -159,6 +159,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 				acciones=categorizeUserEvents(acciones);
 				
 				accionUsuarioRepository.saveAll(acciones);
+				return aplicacionError.get().getIdAplicacionError();
 			}
 		}
 	}
@@ -208,5 +209,21 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 			}
 	    }
 		return accionesUsuario;
+	}
+	@Override
+	public AplicacionErrorResponseDTO findById(Long id) throws BadRequestDataException,NoResultException {
+		if(id==null) {
+			throw new BadRequestDataException();
+		}else {
+			Optional<AplicacionError> error = aplicacionErrorRespository.findById(id);
+		    if(error.isPresent()){
+
+				AplicacionErrorResponseDTO dto=new AplicacionErrorResponseDTO();
+		    	dto=dto.setInfoDTO(error.get());
+		    	return dto;
+		    } else {
+		        throw new NoResultException();
+		    }
+		}
 	}
 }

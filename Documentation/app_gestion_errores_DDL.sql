@@ -29,8 +29,7 @@ CREATE TABLE aplicacion_error (
     nombre_aplicacion  	VARCHAR(80) NOT NULL,
     titulo_error        VARCHAR(80),
     descripcion_error   VARCHAR(3500),
-    correo_usuario      VARCHAR(50),
-    hora_error 			DATE,
+    hora_error 			TIMESTAMP WITH TIME ZONE,
 	navegador_usuario 	VARCHAR(150),
 	ip_usuario 			VARCHAR(50)
 );
