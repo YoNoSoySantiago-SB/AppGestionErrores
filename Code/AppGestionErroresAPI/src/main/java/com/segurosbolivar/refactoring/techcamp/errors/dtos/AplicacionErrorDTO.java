@@ -1,6 +1,7 @@
 package com.segurosbolivar.refactoring.techcamp.errors.dtos;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 
@@ -17,7 +18,7 @@ public class AplicacionErrorDTO {
 	private String descripcionError;
 	private String nombreAplicacion;
 	private String correoUsuario;
-	private Date horaError;
+	private Time horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
 	

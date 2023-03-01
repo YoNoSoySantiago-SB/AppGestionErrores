@@ -1,6 +1,6 @@
 package com.segurosbolivar.refactoring.techcamp.errors.model;
 
-import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ public class AplicacionError {
 	private String nombreAplicacion;
 	private String correoUsuario;
 	
-	private Date horaError;
+	private Time horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
 	
