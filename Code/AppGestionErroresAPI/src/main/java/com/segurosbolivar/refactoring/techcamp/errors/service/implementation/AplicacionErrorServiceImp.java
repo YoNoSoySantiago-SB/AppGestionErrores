@@ -11,10 +11,7 @@ import java.util.Optional;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 import com.segurosbolivar.refactoring.techcamp.errors.model.NivelError;
@@ -214,13 +211,14 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		return accionesUsuario;
 	}
 	@Override
-	public AplicacionErrorDTO findById(Long id) throws BadRequestDataException,NoResultException {
+	public AplicacionErrorResponseDTO findById(Long id) throws BadRequestDataException,NoResultException {
 		if(id==null) {
 			throw new BadRequestDataException();
 		}else {
 			Optional<AplicacionError> error = aplicacionErrorRespository.findById(id);
 		    if(error.isPresent()){
-		    	AplicacionErrorDTO dto=new AplicacionErrorDTO();
+
+				AplicacionErrorResponseDTO dto=new AplicacionErrorResponseDTO();
 		    	dto=dto.setInfoDTO(error.get());
 		    	return dto;
 		    } else {

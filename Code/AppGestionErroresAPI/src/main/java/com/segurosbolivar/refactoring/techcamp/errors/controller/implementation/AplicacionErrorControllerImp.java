@@ -2,6 +2,7 @@ package com.segurosbolivar.refactoring.techcamp.errors.controller.implementation
 
 import java.util.List;
 
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.AplicacionErrorControllerI;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
-import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequest;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
 
@@ -45,6 +42,7 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	@PostMapping("/aplicacionFrontEndError/save")
 	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
         Long newAplicacionError;
+		System.out.println(errorRequest.getAplicacionErrorDto());
 		try {
 			newAplicacionError = aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
 		} catch (BadRequestDataException e) {
@@ -67,8 +65,8 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	
 	@Override
 	@GetMapping("/getApplicationError/{idAplicationError}")
-	public ResponseEntity<AplicacionErrorDTO> getApplicationError(@PathVariable("idAplicationError") Long idAplicationError ) throws BadRequestDataException,NoResultException {
-		AplicacionErrorDTO aplicacionError;
+	public ResponseEntity<AplicacionErrorResponseDTO> getApplicationError(@PathVariable("idAplicationError") Long idAplicationError ) throws BadRequestDataException,NoResultException {
+		AplicacionErrorResponseDTO aplicacionError;
 		try {
 		aplicacionError=aplicacionErrorService.findById(idAplicationError);
 		} catch (BadRequestDataException e) {

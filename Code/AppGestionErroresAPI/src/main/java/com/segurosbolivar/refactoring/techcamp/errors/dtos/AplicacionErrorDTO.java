@@ -1,6 +1,7 @@
 package com.segurosbolivar.refactoring.techcamp.errors.dtos;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 
@@ -12,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AplicacionErrorDTO {
-	
+
 	private String tituloError;
 	private String descripcionError;
 	private String nombreAplicacion;
-	private Date horaError;
+	private Time horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
 	
