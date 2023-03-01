@@ -1,6 +1,8 @@
 package com.segurosbolivar.refactoring.techcamp.errors.model;
 
 import java.sql.Time;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -23,8 +25,8 @@ public class AplicacionError {
 	private String tituloError;
 	private String descripcionError;
 	private String nombreAplicacion;
-	
-	private Time horaError;
+
+	private ZonedDateTime horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
 	
