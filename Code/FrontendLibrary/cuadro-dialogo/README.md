@@ -28,6 +28,17 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 npm i cuadro-dialogo
 
+Additionally, you install these dependencies if they are not found:
+
+npm i @angular/material
+npm i @angular/cdk
+npm i event-logs
+npm i control-errores
+
+In the angular.json file, add this line to the styles:
+
+"node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+
 Once installed, in your app.module.ts file you must configure the following modules in the @NgModule:
 
 ControlErroresModule,
@@ -67,6 +78,7 @@ next: (resp) => {
 console.log(resp);
 },
 error: (err) => {
+//This line
 crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
 },
 });

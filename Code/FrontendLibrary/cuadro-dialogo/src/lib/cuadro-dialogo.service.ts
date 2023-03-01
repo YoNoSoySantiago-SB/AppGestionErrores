@@ -56,16 +56,13 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
 @param err Objeto Error o HttpErrorResponse que se produjo.
 */
   override handleError(err: any): void {
-    console.log(err);
     // Obtiene la hora actual y la información del navegador
     let time = new Date();
-
     let trazabilidad: any;
     let mensajeError: any;
     let idBackend: any;
     let navegator = navigator.userAgent;
-
-    console.log(navegator);
+    let trazaStatus = getCallStackhtpp();
     // Obtiene la dirección IP del usuario usando un servicio externo
     const instancia = new getIpJs();
     instancia.obtenerDireccionIP((direcionIp) => {
@@ -79,15 +76,21 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
         status = err.status;
         if (status === 409) {
           idBackend = err.error;
-          trazabilidad = getCallStackhtpp();
+          trazabilidad = trazaStatus;
           mensajeError = '';
+          console.log(err.error);
+          console.log(err.message);
         } else {
-          trazabilidad = getCallStackhtpp();
+          trazabilidad = trazaStatus;
           mensajeError = createError().handleError(err)[1];
         }
       } else {
         trazabilidad = createError().handleError(err)[0];
-        trazabilidad = trazabilidad.stack;
+        if (trazabilidad.status === 0) {
+          trazabilidad = trazaStatus;
+        } else {
+          trazabilidad = trazabilidad.stack;
+        }
         mensajeError = createError().handleError(err)[1];
       }
 
@@ -109,11 +112,10 @@ Maneja un error y muestra un diálogo modal al usuario para reportar el error.
           },
         });
       });
+      // Limpia la trazabilidad del error para evitar errores en futuras solicitudes HTTP
+
+      setCallStackHttp('');
     });
-
-    // Limpia la trazabilidad del error para evitar errores en futuras solicitudes HTTP
-
-    setCallStackHttp('');
   }
 }
 
