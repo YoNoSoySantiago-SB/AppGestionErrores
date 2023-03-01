@@ -5,17 +5,6 @@ beforeEach(() => {
   events.clearEvents();
 });
 
-test('prueba :v', () => {
-
-
-expect(userEvents[0]).toEqual({
-  fechaHoraAccion: expect.any(Date),
-  accionUsuario: 'Se clickeó el botón con id: testButton y con nombre: testButtonName',
-  nivelError: { nombreNivel: 'Info' },
-  tipoAccion: { nombreAccion: 'Boton' }
-});
-
-});
 
 test('categorizeEvent should push an event with the correct action type and level error for button event', () => {
 
@@ -25,8 +14,8 @@ test('categorizeEvent should push an event with the correct action type and leve
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: 'Button clicked',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Boton' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Boton' 
   });
 });
 
@@ -38,8 +27,8 @@ test('categorizeEvent should push an event with the correct action type and leve
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: 'Se digitó: 1193033570',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Input' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Input' 
   });
 });
 
@@ -51,8 +40,8 @@ test('categorizeEvent should push an event with the correct action type and leve
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: 'GET a http://localhost:8080/cars',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Request' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Request' 
   });
 });
 
@@ -64,8 +53,8 @@ test('categorizeEvent should push an event with the correct action type and leve
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: '{from: /login to: /login}',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Navegacion' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Navegacion' 
   });
 });
 
@@ -77,8 +66,8 @@ test('categorizeEvent should push an event with the correct action type and leve
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: '500 internal server error',
-    nivelError: { nombreNivel: 'Excepcion' },
-    tipoAccion: { nombreAccion: 'Excepcion' }
+    nombreNivel: 'Excepcion' ,
+    nombreAccion: 'Excepcion' 
   });
 });
 
@@ -106,20 +95,11 @@ test('getLastEvents should return the last x events generated when x > number of
 });
 
 test('pushEvent should store all events in the array.', () => {
-  let tipoAccion;
-  let nivelError;
-  tipoAccion= {
-    nombreAccion:"Excepcion"
-  }
-  nivelError= {
-    nombreNivel:"Excepcion"
-  }
-
   const accionUsuario = {
     fechaHoraAccion: new Date(),
     accionUsuario:'500 internal server error',
-    nivelError,
-    tipoAccion
+    nombreAccion:"Excepcion",
+    nombreNivel:"Excepcion"
   }; 
   events.pushEvent(accionUsuario);
   const userEvents=events.getLastEvents(1)
@@ -136,8 +116,8 @@ test('saveRequestHTTP should receive an http request and send it to categorize, 
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: 'GET a http://localhost:8080/cars',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Request' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Request' 
   });
 });
 
@@ -149,7 +129,7 @@ test('saveNavigation should receive an http request and send it to categorize, s
   expect(userEvents[0]).toEqual({
     fechaHoraAccion: expect.any(Date),
     accionUsuario: '{from: /login to: /login}',
-    nivelError: { nombreNivel: 'Info' },
-    tipoAccion: { nombreAccion: 'Navegacion' }
+    nombreNivel: 'Info' ,
+    nombreAccion: 'Navegacion' 
   });
 });
