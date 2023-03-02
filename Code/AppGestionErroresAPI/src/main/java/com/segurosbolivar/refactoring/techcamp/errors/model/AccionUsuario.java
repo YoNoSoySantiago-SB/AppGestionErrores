@@ -1,5 +1,6 @@
 package com.segurosbolivar.refactoring.techcamp.errors.model;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import jakarta.persistence.SequenceGenerator;
@@ -26,7 +27,7 @@ public class AccionUsuario {
 	@SequenceGenerator(name = "id_accion_ususario_generator", allocationSize = 1, sequenceName = "seq_accion_usuario")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_accion_ususario_generator")
 	private Long idAccionUsuario;
-	private Date fechaHoraAccion;
+	private ZonedDateTime fechaHoraAccion;
 	private String accionUsuario;
 	
 	@ManyToOne
