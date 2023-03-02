@@ -64,7 +64,7 @@
       }"
       styleClass="p-card-shadow"
     >
-      <div style="padding: 30px">
+      <div style="padding: 30px; overflow-wrap: break-word;">
         <h1 class="title" style="text-align: center">
           ID del Error: {{ applicationError.idAplicacionError }}
         </h1>
@@ -84,7 +84,7 @@
         <p>{{ applicationError.ipUsuario }}</p>
 
         <h2 class="title">Trazabilidad Codigo FrontEnd</h2>
-        <div [innerHTML]="trazaFrontend"></div>
+        <div  [innerHTML]="trazaFrontend"></div>
 
         <div *ngIf="errorBackAndFront">
           <h2 class="title">Trazabilidad Codigo Backend</h2>
@@ -149,9 +149,7 @@
                   <td style="text-align: center">{{ action.nombreAccion }}</td>
                   <td style="text-align: center">{{ action.accionUsuario }}</td>
                   <td style="text-align: center">{{ action.nombreNivel }}</td>
-                  <td style="text-align: center">
-                    {{ action.fechaHoraAccion | date : "h:mm:ss a Z" }}
-                  </td>
+                  <td style="text-align: center">{{ action.fechaHoraAccion}}</td>
                 </tr>
               </ng-template>
               <ng-template pTemplate="paginatorleft">

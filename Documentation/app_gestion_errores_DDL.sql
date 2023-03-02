@@ -13,7 +13,7 @@ CREATE TABLE accion_usuario (
     id_aplicacion_error INTEGER NOT NULL,
     id_nivel_error      INTEGER NOT NULL,
     id_tipo_accion      INTEGER NOT NULL,
-    fecha_hora_accion   DATE NOT NULL,
+    fecha_hora_accion  TIMESTAMP WITH TIME ZONE,
     accion_usuario      VARCHAR(300)
 );
 

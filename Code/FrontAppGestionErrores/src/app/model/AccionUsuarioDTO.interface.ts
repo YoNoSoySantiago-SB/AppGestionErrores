@@ -1,5 +1,5 @@
 export interface AccionUsuarioDTO{
-    fechaHoraAccion:Date,
+    fechaHoraAccion:string,
     accionUsuario :string,
     nombreNivel:string,
     nombreAccion:string,

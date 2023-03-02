@@ -1,8 +1,6 @@
 package com.segurosbolivar.refactoring.techcamp.errors.model;
 
-import java.sql.Time;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;

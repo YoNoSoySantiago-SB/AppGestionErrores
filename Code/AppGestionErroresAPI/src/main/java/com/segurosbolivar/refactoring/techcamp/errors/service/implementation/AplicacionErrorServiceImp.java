@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 
 import java.io.StringWriter;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +79,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		TrazabilidadCodigo trazabilidadCodigo = new TrazabilidadCodigo();
 		
 		aplicacionError.setNombreAplicacion(applicationName);
+		aplicacionError.setHoraError(ZonedDateTime.now());
 		aplicacionError = aplicacionErrorRespository.save(aplicacionError);
 		
 		StringWriter stackTraceWriter = new StringWriter();
@@ -130,7 +132,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+	public Long saveTrazabilitiyandUserevents(Long idAplicationError,AplicacionErrorDTO aplicacionErrorDTO, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
 		if(idAplicationError==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
@@ -139,9 +141,10 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 			if(aplicacionError.isEmpty()) {
 				throw new BadRequestDataException();
 			}else {
+				AplicacionError savedAplicacionError=aplicacionErrorDTO.setInfo(aplicacionError.get());
 				TrazabilidadCodigo trazabilidadCodigo=new TrazabilidadCodigo();
 				trazabilidadCodigo=trazabilidadCodigoDto.setInfo(trazabilidadCodigo);
-				trazabilidadCodigo.setAplicacionError(aplicacionError.get());
+				trazabilidadCodigo.setAplicacionError(savedAplicacionError);
 				OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
 				trazabilidadCodigo.setOrigenError(origenError);
 				
@@ -153,13 +156,14 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 					TipoAccion tipoAccion= new TipoAccion();
 					accion.setNivelError(nivelError);
 					accion.setTipoAccion(tipoAccion);
+					accion.setAplicacionError(savedAplicacionError);
 					accion=accionDto.setInfo(accion);
 					acciones.add(accion);				
 				}
 				acciones=categorizeUserEvents(acciones);
 				
 				accionUsuarioRepository.saveAll(acciones);
-				return aplicacionError.get().getIdAplicacionError();
+				return savedAplicacionError.getIdAplicacionError();
 			}
 		}
 	}
