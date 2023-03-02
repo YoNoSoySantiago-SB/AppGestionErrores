@@ -3,6 +3,7 @@ package com.segurosbolivar.refactoring.techcamp.errors.controller.implementation
 import java.util.List;
 
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
+import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequestBack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,11 +54,18 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@PostMapping("/saveTrazabilitiyandUserevents/{idAplicationError}")
+<<<<<<< HEAD
 	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("idAplicationError") Long idAplicationError ,@RequestBody TrazabilidadCodigoDTO trazabilidadCodigoDto,@RequestBody List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
 		Long newAplicacionError;
 		try {
 			System.out.println("ID: "+idAplicationError);
 			newAplicacionError=aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,trazabilidadCodigoDto,accionesUsuarioDto);
+=======
+	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("idAplicationError") Long idAplicationError, @RequestBody ErrorRequestBack errorRequest) throws BadRequestDataException {
+		Long newAplicacionError;
+		try {
+			newAplicacionError=aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
+>>>>>>> c6df52dccb5e6ece176dec20669c518b40589653
 		} catch (BadRequestDataException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
