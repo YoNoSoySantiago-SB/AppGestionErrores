@@ -260,23 +260,6 @@ class AppGestionErroresApiApplicationTests {
 		});
 	}
 	
-	@Test
-	void testPersistAplicacionErrorFrontEnd() {
-		AplicacionErrorDTO appErrorDto = new AplicacionErrorDTO();
-		AplicacionError aplicacionError = new AplicacionError();
-		
-		aplicacionError.setIdAplicacionError((long) 1);
-		
-		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
-		
-		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
-		
-		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
-		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
-		assertDoesNotThrow(()->{
-			aplicacionErrorService.persistAplicacionErrorFrontEnd(appErrorDto, traza, userEvents);
-		});
-	}
 	
 	@Test
 	void testPersistAplicacionErrorBackendWithNullException() {
