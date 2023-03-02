@@ -53,6 +53,8 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 	@PostMapping("/saveTrazabilitiyandUserevents/{idAplicationError}")
 	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("idAplicationError") Long idAplicationError, @RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
 		Long newAplicacionError;
+		System.out.println("ola");
+		System.out.println(idAplicationError);
 		try {
 			newAplicacionError=aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,errorRequest.getAplicacionErrorDto(), errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
 		} catch (BadRequestDataException e) {

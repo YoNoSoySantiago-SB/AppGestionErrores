@@ -72,8 +72,10 @@ let amount = 20;
       nombreAccion="Excepcion"
       nombreNivel="Excepcion"
     }
+    let hour= new Date();
+    let fechaHoraAccion=hour.toISOString();
     const accionUsuario = {
-      fechaHoraAccion: new Date(),
+      fechaHoraAccion:fechaHoraAccion,
       accionUsuario:description,
       nombreNivel:nombreNivel,
       nombreAccion:nombreAccion

@@ -1,6 +1,7 @@
 package com.segurosbolivar.refactoring.techcamp.errors.dtos;
 
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 public class AccionUsuarioDTO {
 	
-	private Date fechaHoraAccion;
+	private String fechaHoraAccion;
 	private String accionUsuario;
 	private String nombreNivel;
 	private String nombreAccion;
@@ -25,7 +26,7 @@ public class AccionUsuarioDTO {
 	}
 	
 	public AccionUsuario setInfo(AccionUsuario accionUsuario) {
-		accionUsuario.setFechaHoraAccion(this.fechaHoraAccion);
+		accionUsuario.setFechaHoraAccion(ZonedDateTime.parse(this.fechaHoraAccion));
 		accionUsuario.setAccionUsuario(this.accionUsuario);
 		accionUsuario.getNivelError().setNombreNivel(this.nombreNivel);;
 		accionUsuario.getTipoAccion().setNombreAccion(this.nombreAccion);;
@@ -37,7 +38,7 @@ public class AccionUsuarioDTO {
 		this.accionUsuario=accionUsuario.getAccionUsuario();
 		this.nombreAccion=accionUsuario.getTipoAccion().getNombreAccion();
 		this.nombreNivel=accionUsuario.getNivelError().getNombreNivel();
-		this.fechaHoraAccion=accionUsuario.getFechaHoraAccion();
+		this.fechaHoraAccion=accionUsuario.getFechaHoraAccion().toString();
 		return this;
 		
 	}

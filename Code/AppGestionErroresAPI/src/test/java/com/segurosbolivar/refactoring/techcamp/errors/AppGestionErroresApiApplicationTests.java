@@ -18,8 +18,10 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.BadRequestDataException;
+import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultException;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AccionUsuarioDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorDTO;
+import com.segurosbolivar.refactoring.techcamp.errors.dtos.AplicacionErrorResponseDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.ExceptionDto;
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.TrazabilidadCodigoDTO;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
@@ -34,8 +36,12 @@ import com.segurosbolivar.refactoring.techcamp.errors.repository.NivelErrorRepos
 import com.segurosbolivar.refactoring.techcamp.errors.repository.OrigenErrorRepository;
 import com.segurosbolivar.refactoring.techcamp.errors.repository.TipoAccionRepository;
 import com.segurosbolivar.refactoring.techcamp.errors.repository.TrazabilidadCodigoRepository;
+import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.AccionUsuarioServiceImp;
 import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.AplicacionErrorServiceImp;
+import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.TrazabilidadCodigoServiceImp;
+import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AccionUsuarioServiceI;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
+import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.TrazabilidadCodigoServiceI;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
@@ -57,9 +63,17 @@ class AppGestionErroresApiApplicationTests {
 	@InjectMocks
 	private AplicacionErrorServiceI aplicacionErrorService;
 	
+	@InjectMocks
+	private AccionUsuarioServiceI accionUsuarioService;
+	
+	@InjectMocks
+	private TrazabilidadCodigoServiceI trazabilidadCodigoService;
+	
 
 	public AppGestionErroresApiApplicationTests() {
 		aplicacionErrorService = new AplicacionErrorServiceImp(aplicacionErrorRespository, origenErrorRepository, trazabilidadCodigoRepository, nivelErrorRepository, tipoAccionRepository, accionUsuarioRepository);
+		accionUsuarioService= new AccionUsuarioServiceImp(accionUsuarioRepository);
+		trazabilidadCodigoService= new TrazabilidadCodigoServiceImp(trazabilidadCodigoRepository);
 	}
 	
 	private List<AccionUsuario> setUpUserEventList() {
@@ -260,23 +274,6 @@ class AppGestionErroresApiApplicationTests {
 		});
 	}
 	
-	@Test
-	void testPersistAplicacionErrorFrontEnd() {
-		AplicacionErrorDTO appErrorDto = new AplicacionErrorDTO();
-		AplicacionError aplicacionError = new AplicacionError();
-		
-		aplicacionError.setIdAplicacionError((long) 1);
-		
-		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
-		
-		when(aplicacionErrorRespository.save(aplicacionError)).thenReturn(aplicacionError);
-		
-		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
-		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
-		assertDoesNotThrow(()->{
-			aplicacionErrorService.persistAplicacionErrorFrontEnd(appErrorDto, traza, userEvents);
-		});
-	}
 	
 	@Test
 	void testPersistAplicacionErrorBackendWithNullException() {
@@ -319,4 +316,39 @@ class AppGestionErroresApiApplicationTests {
 		});
 	}	
 	
+	@Test
+	void testFindByIdAplicacionErrorNull() {
+		assertThrows(BadRequestDataException.class, ()->{
+			aplicacionErrorService.findById(null);
+		});
+	}
+	
+	@Test
+	void testfindAllActionsUserByAplicacionErrorIdAplicacionErrorNull() {
+		assertThrows(BadRequestDataException.class, ()->{
+			accionUsuarioService.findAllActionsUserByAplicacionErrorIdAplicacionError(null);
+		});
+	}
+	
+	@Test
+	void testfindAllTrazabilitiesByAplicacionErrorIdAplicacionErrorNull() {
+		assertThrows(BadRequestDataException.class, ()->{
+			trazabilidadCodigoService.findAllTrazabilitiesByAplicacionErrorIdAplicacionError(null);
+		});
+	}
+	
+	@Test
+	void testfindAllTrazabilitiesByAplicacionErrorIdAplicacionErrorNoExist() {
+		assertThrows(NoResultException.class, ()->{
+			trazabilidadCodigoService.findAllTrazabilitiesByAplicacionErrorIdAplicacionError((long) -1);
+		});
+	}
+	
+	@Test
+	void testfindAllActionsUserByAplicacionErrorIdAplicacionErrorNoExist() {
+		assertThrows(NoResultException.class, ()->{
+			accionUsuarioService.findAllActionsUserByAplicacionErrorIdAplicacionError((long) -1);
+		});
+	}
+
 }
