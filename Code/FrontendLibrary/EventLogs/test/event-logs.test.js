@@ -1,5 +1,5 @@
 const events = require('../event-logs');
-
+const { String } = require('core-js');
 
 beforeEach(() => {
   events.clearEvents();
@@ -12,7 +12,7 @@ test('categorizeEvent should push an event with the correct action type and leve
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: 'Button clicked',
     nombreNivel: 'Info' ,
     nombreAccion: 'Boton' 
@@ -25,7 +25,7 @@ test('categorizeEvent should push an event with the correct action type and leve
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: 'Se digitó: 1193033570',
     nombreNivel: 'Info' ,
     nombreAccion: 'Input' 
@@ -38,7 +38,7 @@ test('categorizeEvent should push an event with the correct action type and leve
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: 'GET a http://localhost:8080/cars',
     nombreNivel: 'Info' ,
     nombreAccion: 'Request' 
@@ -51,7 +51,7 @@ test('categorizeEvent should push an event with the correct action type and leve
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: '{from: /login to: /login}',
     nombreNivel: 'Info' ,
     nombreAccion: 'Navegacion' 
@@ -64,7 +64,7 @@ test('categorizeEvent should push an event with the correct action type and leve
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: '500 internal server error',
     nombreNivel: 'Excepcion' ,
     nombreAccion: 'Excepcion' 
@@ -96,7 +96,7 @@ test('getLastEvents should return the last x events generated when x > number of
 
 test('pushEvent should store all events in the array.', () => {
   const accionUsuario = {
-    fechaHoraAccion: new Date(),
+    fechaHoraAccion: '2023-03-01T22:43:16.851-05:00[America/Bogota]',
     accionUsuario:'500 internal server error',
     nombreAccion:"Excepcion",
     nombreNivel:"Excepcion"
@@ -114,7 +114,7 @@ test('saveRequestHTTP should receive an http request and send it to categorize, 
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: 'GET a http://localhost:8080/cars',
     nombreNivel: 'Info' ,
     nombreAccion: 'Request' 
@@ -127,7 +127,7 @@ test('saveNavigation should receive an http request and send it to categorize, s
   const userEvents=events.getLastEvents(1)
 
   expect(userEvents[0]).toEqual({
-    fechaHoraAccion: expect.any(Date),
+    fechaHoraAccion: expect.any(String),
     accionUsuario: '{from: /login to: /login}',
     nombreNivel: 'Info' ,
     nombreAccion: 'Navegacion' 
