@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 
 import java.io.StringWriter;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +79,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		TrazabilidadCodigo trazabilidadCodigo = new TrazabilidadCodigo();
 		
 		aplicacionError.setNombreAplicacion(applicationName);
+		aplicacionError.setHoraError(ZonedDateTime.now());
 		aplicacionError = aplicacionErrorRespository.save(aplicacionError);
 		
 		StringWriter stackTraceWriter = new StringWriter();
