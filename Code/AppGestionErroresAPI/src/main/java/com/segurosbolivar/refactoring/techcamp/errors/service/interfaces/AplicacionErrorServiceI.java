@@ -16,7 +16,7 @@ public interface AplicacionErrorServiceI {
 	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionError, TrazabilidadCodigoDTO trazabilidadCodigo,
 			List<AccionUsuarioDTO> accionesUsuario) throws BadRequestDataException;
 
-	public Long saveTrazabilitiyandUserevents(Long idAplicationError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
+	public Long saveTrazabilitiyandUserevents(Long idAplicationError, AplicacionErrorDTO aplicacionError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuariodto) throws BadRequestDataException;
 
 	public AplicacionErrorResponseDTO findById(Long id) throws BadRequestDataException, NoResultException;

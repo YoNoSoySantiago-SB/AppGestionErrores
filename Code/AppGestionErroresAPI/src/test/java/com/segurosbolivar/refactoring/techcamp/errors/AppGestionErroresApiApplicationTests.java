@@ -188,25 +188,28 @@ class AppGestionErroresApiApplicationTests {
 	void testSaveTrazabilitiyAndUsereventsWithNullAppId() {
 		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
 		
 		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.saveTrazabilitiyandUserevents(null, traza, userEvents);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(null,appError, traza, userEvents);
 		});
 	}
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNullTraza() {
 		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
 		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), null, userEvents);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1),appError, null, userEvents);
 		});
 	}
 	
 	@Test
 	void testSaveTrazabilitiyAndUsereventsWithNullUserEvents() {
 		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
 		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, null);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1),appError, traza, null);
 		});
 	}
 	
@@ -214,8 +217,9 @@ class AppGestionErroresApiApplicationTests {
 	void testSaveTrazabilitiyAndUsereventsWithNoExistAplicacionError() {
 		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
 		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
 		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(-1), traza, userEvents);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(-1),appError, traza, userEvents);
 		});
 	}
 	
@@ -223,8 +227,9 @@ class AppGestionErroresApiApplicationTests {
 	void testSaveTrazabilitiyAndUserevents() {
 		List<AccionUsuarioDTO> userEvents = setUpUserEventListDTOS();
 		TrazabilidadCodigoDTO traza = new TrazabilidadCodigoDTO();
+		AplicacionErrorDTO appError = new AplicacionErrorDTO();
 		assertThrows(BadRequestDataException.class, ()->{
-			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1), traza, userEvents);
+			aplicacionErrorService.saveTrazabilitiyandUserevents(Long.valueOf(1),appError, traza, userEvents);
 		});
 	}
 	
