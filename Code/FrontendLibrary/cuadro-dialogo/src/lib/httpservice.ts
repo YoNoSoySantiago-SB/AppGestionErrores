@@ -1,3 +1,4 @@
+import { AplicacionErrorDto } from './interfaces';
 import { observable, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -40,18 +41,22 @@ export class ServicehttpAPIError {
 
 Stores traceability and user actions for a specific application error.
 @param {number} applicationError - The ID of the application error.
+@param {Object} applicationError - Object representing the application error.
 @param {Object} tracebackError - Object representing the error traceback.
 @param {Array} useractions - Array of objects representing user actions.
 @returns {Promise} A promise that resolves to the request response data.
 */
   saveTrazabilitiyandUserevents(
     idaplicacionError: number,
+
+    aplicacionError: object,
     trazabilidadError: object,
     accionesUsuario: Array<object>
   ): Observable<any> {
     const payload = {
-      trazabilidadError: trazabilidadError,
-      accionesUsuario: accionesUsuario,
+      aplicacionErrorDto: aplicacionError,
+      trazabilidadCodigoDto: trazabilidadError,
+      accionesUsuarioDto: accionesUsuario,
     };
     console.log(payload);
 
