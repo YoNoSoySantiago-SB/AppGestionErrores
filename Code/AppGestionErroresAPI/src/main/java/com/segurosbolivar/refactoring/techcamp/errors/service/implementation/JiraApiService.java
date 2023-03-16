@@ -3,6 +3,7 @@ package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.segurosbolivar.refactoring.techcamp.errors.request.ResponseJira;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.JiraApiServicel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ public class JiraApiService implements JiraApiServicel {
         System.out.println(response.getBody());
     }
 
-    public String createIssue(String summary, String description, String projectName) throws Exception {
+    public ResponseJira createIssue(String summary, String description, String projectName, String parent) throws Exception {
         String url = JIRA_BASE_URL + "/issue/";
         String email = "marlon.anacona@correounivalle.edu.co";
         String apiToken = "ATATT3xFfGF0M7Ecx5i7EYnN1f23LQCGgmNJn9NuGKgeg45mMTy6_tugSLJUzFkgsGMMvuoR5mx081s2uaVJPwXBVA_1LikB165iHln_f4W5i4YfSkdpwaQHMBmAe6SuuILZVXzAkChBdzfI9aOgMIhJybILVi2bFunJ6mSzcarAATG21amxXxI=BB072F54";
@@ -54,7 +55,7 @@ public class JiraApiService implements JiraApiServicel {
         fields.put("project", new JSONObject().put("key", projectName));
         fields.put("summary", summary);
         fields.put("issuetype", new JSONObject().put("id", "10005"));
-        fields.put("parent", new JSONObject().put("key", "TEC-10"));
+        fields.put("parent", new JSONObject().put("key", parent));
         fields.put("description", bodyObj);
         requestBody.put("fields", fields);
 
@@ -69,9 +70,11 @@ public class JiraApiService implements JiraApiServicel {
 
         String respuesta=response.getBody().getObject().get("key").toString();
       if(response.getStatus()==201){
-          return  "Acción completada, Se ha registrado en Jira con codigo: "+respuesta;
+          ResponseJira respuestaAEnviar=new ResponseJira();
+          respuestaAEnviar.setKey(respuesta);
+          return  respuestaAEnviar;
       }else{
-          return  "No se ha logrado registrar en el jira";
+          throw new Error( "No se ha logrado registrar en el jira");
       }
     }
 }

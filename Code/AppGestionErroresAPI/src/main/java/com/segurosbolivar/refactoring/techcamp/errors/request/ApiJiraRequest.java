@@ -9,4 +9,5 @@ public class ApiJiraRequest {
     private String summary;
     private String description;
     private String projectname;
+    private String parent;
 }

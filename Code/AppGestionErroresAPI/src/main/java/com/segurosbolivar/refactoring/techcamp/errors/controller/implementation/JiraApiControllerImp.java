@@ -4,6 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces.JiraApiControllerl;
 import com.segurosbolivar.refactoring.techcamp.errors.request.ApiJiraRequest;
+import com.segurosbolivar.refactoring.techcamp.errors.request.ResponseJira;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.JiraApiServicel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +24,19 @@ public class JiraApiControllerImp implements JiraApiControllerl {
 
     @Override
     @PostMapping("/createIssue/save")
-    public ResponseEntity<String> createIssue(@RequestBody ApiJiraRequest apiJiraRequest) {
-        String resp;
+    public ResponseEntity<ResponseJira> createIssue(@RequestBody ApiJiraRequest apiJiraRequest) {
+        ResponseJira resp;
 
 
         try{
-            resp= jiraApiServicel.createIssue(apiJiraRequest.getSummary(),apiJiraRequest.getDescription(),apiJiraRequest.getProjectname());
+            resp= jiraApiServicel.createIssue(apiJiraRequest.getSummary(),apiJiraRequest.getDescription(),apiJiraRequest.getProjectname(),apiJiraRequest.getParent());
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
         }
-        return  new ResponseEntity<>(resp, HttpStatus.CREATED);
+
+
+        return new ResponseEntity<>(resp, HttpStatus.CREATED);
 
     }
 }

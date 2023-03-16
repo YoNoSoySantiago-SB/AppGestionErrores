@@ -1,6 +1,7 @@
 package com.segurosbolivar.refactoring.techcamp.errors.controller.interfaces;
 
 import com.segurosbolivar.refactoring.techcamp.errors.request.ApiJiraRequest;
+import com.segurosbolivar.refactoring.techcamp.errors.request.ResponseJira;
 import org.codehaus.jackson.JsonNode;
 import org.springframework.http.ResponseEntity;
 
@@ -10,5 +11,5 @@ public interface JiraApiControllerl {
 
 
 
-    ResponseEntity<String> createIssue(ApiJiraRequest apiJiraRequest);
+    ResponseEntity<ResponseJira> createIssue(ApiJiraRequest apiJiraRequest);
 }
