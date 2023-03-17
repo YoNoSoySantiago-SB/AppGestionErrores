@@ -1,0 +1,15 @@
+.custom-button {
+    background-color: #198754;
+    color: white;
+  }
+
+  .title {
+    font-weight: bold;
+  }
+  .custom-card {
+    width: 200px;
+  }
+  .card-list-container {
+    max-width: 900px; /* El ancho máximo deseado */
+    margin: 0 auto; /* Centrar el contenido horizontalmente */
+  }

@@ -1,9 +1,14 @@
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, Inject, Injectable, OnInit } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { Component, Inject, Injectable, OnInit, NgZone } from '@angular/core';
 import { AplicacionErrorDto, TrazabilidadCodigoDto } from './interfaces';
 import { ServicehttpAPIError } from './httpservice';
 import { HttpClient, HttpBackend, HttpXhrBackend } from '@angular/common/http';
-import { Time, XhrFactory } from '@angular/common';
+import { DatePipe, Time, XhrFactory } from '@angular/common';
+import { getnameApp } from './getNameApp';
 
 @Component({
   selector: 'app-alert-dialog',
@@ -12,42 +17,46 @@ import { Time, XhrFactory } from '@angular/common';
 })
 /**
 
-Representa un diálogo de alerta que se puede utilizar para mostrar un mensaje de error y realizar acciones para reportar o cerrar el diálogo.
+Represents an alert dialog that can be used to display an error message and perform actions to report or close the dialog.
 */
 export class AlertDialog {
-  //En caso de no encontrar el el mensaje
+  //In case the message is not found.
   message: string = 'An unspecified error has occurred';
-  //Icono que aparecera
+  //Icon show
   icon: string = '';
-  //Texto del boton por defecto
+  //Text default
   buttonText = 'Ok';
-  //Ip del usuario que presento el error
+  //Ip user addres
   ipUsuario: string = '';
-  //Trazabilidad del error
+  //Trace
   trazabilidad: string = '';
-  //Mensaje del objeto
+  //Message object
   mensajeobject: string = '';
-  //Tiempo en el que sucedio el problema
+  //Time error
   tiempo: Date = new Date();
-  //navegador y sistema operativo que ocurrio
+  //navegator
   navegadorUsuario: string = '';
-  //Eventos de usuario que hizo antes del error
+  //Events user before error
   eventosUsuario: any;
-  //Nombre del usuario
+  //NameUser
   nombre: string = '';
   //Email del usuario
   email: string = '';
-  //Descripcion del usuario
+  //Description
   descripcion: string = '';
   //Status
   status: number = -1;
   idBackend: number = -1;
+  showDialog: boolean = false;
+  errorDialog: boolean = false;
+  origen: string = '';
+  public resp: any;
 
   /**
 
-Crea una nueva instancia de AlertDialog.
-@param data Los datos para inicializar el diálogo. Incluye un mensaje, un icono opcional, un texto para el botón, información de seguimiento, la dirección IP del usuario, el objeto mensaje, la hora en que se produjo el error, el navegador utilizado, y eventos de usuario.
-@param dialogRef Una referencia al cuadro de diálogo que se está mostrando.
+Creates a new instance of AlertDialog.
+@param data The data to initialize the dialog. Includes a message, an optional icon, text for the button, tracking information, user IP address, message object, time when the error occurred, browser used, and user events.
+@param dialogRef A reference to the dialog that is being displayed.
 */
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -63,6 +72,7 @@ Crea una nueva instancia de AlertDialog.
       eventosUsuario: any;
       status: number;
       idBackend: number;
+      origen: string;
     },
     private dialogRef: MatDialogRef<AlertDialog>
   ) {
@@ -77,17 +87,17 @@ Crea una nueva instancia de AlertDialog.
     if (data?.eventosUsuario) this.eventosUsuario = data.eventosUsuario;
     if (data?.status) this.status = data.status;
     if (data?.idBackend) this.idBackend = data.idBackend;
+    if (data?.origen) this.origen = data.origen;
   }
-
-  //Metodo que se ejecuta para mandar la información al backend y el reporte
-  reportar() {
+  //Method that is executed to close the dialog and send the error information to the backend.
+  async enviar() {
     let aplicacionError: AplicacionErrorDto;
+
     aplicacionError = {
-      tituloError: this.message,
+      tituloError: this.nombre,
       descripcionError: this.descripcion,
-      nombreAplicacion: '',
-      correoUsuario: this.email,
-      horaError: this.tiempo,
+      nombreAplicacion: getnameApp(),
+      horaError: this.tiempo.toISOString(),
       ipUsuario: this.ipUsuario,
       navegadorUsuario: this.navegadorUsuario,
     };
@@ -95,72 +105,76 @@ Crea una nueva instancia de AlertDialog.
     let trazabilidadCodigo: TrazabilidadCodigoDto;
     trazabilidadCodigo = {
       trazaError: this.trazabilidad,
+      origen: this.origen,
     };
-
+    //Evaluates if the error comes from the backend with status 409.
     if (this.status == 409) {
-      console.log(sendAPIBackend(1, trazabilidadCodigo, this.eventosUsuario));
+      sendAPIBackend(
+        this.idBackend,
+        aplicacionError,
+        trazabilidadCodigo,
+        this.eventosUsuario
+      ).subscribe({
+        next: (response) => {
+          //Displays the successful request and the error ID.
+          this.resp = this.idBackend;
+          response;
+          this.showDialog = true;
+        },
+        error: (err) => {
+          //Displays that there was an error in the request.
+          this.errorDialog = true;
+          err;
+        },
+      });
     } else {
-      sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario);
+      //In case the error is from the frontend, it will persist it as a frontend error and make the necessary service call.
+      sendAPIFront(
+        aplicacionError,
+        trazabilidadCodigo,
+        this.eventosUsuario
+      ).subscribe({
+        next: (response) => {
+          //Displays the successful request and the error ID.
+          this.resp = response;
+          this.showDialog = true;
+        },
+        error: (err) => {
+          //Displays that there was an error in the request.
+          this.errorDialog = true;
+        },
+      });
     }
-
-    console.log(trazabilidadCodigo);
-
-    console.log(aplicacionError);
-
-    this.dialogRef.close();
   }
-  //Metodo que se ejecuta para cerrar el dialogo y mandar la información del error al backend
+
   cerrar() {
-    let aplicacionError: AplicacionErrorDto;
-    aplicacionError = {
-      tituloError: this.message,
-      descripcionError: this.descripcion,
-      nombreAplicacion: '',
-      correoUsuario: this.email,
-      horaError: this.tiempo,
-      ipUsuario: this.ipUsuario,
-      navegadorUsuario: this.navegadorUsuario,
-    };
-
-    let trazabilidadCodigo: TrazabilidadCodigoDto;
-    trazabilidadCodigo = {
-      trazaError: this.trazabilidad,
-    };
-
-    if (this.status == 409) {
-      console.log(
-        sendAPIBackend(this.idBackend, trazabilidadCodigo, this.eventosUsuario)
-      );
-    } else {
-      console.log(
-        sendAPIFront(aplicacionError, trazabilidadCodigo, this.eventosUsuario)
-      );
-    }
-
     this.dialogRef.close();
   }
 }
 
 /**
- * Clase que implementa la interfaz XhrFactory para proporcionar una fábrica personalizada para HttpClient de Angular.
- */
+
+Class that implements the XhrFactory interface to provide a custom factory for Angular's HttpClient.
+*/
 class MyXhrFactory implements XhrFactory {
   /**
-   * Crea y devuelve una nueva instancia de XMLHttpRequest.
-   * @returns Una nueva instancia de XMLHttpRequest.
-   */
+
+Creates and returns a new instance of XMLHttpRequest.
+@returns A new instance of XMLHttpRequest.
+*/
   build(): XMLHttpRequest {
     return new XMLHttpRequest();
   }
 }
 
 /**
- * Envía una solicitud de API para guardar los errores de la aplicación y los eventos del usuario en la parte frontal.
- * @param aplicacionError - Objeto que contiene información sobre el error de la aplicación.
- * @param trazabilidad_codigo - Código de trazabilidad para el seguimiento del error.
- * @param eventosUsuario - Objeto que contiene información sobre los eventos del usuario.
- * @returns Un Observable que emite una respuesta de la API.
- */
+
+Sends an API request to save application errors and user events on the frontend.
+@param applicationError - Object containing information about the application error.
+@param traceabilityCode - Traceability code for tracking the error.
+@param userEvents - Object containing information about user events.
+@returns An Observable that emits an API response.
+*/
 function sendAPIFront(
   aplicacionError: AplicacionErrorDto,
   trazabilidad_codigo: TrazabilidadCodigoDto,
@@ -169,49 +183,50 @@ function sendAPIFront(
   const xhrFactory = new MyXhrFactory();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi
-    .persistAplicacionErrorFrontEnd(
-      aplicacionError,
-      trazabilidad_codigo,
-      eventosUsuario
-    )
-    .subscribe({
-      next: (response) => {
-        response;
-      },
-      error: (err) => {
-        err;
-      },
-    });
+  return serviceApi.persistAplicacionErrorFrontEnd(
+    aplicacionError,
+    trazabilidad_codigo,
+    eventosUsuario
+  );
 }
 
 /**
- * Envía una solicitud de API para guardar los eventos del usuario en el backend.
- * @param idaplicacionError - ID del error de la aplicación.
- * @param trazabilidad_codigo - Código de trazabilidad para el seguimiento del error.
- * @param eventosUsuario - Objeto que contiene información sobre los eventos del usuario.
- * @returns Un Observable que emite una respuesta de la API.
- */
+
+Class that implements the XhrFactory interface to provide a custom factory for Angular's HttpClient.
+*/
+class MyXhrFactory1 implements XhrFactory {
+  /**
+
+Creates and returns a new instance of XMLHttpRequest.
+@returns A new instance of XMLHttpRequest.
+*/
+  build(): XMLHttpRequest {
+    return new XMLHttpRequest();
+  }
+}
+
+/**
+
+Sends an API request to save user events on the backend.
+@param applicationErrorId - ID of the application error.
+@param applicationError - Object containing information about the application error.
+@param traceabilityCode - Traceability code for tracking the error.
+@param userEvents - Object containing information about user events.
+@returns An Observable that emits an API response.
+*/
 function sendAPIBackend(
   idaplicacionError: number,
+  aplicacionError: AplicacionErrorDto,
   trazabilidad_codigo: TrazabilidadCodigoDto,
   eventosUsuario: any
 ) {
-  const xhrFactory = new MyXhrFactory();
+  const xhrFactory = new MyXhrFactory1();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
-  return serviceApi
-    .saveTrazabilitiyandUserevents(
-      idaplicacionError,
-      trazabilidad_codigo,
-      eventosUsuario
-    )
-    .subscribe({
-      next: (response) => {
-        response;
-      },
-      error: (err) => {
-        err;
-      },
-    });
+  return serviceApi.saveTrazabilitiyandUserevents(
+    idaplicacionError,
+    aplicacionError,
+    trazabilidad_codigo,
+    eventosUsuario
+  );
 }

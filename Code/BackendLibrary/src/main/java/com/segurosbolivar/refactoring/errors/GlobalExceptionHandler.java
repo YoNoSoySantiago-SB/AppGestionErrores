@@ -6,6 +6,9 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	@Value(value="spring.application.name")
+	private static String appName;
    
 	/**
      * Handles all uncaught exception persisting in the database without generating a report yet.
@@ -35,7 +41,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
     	
-
     	Map<String,Long> responseMap = new HashMap<>();
     	
     	Long errorId = catchException(ex);
@@ -59,17 +64,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return The id of the generated report
      */
     public static Long catchException(Exception ex) {
+    	
+    	System.out.println("EOOOOOOOOOOOOOOO");
     	RestTemplate restTemplate = new RestTemplate();
     	String url = "http://localhost:8080/aplicacionBackendError/save";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         
-        String applicationName = "Test By Now";
-        
+        String applicationName = appName == null || appName =="null" || appName.isEmpty()? "Desconocido" : appName;
+//        String applicationName = env.getProperty("spring.application.name");
+        applicationName = applicationName==null||applicationName.isEmpty()?"Desconocido":applicationName;
         ErrorPayload errorPayload = new ErrorPayload();
         errorPayload.setException(ex);
         errorPayload.setApplicationName(applicationName);
+        
+        System.out.println(errorPayload);
 
         HttpEntity<ErrorPayload> request = new HttpEntity<>(errorPayload, headers);
 
@@ -81,6 +91,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static class ErrorPayload {
         private Exception exception;
         private String applicationName;
+        
+        public Exception getException() {
+        	return exception;
+        }
+        
+        public String getApplicationName() {
+        	return applicationName;
+        }
 
         public void setException(Exception exception) {
             this.exception = exception;

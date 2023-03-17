@@ -13,7 +13,7 @@ CREATE TABLE accion_usuario (
     id_aplicacion_error INTEGER NOT NULL,
     id_nivel_error      INTEGER NOT NULL,
     id_tipo_accion      INTEGER NOT NULL,
-    fecha_hora_accion   DATE NOT NULL,
+    fecha_hora_accion  TIMESTAMP WITH TIME ZONE,
     accion_usuario      VARCHAR(300)
 );
 
@@ -29,8 +29,7 @@ CREATE TABLE aplicacion_error (
     nombre_aplicacion  	VARCHAR(80) NOT NULL,
     titulo_error        VARCHAR(80),
     descripcion_error   VARCHAR(3500),
-    correo_usuario      VARCHAR(50),
-    hora_error 			DATE,
+    hora_error 			TIMESTAMP WITH TIME ZONE,
 	navegador_usuario 	VARCHAR(150),
 	ip_usuario 			VARCHAR(50)
 );
