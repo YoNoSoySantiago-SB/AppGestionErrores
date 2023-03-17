@@ -1,53 +1,57 @@
 package com.segurosbolivar.refactoring.errors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.client.MockRestServiceServer;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.WebRequest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.segurosbolivar.refactoring.errors.GlobalExceptionHandler.ErrorPayload;
-
+@TestInstance(Lifecycle.PER_CLASS)
 class BackendLibraryApplicationTests {
 	
-	RestTemplate restTemplate = new RestTemplate();
-	MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-	ObjectMapper objectMapper = new ObjectMapper();
+	@Mock
+    private Environment env;
+	
+	@Mock
+	private RestTemplate template;
 
-	@Test
-	void contextLoads() throws JsonProcessingException {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+    @InjectMocks
+    private GlobalExceptionHandler globalExceptionHandler;
 
-		String applicationName = "Test By Now";
+    @BeforeAll
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        when(env.getProperty("spring.api.base.url")).thenReturn("http://localhost:8080");
+    }
 
-		ErrorPayload errorPayload = new ErrorPayload();
-		errorPayload.setException(new Exception());
-		errorPayload.setApplicationName(applicationName);
+    @Test
+    public void testHandleConflict() {
+        Exception ex = new Exception("Test Exception");
+        WebRequest request = mock(WebRequest.class);
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleConflict(ex, request);
 
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+    }
 
-		Long expectedResponse = 123L;
+    @Test
+    public void testCatchException() {
+        Exception ex = new Exception("Test Exception");
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.catchException(ex);
 
-		mockServer.expect(requestTo("http://localhost:8080/aplicacionBackendError/save"))
-		          .andExpect(method(HttpMethod.POST))
-		          .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		          .andRespond(withSuccess(objectMapper.writeValueAsString(expectedResponse), MediaType.APPLICATION_JSON));
-		
-		Long response = GlobalExceptionHandler.catchException(new Exception());
-		mockServer.verify();
-
-		assertEquals(expectedResponse, response);
-
-	}
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+    }
 }
