@@ -27,6 +27,7 @@ public class AplicacionError {
 	private ZonedDateTime horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
+	private String correoUsuario;
 	
 	@OneToMany(mappedBy = "aplicacionError")
 	private List<TrazabilidadCodigo> trazas_codigo;

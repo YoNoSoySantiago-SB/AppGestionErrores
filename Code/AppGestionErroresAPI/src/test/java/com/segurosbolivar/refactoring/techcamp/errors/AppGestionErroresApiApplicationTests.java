@@ -38,9 +38,11 @@ import com.segurosbolivar.refactoring.techcamp.errors.repository.TipoAccionRepos
 import com.segurosbolivar.refactoring.techcamp.errors.repository.TrazabilidadCodigoRepository;
 import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.AccionUsuarioServiceImp;
 import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.AplicacionErrorServiceImp;
+import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.EmailSenderServiceImp;
 import com.segurosbolivar.refactoring.techcamp.errors.service.implementation.TrazabilidadCodigoServiceImp;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AccionUsuarioServiceI;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
+import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.EmailSenderServiceI;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.TrazabilidadCodigoServiceI;
 
 @SpringBootTest
@@ -69,9 +71,13 @@ class AppGestionErroresApiApplicationTests {
 	@InjectMocks
 	private TrazabilidadCodigoServiceI trazabilidadCodigoService;
 	
+	@InjectMocks
+	private EmailSenderServiceI emailSenderService;
+	
 
 	public AppGestionErroresApiApplicationTests() {
-		aplicacionErrorService = new AplicacionErrorServiceImp(aplicacionErrorRespository, origenErrorRepository, trazabilidadCodigoRepository, nivelErrorRepository, tipoAccionRepository, accionUsuarioRepository);
+		emailSenderService= new EmailSenderServiceImp(null);
+		aplicacionErrorService = new AplicacionErrorServiceImp(aplicacionErrorRespository, origenErrorRepository, trazabilidadCodigoRepository, nivelErrorRepository, tipoAccionRepository, accionUsuarioRepository,emailSenderService);
 		accionUsuarioService= new AccionUsuarioServiceImp(accionUsuarioRepository);
 		trazabilidadCodigoService= new TrazabilidadCodigoServiceImp(trazabilidadCodigoRepository);
 	}
