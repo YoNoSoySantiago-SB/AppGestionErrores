@@ -7,7 +7,7 @@ import { Component, Inject, Injectable, OnInit, NgZone } from '@angular/core';
 import { AplicacionErrorDto, TrazabilidadCodigoDto } from './interfaces';
 import { ServicehttpAPIError } from './httpservice';
 import { HttpClient, HttpBackend, HttpXhrBackend } from '@angular/common/http';
-import { Time, XhrFactory } from '@angular/common';
+import { DatePipe, Time, XhrFactory } from '@angular/common';
 import { getnameApp } from './getNameApp';
 
 @Component({
@@ -92,11 +92,12 @@ Creates a new instance of AlertDialog.
   //Method that is executed to close the dialog and send the error information to the backend.
   async enviar() {
     let aplicacionError: AplicacionErrorDto;
+
     aplicacionError = {
       tituloError: this.nombre,
       descripcionError: this.descripcion,
       nombreAplicacion: getnameApp(),
-      horaError: this.tiempo.toLocaleTimeString(),
+      horaError: this.tiempo.toISOString(),
       ipUsuario: this.ipUsuario,
       navegadorUsuario: this.navegadorUsuario,
     };
@@ -110,12 +111,12 @@ Creates a new instance of AlertDialog.
     if (this.status == 409) {
       sendAPIBackend(
         this.idBackend,
+        aplicacionError,
         trazabilidadCodigo,
         this.eventosUsuario
       ).subscribe({
         next: (response) => {
           //Displays the successful request and the error ID.
-
           this.resp = this.idBackend;
           response;
           this.showDialog = true;
@@ -128,7 +129,6 @@ Creates a new instance of AlertDialog.
       });
     } else {
       //In case the error is from the frontend, it will persist it as a frontend error and make the necessary service call.
-
       sendAPIFront(
         aplicacionError,
         trazabilidadCodigo,
@@ -192,22 +192,40 @@ function sendAPIFront(
 
 /**
 
+Class that implements the XhrFactory interface to provide a custom factory for Angular's HttpClient.
+*/
+class MyXhrFactory1 implements XhrFactory {
+  /**
+
+Creates and returns a new instance of XMLHttpRequest.
+@returns A new instance of XMLHttpRequest.
+*/
+  build(): XMLHttpRequest {
+    return new XMLHttpRequest();
+  }
+}
+
+/**
+
 Sends an API request to save user events on the backend.
 @param applicationErrorId - ID of the application error.
+@param applicationError - Object containing information about the application error.
 @param traceabilityCode - Traceability code for tracking the error.
 @param userEvents - Object containing information about user events.
 @returns An Observable that emits an API response.
 */
 function sendAPIBackend(
   idaplicacionError: number,
+  aplicacionError: AplicacionErrorDto,
   trazabilidad_codigo: TrazabilidadCodigoDto,
   eventosUsuario: any
 ) {
-  const xhrFactory = new MyXhrFactory();
+  const xhrFactory = new MyXhrFactory1();
   const httpBackend = new HttpXhrBackend(xhrFactory);
   const serviceApi = new ServicehttpAPIError(new HttpClient(httpBackend));
   return serviceApi.saveTrazabilitiyandUserevents(
     idaplicacionError,
+    aplicacionError,
     trazabilidad_codigo,
     eventosUsuario
   );

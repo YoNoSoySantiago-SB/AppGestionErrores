@@ -77,10 +77,9 @@ Handles an error and displays a modal dialog to the user to report the error.
         status = err.status;
         if (status === 409) {
           idBackend = err.error;
+          idBackend = idBackend.id_application_error;
           trazabilidad = trazaStatus;
           mensajeError = '';
-          console.log(err.error);
-          console.log(err.message);
         } else {
           trazabilidad = trazaStatus;
           mensajeError = createError().handleError(err)[1];
