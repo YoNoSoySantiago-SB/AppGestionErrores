@@ -1,6 +1,8 @@
 package com.segurosbolivar.refactoring.techcamp.errors.service.implementation;
 
+
 import java.io.PrintWriter;
+
 
 
 
@@ -26,10 +28,12 @@ import com.segurosbolivar.refactoring.techcamp.errors.repository.OrigenErrorRepo
 import com.segurosbolivar.refactoring.techcamp.errors.repository.TipoAccionRepository;
 import com.segurosbolivar.refactoring.techcamp.errors.repository.TrazabilidadCodigoRepository;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
+import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.EmailSenderServiceI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -48,6 +52,8 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	private TipoAccionRepository tipoAccionRepository;
 	@Autowired
 	private AccionUsuarioRepository accionUsuarioRepository;
+	@Autowired
+	private EmailSenderServiceI emailSenderService;
 	
 	public AplicacionErrorServiceImp(
 			AplicacionErrorRepository aer,
@@ -55,7 +61,8 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 			TrazabilidadCodigoRepository tcr,
 			NivelErrorRepository ner,
 			TipoAccionRepository tar,
-			AccionUsuarioRepository aur) {
+			AccionUsuarioRepository aur,
+			EmailSenderServiceI ess) {
 		
 		this.aplicacionErrorRespository = aer;
 		this.origenErrorRepository = oer;
@@ -63,6 +70,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		this.nivelErrorRepository = ner;
 		this.tipoAccionRepository = tar;
 		this.accionUsuarioRepository = aur;
+		this.emailSenderService=ess;
 	}
 	
 	@Override
@@ -97,7 +105,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	}
 
 	@Override
-	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionErrorDto,TrazabilidadCodigoDTO trazabilidadCodigoDto, List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
+	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionErrorDto,TrazabilidadCodigoDTO trazabilidadCodigoDto, List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException, MessagingException {
 		if(aplicacionErrorDto==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
@@ -126,6 +134,11 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 			acciones=categorizeUserEvents(acciones);
 			
 			accionUsuarioRepository.saveAll(acciones);
+			
+			Optional<AplicacionError> ae=aplicacionErrorRespository.findById(aplicacionError.getIdAplicacionError());
+			if(!ae.isEmpty()) {
+				emailSenderService.sendEmail(ae.get().getCorreoUsuario(), ae.get().getIdAplicacionError());
+			}
 			return aplicacionError.getIdAplicacionError();
 		}
 		
@@ -133,7 +146,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 
 	@Override
 	public Long saveTrazabilitiyandUserevents(Long idAplicationError,AplicacionErrorDTO aplicacionErrorDTO, TrazabilidadCodigoDTO trazabilidadCodigoDto,
-			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException {
+			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException, MessagingException {
 		if(idAplicationError==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
@@ -163,6 +176,10 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 				acciones=categorizeUserEvents(acciones);
 				
 				accionUsuarioRepository.saveAll(acciones);
+				Optional<AplicacionError> ae=aplicacionErrorRespository.findById(savedAplicacionError.getIdAplicacionError());
+				if(!ae.isEmpty()) {
+					emailSenderService.sendEmail(ae.get().getCorreoUsuario(), ae.get().getIdAplicacionError());
+				}
 				return savedAplicacionError.getIdAplicacionError();
 			}
 		}
@@ -230,4 +247,5 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		    }
 		}
 	}
+
 }

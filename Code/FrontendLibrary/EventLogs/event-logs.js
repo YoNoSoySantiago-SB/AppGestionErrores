@@ -22,13 +22,13 @@ let amount = 20;
    */
   window.addEventListener('click', function (e) {
     if (e.target.tagName === 'BUTTON') {
-      if(e.target.id!='description-dialog-errores' && e.target.id!='email-dialog-errores' && e.target.id!='name-dialog-errores'){
-        let buttonEventDescription = "Se clickeó el botón con id: " + (e.target.id || "Desconocido") + " y con nombre: " + (e.target.name || "Desconocido");
+      if(e.target.id!='noreportar-dialog-errores' && e.target.id!='reportar-dialog-errores'){
+        let buttonEventDescription = "Se clickeó el botón con id: " + (e.target.id || "Desconocido") + " y con data-qa-id: " + (e.target.dataset.qaId || "Desconocido");
         categorizeEvent(buttonEventDescription,"Button");
       }
     }
     if (e.target.tagName === 'INPUT') {
-      if(e.target.id!='reportar-dialog-errores' && e.target.id!='noreportar-dialog-errores' ){
+      if(e.target.id!='name-dialog-errores' && e.target.id!='description-dialog-errores' ){
         if (e.target.dataset.inputType === "false") {
           e.target.addEventListener('blur', function (e) {
             let inputEventDescription= '[Filtrado]';
@@ -36,7 +36,7 @@ let amount = 20;
           });
         }else{
           e.target.addEventListener('blur', function (e) {
-            let inputEventDescription = e.target.value ? "Se digitó: " + e.target.value + " en el input con id " +(e.target.id || "Desconocido") : "No se digitó nada";
+            let inputEventDescription = e.target.value ? "Se digitó: " + e.target.value + " en el input con id " +(e.target.id || "Desconocido") + " y con data-qa-id: " + (e.target.dataset.qaId || "Desconocido"): "No se digitó nada";
             categorizeEvent(inputEventDescription,"Input")
           });
         }
@@ -116,6 +116,7 @@ let amount = 20;
     categorizeEvent(error,"Exception");
     let savedEvents = getLastEvents(amount);
     let copiedEvents = [...savedEvents];
+    console.log(copiedEvents)
     clearEvents()
     return copiedEvents;
   }

@@ -7,6 +7,8 @@ import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultE
 import com.segurosbolivar.refactoring.techcamp.errors.dtos.*;
 import com.segurosbolivar.refactoring.techcamp.errors.model.AccionUsuario;
 
+import jakarta.mail.MessagingException;
+
 public interface AplicacionErrorServiceI {
 	
 	public Long persistAplicacionErrorBackend(ExceptionDto exceptionDto) throws BadRequestDataException;
@@ -14,10 +16,11 @@ public interface AplicacionErrorServiceI {
 	public List<AccionUsuario> categorizeUserEvents(List<AccionUsuario> accionesUsuario) throws BadRequestDataException;
 
 	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionError, TrazabilidadCodigoDTO trazabilidadCodigo,
-			List<AccionUsuarioDTO> accionesUsuario) throws BadRequestDataException;
+			List<AccionUsuarioDTO> accionesUsuario) throws BadRequestDataException, MessagingException;
 
 	public Long saveTrazabilitiyandUserevents(Long idAplicationError, AplicacionErrorDTO aplicacionError, TrazabilidadCodigoDTO trazabilidadCodigoDto,
-			List<AccionUsuarioDTO> accionesUsuariodto) throws BadRequestDataException;
+			List<AccionUsuarioDTO> accionesUsuariodto) throws BadRequestDataException, MessagingException;
 
 	public AplicacionErrorResponseDTO findById(Long id) throws BadRequestDataException, NoResultException;
+	
 }

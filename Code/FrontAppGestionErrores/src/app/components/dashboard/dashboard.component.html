@@ -41,7 +41,7 @@
       styleClass="p-card-shadow"
     >
       <div>
-        Seleccione el identificador del error para ver la informacion
+        Seleccione el identificador del error para ver la información
         relacionada
       </div>
       <div style="padding: 30px"></div>
@@ -69,12 +69,12 @@
           ID del Error: {{ applicationError.idAplicacionError }}
         </h1>
 
-        <h2 class="title">Descripcion</h2>
+        <h2 class="title">Descripción</h2>
         <p>{{ applicationError.descripcionError }}</p>
 
         <h2 class="title">Error detectado</h2>
         <p>{{ applicationError.tituloError }}</p>
-        <h2 class="title">Hora que ocurrio el error:</h2>
+        <h2 class="title">Hora que ocurrió el error:</h2>
         <p>{{ applicationError.horaError }}</p>
 
         <h2 class="title">Navegador</h2>
@@ -83,11 +83,11 @@
         <h2 class="title">IP Usuario</h2>
         <p>{{ applicationError.ipUsuario }}</p>
 
-        <h2 class="title">Trazabilidad Codigo FrontEnd</h2>
+        <h2 class="title">Trazabilidad Código FrontEnd</h2>
         <div  [innerHTML]="trazaFrontend"></div>
 
         <div *ngIf="errorBackAndFront">
-          <h2 class="title">Trazabilidad Codigo Backend</h2>
+          <h2 class="title">Trazabilidad Código Backend</h2>
           <div [innerHTML]="trazaBackend"></div>
         </div>
         <h2 class="title">Eventos del usuario</h2>
@@ -106,8 +106,8 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th style="text-align: center; width: 15%"></th>
-                  <th style="text-align: center; width: 15%">Accion</th>
-                  <th style="text-align: center; width: 45%">Descripcion</th>
+                  <th style="text-align: center; width: 15%">AcciÓn</th>
+                  <th style="text-align: center; width: 45%">Descripcin</th>
                   <th style="text-align: center; width: 15%">Nivel</th>
                   <th style="text-align: center; width: 15%">Hora</th>
                 </tr>

@@ -6,6 +6,8 @@ import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.EmailSe
 
 import jakarta.mail.MessagingException;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,8 +28,13 @@ public class EmailSenderServiceImp implements EmailSenderServiceI {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 	    simpleMailMessage.setFrom("testapperrores@gmail.com");
 	    simpleMailMessage.setTo(to);
-	    simpleMailMessage.setSubject("Creación de ticket en Jira");
-	    simpleMailMessage.setText("Se ha creado un ticket con ID: " + id);
+	    simpleMailMessage.setSubject("Creación de ticket");
+	    LocalDate date = LocalDate.now();
+	    String messsage = "Se ha creado un ticket con los siguientes detalles:\n\n" +
+                "ID del ticket: " + id + "\n" +
+                "Fecha de creación: " + date.toString()+ "\n" +
+                "Si necesita más información o tiene alguna pregunta, no dude en ponerse en contacto con nosotros.";
+	    simpleMailMessage.setText(messsage);
 
 	    this.mailSender.send(simpleMailMessage);
 	}

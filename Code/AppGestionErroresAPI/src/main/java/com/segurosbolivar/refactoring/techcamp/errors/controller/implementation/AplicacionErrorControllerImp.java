@@ -17,6 +17,8 @@ import com.segurosbolivar.refactoring.techcamp.errors.customexceptions.NoResultE
 import com.segurosbolivar.refactoring.techcamp.errors.request.ErrorRequest;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.AplicacionErrorServiceI;
 
+import jakarta.mail.MessagingException;
+
 @RestController
 @CrossOrigin("*")
 public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
@@ -38,12 +40,13 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@PostMapping("/aplicacionFrontEndError/save")
-	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
+	public ResponseEntity<Long> saveFrontEndError(@RequestBody ErrorRequest errorRequest) throws BadRequestDataException, MessagingException {
         Long newAplicacionError;
-		System.out.println(errorRequest.getAplicacionErrorDto());
 		try {
 			newAplicacionError = aplicacionErrorService.persistAplicacionErrorFrontEnd(errorRequest.getAplicacionErrorDto(),errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
 		} catch (BadRequestDataException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}catch (MessagingException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
@@ -51,13 +54,13 @@ public class AplicacionErrorControllerImp implements AplicacionErrorControllerI{
 
 	@Override
 	@PostMapping("/saveTrazabilitiyandUserevents/{idAplicationError}")
-	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("idAplicationError") Long idAplicationError, @RequestBody ErrorRequest errorRequest) throws BadRequestDataException {
+	public ResponseEntity<Long> saveTrazabilitiyandUserevents(@PathVariable("idAplicationError") Long idAplicationError, @RequestBody ErrorRequest errorRequest) throws BadRequestDataException, MessagingException {
 		Long newAplicacionError;
-		System.out.println("ola");
-		System.out.println(idAplicationError);
 		try {
 			newAplicacionError=aplicacionErrorService.saveTrazabilitiyandUserevents(idAplicationError,errorRequest.getAplicacionErrorDto(), errorRequest.getTrazabilidadCodigoDto(),errorRequest.getAccionesUsuarioDto());
 		} catch (BadRequestDataException e) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}catch (MessagingException e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(newAplicacionError, HttpStatus.CREATED);
