@@ -42,7 +42,7 @@ class BackendLibraryApplicationTests {
         WebRequest request = mock(WebRequest.class);
         ResponseEntity<Object> responseEntity = globalExceptionHandler.handleConflict(ex, request);
 
-        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
     }
 
@@ -51,7 +51,7 @@ class BackendLibraryApplicationTests {
         Exception ex = new Exception("Test Exception");
         ResponseEntity<Object> responseEntity = globalExceptionHandler.catchException(ex);
 
-        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
     }
 }

@@ -62,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		}
         
         return handleExceptionInternal(ex, bodyOfResponse, 
-          new HttpHeaders(), HttpStatus.CONFLICT, catchRequest);
+          new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, catchRequest);
     }
     
     /**
@@ -85,7 +85,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			e.printStackTrace();
 		}
         
-    	return new ResponseEntity<>(bodyOfResponse,HttpStatus.CONFLICT);
+    	return new ResponseEntity<>(bodyOfResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
     /**
