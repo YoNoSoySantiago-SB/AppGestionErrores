@@ -1,6 +1,7 @@
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { saveNavigation } from 'event-logs';
+import { errorName } from './getNameApp';
 
 @Injectable()
 export class RouterEvents {
@@ -20,6 +21,7 @@ export class RouterEvents {
       }
       if (event instanceof NavigationEnd) {
         navigationend = this.router.url.toString();
+
         this.saveNavigation(navigationstart, navigationend);
       }
     });

@@ -26,7 +26,7 @@ describe('ErrorHandlerService', () => {
   it('should handle HttpErrorResponse with 409 status code', () => {
     const errorResponse = new HttpErrorResponse({
       status: 409,
-      error: 'id-123',
+      error: '123',
     });
 
     setCallStackHttp('Error en el servidor');
@@ -38,13 +38,7 @@ describe('ErrorHandlerService', () => {
         icon: 'Error',
         message: errorResponse.message,
         buttonText: 'Reportar',
-        ip: '',
-        trazabilidad: 'Error en el servidor',
-        mensajeobject: '',
-        tiempo: jasmine.any(String),
-        navegador: jasmine.any(String),
-        eventosUsuario: jasmine.any(Object),
-        status: 409,
+        idBackend: '123',
       },
     });
   });

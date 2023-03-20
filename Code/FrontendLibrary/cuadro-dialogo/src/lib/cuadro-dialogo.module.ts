@@ -9,8 +9,6 @@ import { CommonModule } from '@angular/common';
 import { AlertDialog } from './cuadro-dialogo.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { crearCuadroError } from './cuadro-dialogo.service';
-import { saveError } from 'event-logs';
 import { ControlErroresModule } from 'control-errores';
 
 @NgModule({
