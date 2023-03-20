@@ -7,13 +7,23 @@ import com.segurosbolivar.refactoring.techcamp.errors.request.ResponseJira;
 import com.segurosbolivar.refactoring.techcamp.errors.service.interfaces.JiraApiServicel;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
 public class JiraApiService implements JiraApiServicel {
-    private final String JIRA_BASE_URL = "https://marloncamp.atlassian.net/rest/api/3";
+
+    @Value("${jira.url}")
+    private String JIRA_BASE_URL;
+
+
+    @Value("${jira.username}")
+    private String email;
+
+    @Value("${jira.token}")
+    private String apiToken;
 
     public void getIssue(String issueKey, String email, String apiToken) throws Exception {
         String url = JIRA_BASE_URL + "/issue/" + issueKey;
@@ -28,8 +38,6 @@ public class JiraApiService implements JiraApiServicel {
 
     public ResponseJira createIssue(String summary, String description, String projectName, String parent) throws Exception {
         String url = JIRA_BASE_URL + "/issue/";
-        String email = "marlon.anacona@correounivalle.edu.co";
-        String apiToken = "ATATT3xFfGF0M7Ecx5i7EYnN1f23LQCGgmNJn9NuGKgeg45mMTy6_tugSLJUzFkgsGMMvuoR5mx081s2uaVJPwXBVA_1LikB165iHln_f4W5i4YfSkdpwaQHMBmAe6SuuILZVXzAkChBdzfI9aOgMIhJybILVi2bFunJ6mSzcarAATG21amxXxI=BB072F54";
 
         // Define el cuerpo de la petición
         JSONObject requestBody = new JSONObject();
