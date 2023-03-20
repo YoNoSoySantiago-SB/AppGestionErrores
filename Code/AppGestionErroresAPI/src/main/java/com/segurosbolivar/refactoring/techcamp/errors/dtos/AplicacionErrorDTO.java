@@ -1,8 +1,6 @@
 package com.segurosbolivar.refactoring.techcamp.errors.dtos;
 
-import java.sql.Time;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 import com.segurosbolivar.refactoring.techcamp.errors.model.AplicacionError;
 
@@ -21,6 +19,7 @@ public class AplicacionErrorDTO {
 	private String horaError;
 	private String navegadorUsuario;
 	private String ipUsuario;
+	private UserInfo userinfo;
 	
 	public AplicacionError setInfo(AplicacionError aplicacionError) {
 		aplicacionError.setTituloError(this.tituloError);
@@ -29,6 +28,8 @@ public class AplicacionErrorDTO {
 		aplicacionError.setHoraError(ZonedDateTime.parse(horaError));
 		aplicacionError.setNavegadorUsuario(this.navegadorUsuario);
 		aplicacionError.setIpUsuario(this.ipUsuario);
+		aplicacionError.setCorreoUsuario(userinfo.email);
+		aplicacionError.setNombreUsuario(userinfo.fullname);
 		return aplicacionError;
 		
 	}
@@ -40,8 +41,15 @@ public class AplicacionErrorDTO {
 		this.horaError=aplicacionError.getHoraError().toString();
 		this.navegadorUsuario=aplicacionError.getNavegadorUsuario();
 		this.ipUsuario=aplicacionError.getIpUsuario();
+		this.userinfo.email=aplicacionError.getCorreoUsuario();
+		this.userinfo.fullname = aplicacionError.getNombreUsuario();
 		return this;
 		
 	}
 	
+	@Data
+	public class UserInfo{
+		String fullname;
+		String email;
+	}
 }
