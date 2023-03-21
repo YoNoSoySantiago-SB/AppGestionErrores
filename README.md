@@ -140,13 +140,13 @@ npm i event-logs
 npm i control-errores
 ```
 
-1. En el archivo angular.json debes agregar a los estilos esta linea:
+2. En el archivo angular.json debes agregar a los estilos esta linea:
 
 ```
     "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
 ```
 
-1. Una vez instalada las librerias debes ir al app.module.ts de tu aplicacion importar y en el @NgModule agregar al imports estos modulos:
+3. Una vez instalada las librerias debes ir al app.module.ts de tu aplicacion importar y en el @NgModule agregar al imports estos modulos:
 
 ```jsx
 ControlErroresModule,
@@ -165,62 +165,38 @@ providers: [
     RouterEvents,
 ],
 ```
+4.Finalmente en el archivo app.component.ts de tu aplicacion , en el constructor agregar estos parametros:
 
-1. Finalmente en el archivo app.component.ts de tu aplicacion , en el constructor agregar estos parametros:
+    private router: Router, private routerEvents: RouterEvents
 
-```jsx
-private router: Router, private routerEvents: RouterEvents
-```
+E implementar en la clase OnInit
 
-E implementar en la clase OnInit, dentro del metodo ngOnInit agregar:
+dentro del metodo ngOnInit agregar:
 
-```jsx
-nameApp('Nombre de la aplicación');
-```
-
+    nameApp('Nombre de la aplicación');
+    nameKey('Clave del proyecto en JIRA');
+    nameKeyParent('clave del epic en JIRA');
+    userInfoKeys('savedEmail',undefined,true)
+  
 Ejemplo:
-
-```jsx
 
     export class AppComponent implements OnInit {
       constructor(private router: Router, private routerEvents: RouterEvents) {}
 
       ngOnInit() {
-	      nameApp('Tu nombre de aplicación');
+       nameApp('Aplicación prueba');
+       nameKey('TEC');
+       nameKeyParent('TEC-19');
+       userInfoKeys('savedEmail',undefined,true)
+  
       }
       title = 'library';
-    }
-```
+      }
 
-1. Una vez que se complete este procedimiento, cualquier error que no sea de Http que ocurra en tu aplicación será capturado y se presentará un matDialog para informar o no informar del error, enviando la información necesaria sobre dicho error.
+5.Una vez que se complete este procedimiento, cualquier error presentado en angular será capturado y quedará  en la autonomia del usuario reportar el problema a Jira
 
-2. Para usarlo en una respuesta http, haz lo siguiente:
+6.Los errores HTTP detectados serán unicamente con status mayor a 500 (de servidor) y 0 (servidor no activo o no encontrado) y debe estar conectado a una API que contengo la libreria de backend
 
-En el constructor de tu componente donde será utilizada, ingresa los siguientes parámetros.
-
-```jsx
-private matDialog: MatDialog,
-private ngzone: NgZone
-```
-
-En la sección de error de la respuesta http, agrega la línea.
-
-```jsx
-crearCuadroError(matDialog,ngzone,Error(err).stack).handleError(err);
-```
-
-Ejemplo:
-
-```jsx
-this.serviceHttp.getUsuario().subscribe({
-    next: (resp) => {
-    console.log(resp);
-    },
-    error: (err) => {
-    //Este linea
-    crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
-    },
-});
 ```
 
 **Eventos del Usuario**
