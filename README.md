@@ -197,9 +197,10 @@ Ejemplo:
 
 6.Los errores HTTP detectados serán unicamente con status mayor a 500 (de servidor) y 0 (servidor no activo o no encontrado) y debe estar conectado a una API que contengo la libreria de backend
 
-```
 
-# Eventos del Usuario
+ **Eventos del Usuario**
+
+
 Para utilizar esta libreria donde se guardaran los ultimos x eventos generados por el usuario, donde x podria modificarse segun lo requiera el desarrollador, debera seguir los siguientes pasos:
 
 1. Importe el modulo de HTTP_INTERCEPTORS en el modulo principal:
