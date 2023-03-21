@@ -199,7 +199,7 @@ Ejemplo:
 
 ```
 
-**Eventos del Usuario**
+# Eventos del Usuario
 Para utilizar esta libreria donde se guardaran los ultimos x eventos generados por el usuario, donde x podria modificarse segun lo requiera el desarrollador, debera seguir los siguientes pasos:
 
 1. Importe el modulo de HTTP_INTERCEPTORS en el modulo principal:
