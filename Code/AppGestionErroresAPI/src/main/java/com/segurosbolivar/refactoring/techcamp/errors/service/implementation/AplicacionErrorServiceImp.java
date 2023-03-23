@@ -103,12 +103,12 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 
 	@Override
 	public Long persistAplicacionErrorFrontEnd(AplicacionErrorDTO aplicacionErrorDto,TrazabilidadCodigoDTO trazabilidadCodigoDto, List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException, MessagingException {
+		System.out.println("ERROR FRONT");
 		if(aplicacionErrorDto==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
 			AplicacionError aplicacionError=new AplicacionError();
 			aplicacionError=aplicacionErrorDto.setInfo(aplicacionError);
-			System.out.println(aplicacionError.getNavegadorUsuario());
 			aplicacionError = aplicacionErrorRespository.save(aplicacionError);
 			OrigenError origenError = origenErrorRepository.findByNombreOrigen(OrigenError.ORIGEN_ERROR_FRONTEND);
 			TrazabilidadCodigo trazabilidadCodigo=new TrazabilidadCodigo();
@@ -140,6 +140,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	@Override
 	public Long saveTrazabilitiyandUserevents(Long idAplicationError,AplicacionErrorDTO aplicacionErrorDTO, TrazabilidadCodigoDTO trazabilidadCodigoDto,
 			List<AccionUsuarioDTO> accionesUsuarioDto) throws BadRequestDataException, MessagingException {
+		System.out.println("ERROR back-FRONT");
 		if(idAplicationError==null || trazabilidadCodigoDto== null || accionesUsuarioDto==null) {
 			throw new BadRequestDataException();
 		}else {
