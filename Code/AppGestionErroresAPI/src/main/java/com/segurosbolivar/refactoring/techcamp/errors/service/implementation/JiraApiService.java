@@ -104,7 +104,7 @@ public class JiraApiService implements JiraApiServicel {
           Long id = Long.parseLong(idError);
 			Optional<AplicacionError> ae=aplicacionErrorRespository.findById(id);
 			if(!ae.isEmpty()) {
-				if(ae.get().getCorreoUsuario()!=null) {
+				if(!(ae.get().getCorreoUsuario()).equals("DESCONOCIDO")) {
 					emailSenderService.sendEmail(ae.get().getCorreoUsuario(), respuesta);
 				}
 			}
