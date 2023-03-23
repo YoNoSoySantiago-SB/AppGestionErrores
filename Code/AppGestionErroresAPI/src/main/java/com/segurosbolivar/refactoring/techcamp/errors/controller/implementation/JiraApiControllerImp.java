@@ -29,7 +29,7 @@ public class JiraApiControllerImp implements JiraApiControllerl {
 
 
         try{
-            resp= jiraApiServicel.createIssue(apiJiraRequest.getSummary(),apiJiraRequest.getDescription(),apiJiraRequest.getProjectname(),apiJiraRequest.getParent());
+            resp= jiraApiServicel.createIssue(apiJiraRequest.getSummary(),apiJiraRequest.getDescription(),apiJiraRequest.getProjectname(),apiJiraRequest.getParent(),apiJiraRequest.getIdError());
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 

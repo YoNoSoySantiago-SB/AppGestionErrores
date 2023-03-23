@@ -10,4 +10,5 @@ public class ApiJiraRequest {
     private String description;
     private String projectname;
     private String parent;
+    private String idError;
 }
