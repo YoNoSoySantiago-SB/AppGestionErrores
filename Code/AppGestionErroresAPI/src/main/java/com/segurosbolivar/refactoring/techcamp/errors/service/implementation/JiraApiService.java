@@ -101,11 +101,11 @@ public class JiraApiService implements JiraApiServicel {
       if(response.getStatus()==201){
           ResponseJira respuestaAEnviar=new ResponseJira();
           respuestaAEnviar.setKey(respuesta);
-          
-			Optional<AplicacionError> ae=aplicacionErrorRespository.findById(idError);
+          Long id = Long.parseLong(idError);
+			Optional<AplicacionError> ae=aplicacionErrorRespository.findById(id);
 			if(!ae.isEmpty()) {
 				if(ae.get().getCorreoUsuario()!=null) {
-					emailSenderService.sendEmail(ae.get().getCorreoUsuario(), ae.get().getIdAplicacionError());
+					emailSenderService.sendEmail(ae.get().getCorreoUsuario(), respuesta);
 				}
 			}
           return  respuestaAEnviar;

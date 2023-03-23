@@ -169,10 +169,7 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 				acciones=categorizeUserEvents(acciones);
 				
 				accionUsuarioRepository.saveAll(acciones);
-				Optional<AplicacionError> ae=aplicacionErrorRespository.findById(savedAplicacionError.getIdAplicacionError());
-				if(!ae.isEmpty()) {
-					emailSenderService.sendEmail(ae.get().getCorreoUsuario(), ae.get().getIdAplicacionError());
-				}
+
 				return savedAplicacionError.getIdAplicacionError();
 			}
 		}

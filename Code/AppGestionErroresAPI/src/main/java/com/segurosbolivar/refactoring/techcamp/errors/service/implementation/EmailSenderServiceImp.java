@@ -24,7 +24,7 @@ public class EmailSenderServiceImp implements EmailSenderServiceI {
 
 
 	@Override
-	public void sendEmail(String to, Long id) throws MessagingException {
+	public void sendEmail(String to, String id) throws MessagingException {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 	    simpleMailMessage.setFrom("testapperrores@gmail.com");
 	    simpleMailMessage.setTo(to);
