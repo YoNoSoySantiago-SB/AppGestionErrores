@@ -65,12 +65,10 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-core/6.0.4/spring-core-6.0.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-jcl/6.0.4/spring-jcl-6.0.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/jakarta/persistence/jakarta.persistence-api/3.1.0/jakarta.persistence-api-3.1.0.jar" enabled="true" runInBatchMode="false"/>
-<<<<<<< HEAD
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/boot/spring-boot-starter-mail/3.0.4/spring-boot-starter-mail-3.0.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-context-support/6.0.4/spring-context-support-6.0.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/angus/jakarta.mail/1.0.0/jakarta.mail-1.0.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/angus/angus-activation/1.0.0/angus-activation-1.0.0.jar" enabled="true" runInBatchMode="false"/>
-=======
     <factorypathentry kind="VARJAR" id="M2_REPO/com/atlassian/jira/jira-rest-java-client-api/5.2.0/jira-rest-java-client-api-5.2.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/atlassian/util/concurrent/atlassian-util-concurrent/4.0.1/atlassian-util-concurrent-4.0.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/atlassian/httpclient/atlassian-httpclient-api/2.0.0/atlassian-httpclient-api-2.0.0.jar" enabled="true" runInBatchMode="false"/>
@@ -107,5 +105,4 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/httpcomponents/httpcore-nio/4.4.16/httpcore-nio-4.4.16.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/httpcomponents/httpmime/4.5.14/httpmime-4.5.14.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/json/json/20160212/json-20160212.jar" enabled="true" runInBatchMode="false"/>
->>>>>>> fd256f86370a0473781b840798a959f471aa613b
 </factorypath>

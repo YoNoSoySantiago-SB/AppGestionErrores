@@ -52,8 +52,6 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 	private TipoAccionRepository tipoAccionRepository;
 	@Autowired
 	private AccionUsuarioRepository accionUsuarioRepository;
-	@Autowired
-	private EmailSenderServiceI emailSenderService;
 	
 	public AplicacionErrorServiceImp(
 			AplicacionErrorRepository aer,
@@ -70,7 +68,6 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 		this.nivelErrorRepository = ner;
 		this.tipoAccionRepository = tar;
 		this.accionUsuarioRepository = aur;
-		this.emailSenderService=ess;
 	}
 	
 	@Override
@@ -135,10 +132,6 @@ public class AplicacionErrorServiceImp implements AplicacionErrorServiceI{
 			
 			accionUsuarioRepository.saveAll(acciones);
 			
-			Optional<AplicacionError> ae=aplicacionErrorRespository.findById(aplicacionError.getIdAplicacionError());
-			if(!ae.isEmpty()) {
-				emailSenderService.sendEmail(ae.get().getCorreoUsuario(), ae.get().getIdAplicacionError());
-			}
 			return aplicacionError.getIdAplicacionError();
 		}
 		

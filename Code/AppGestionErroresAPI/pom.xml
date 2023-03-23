@@ -28,10 +28,10 @@
 				<updatePolicy>daily</updatePolicy>
 			</snapshots>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>atlassian-public</id>
 			<url>https://packages.atlassian.com/maven/repository/public</url>
-		</repository>
+		</repository>-->
 	</repositories>
 	<dependencies>
 
