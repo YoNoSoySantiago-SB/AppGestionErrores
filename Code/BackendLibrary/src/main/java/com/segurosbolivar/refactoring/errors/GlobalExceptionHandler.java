@@ -98,6 +98,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     	
     	String url = env.getProperty("spring.api.base.url");
     	url = url+"/aplicacionBackendError/save";
+    	System.out.println("Reportando error en: "+url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
