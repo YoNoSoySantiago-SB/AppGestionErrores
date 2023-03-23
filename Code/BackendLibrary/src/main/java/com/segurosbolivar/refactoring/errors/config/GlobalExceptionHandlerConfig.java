@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
+import com.segurosbolivar.refactoring.errors.GlobalExceptionHandler;
+
 @Configuration
 @ComponentScan("com.segurosbolivar.refactoring.errors")
 @PropertySource("classpath:library.properties")
@@ -28,5 +30,9 @@ public class GlobalExceptionHandlerConfig {
         dataSourceBuilder.driverClassName(env.getProperty("spring.datasource.driver-class-name"));
         return dataSourceBuilder.build();
     }
-	
+    
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
+    }
 }
