@@ -8,6 +8,6 @@ public interface JiraApiServicel {
 
     public void getIssue(String issueKey, String email, String apiToken) throws Exception ;
 
-    public ResponseJira createIssue(String summary, String description, String projectName, String parent) throws Exception ;
+    public ResponseJira createIssue(String summary, String description, String projectName, String parent,String idError) throws Exception ;
 
     }

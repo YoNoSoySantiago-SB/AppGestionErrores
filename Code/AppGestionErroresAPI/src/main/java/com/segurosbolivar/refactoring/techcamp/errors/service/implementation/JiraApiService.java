@@ -36,7 +36,7 @@ public class JiraApiService implements JiraApiServicel {
         System.out.println(response.getBody());
     }
 
-    public ResponseJira createIssue(String summary, String description, String projectName, String parent) throws Exception {
+    public ResponseJira createIssue(String summary, String description, String projectName, String parent,String idError) throws Exception {
         String url = JIRA_BASE_URL + "/issue/";
 
         // Define el cuerpo de la petición
