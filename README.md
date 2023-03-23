@@ -252,11 +252,6 @@ providers: [
 
 4. En el componente principal importe los modulos de Router y RouterEvents:
 
-```mermaid
-graph TD
-  Mermaid --> Diagram
-```
-
 ```tsx
 import { Router } from '@angular/router';
 import { RouterEvents } from 'cuadro-dialogo';
@@ -285,8 +280,30 @@ Por ejemplo:
 ```html
 <div class="form-outline mb-4">
 	<label class="form-label" for="form2Example17">Email address</label>
-	<input data-input-type="false" type="text" id="email" name="email" class="form-control form-control-lg" [(ngModel)]="account.email" />                  
+	<input data-input-type="false" type="text" id="email" data-qa-id="email" class="form-control form-control-lg" [(ngModel)]="account.email" />                  
 </div>
 ```
 
-*Nota: Es muy importante contar con buenas practicas al momento de crear etiquetas en inputs, deberia poder tener la propiedad de id y name ya que cuando se persiste en la base de datos y se muestra en el reporte, para una rapida identificacion, por lo que si la etiqueta no cuenta con estas propiedades en el reporte saldra como Desconocido*
+*Nota: Es muy importante contar con buenas practicas al momento de crear etiquetas en inputs, deberia poder tener la propiedad de id y data-qa-id ya que cuando se persiste en la base de datos y se muestra en el reporte, para una rapida identificacion, por lo que si la etiqueta no cuenta con estas propiedades en el reporte saldra como Desconocido*
+
+# Envio de Emails
+
+Cuando se reporta un error al Jira, si se captura el correo del usuario se le envia un correo de notificacion del ticket que se creo, para esto tiene que escribir en el [application.properties](http://application.properties) de la API lo siguiente:
+
+```java
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=correo
+spring.mail.password=contraseña
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
+- **`spring.mail.host`**: El nombre del servidor SMTP que se utilizará para enviar correo electrónico. En este caso, se utiliza el servidor de correo electrónico de Gmail.
+- **`spring.mail.port`**: El número de puerto que se utilizará para conectarse al servidor SMTP. En este caso, se utiliza el puerto 587.
+- **`spring.mail.username`**: La dirección de correo electrónico que se utilizará como remitente para enviar correo electrónico.
+- **`spring.mail.password`**: La contraseña de la dirección de correo electrónico que se utilizará como remitente.
+- **`spring.mail.properties.mail.smtp.auth`**: Un valor booleano que indica si se requiere autenticación para enviar correo electrónico.
+- **`spring.mail.properties.mail.smtp.starttls.enable`**: Un valor booleano que indica si se habilitará el protocolo TLS (Transport Layer Security) para cifrar la conexión entre el cliente y el servidor SMTP.
+
+Para la contraseña, no debe poner la contraseña del correo sino la generada en “**Contraseñas de aplicaciones”,** para esto, debe tener la autenticacion de dos pasos para poder seleccionar esto. Una vez hecho esto, seleccionara “**Contraseñas de aplicaciones”** y escribira el nombre de la Api, ya con esto se le generara la contraseña que debe poner en el archivo de configuración. Se vera de esta manera:
