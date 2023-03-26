@@ -180,6 +180,9 @@ E implementar en la clase OnInit, dentro del metodo ngOnInit agregar:
 
 ```jsx
 nameApp('Nombre de la aplicación');
+nameKey('Clave del proyecto en JIRA');
+nameKeyParent('clave del epic en JIRA');
+userInfoKeys('Key del email de usuario','Key del email de usuario',La Key está en el localStorage? (busca en el sessionStorage por default))
 ```
 
 Ejemplo:
@@ -190,7 +193,10 @@ Ejemplo:
       constructor(private router: Router, private routerEvents: RouterEvents) {}
 
       ngOnInit() {
-	      nameApp('Tu nombre de aplicación');
+	      nameApp('Aplicación prueba');
+	      nameKey('TEC');
+	      nameKeyParent('TEC-19');
+	      userInfoKeys('savedEmail',undefined,true)
       }
       title = 'library';
     }
