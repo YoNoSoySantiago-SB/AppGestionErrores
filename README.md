@@ -8,7 +8,7 @@ Esta librearía fue diseñada para capturar errores no controlados en proyectos 
 
 Para instalar la librería, sigue los siguientes pasos:
 
-1. Descarga el archivo .jar de BackendLibrary desde el siguiente enlace: [BackendLibrary-0.0.1-SNAPSHOT.jar](https://www.notion.so/Code%5CBackendLibrary%5Ctarget%5CBackendLibrary-0.0.1-SNAPSHOT.jar).
+1. Descarga el archivo .jar de BackendLibrary desde el siguiente enlace: [BackendLibrary-0.0.1-SNAPSHOT.jar](https://github.com/YoNoSoySantiago-SB/AppGestionErrores/raw/development/Code/BackendLibrary/target/BackendLibrary-0.0.1-SNAPSHOT.jar).
 2. Crea una carpeta llamada 'lib' en la raíz de tu proyecto Rest.
 3. Copia el archivo .jar de BackendLibrary en la carpeta 'lib' creada en el paso anterior.
 
@@ -39,9 +39,9 @@ y agrega el siguiente bloque de configuración en tu archivo pom.xml:
 
 ```xml
 <dependency>
-		<groupId>com.segurosbolivar.refactoring.techcamp</groupId>
-		<artifactId>BackendLibrary</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+	<groupId>com.segurosbolivar.refactoring.techcamp</groupId>
+	<artifactId>BackendLibrary</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 </dependency>
 
 ```
@@ -111,13 +111,17 @@ Con esto, habrás completado la instalación y configuración de BackendLibrary 
 
 ## Uso para Excepciones controladas
 
-Para manejar excepciones controladas, debes llamar al método `GlobalExceptionHandler.catchException(e)` dentro del catch donde se controló la excepción. Por ejemplo:
+Para manejar excepciones controladas, debes llamar al método `catchException(e)` de la clase GlobalExceptionHanlder dentro del catch donde se controló la excepción. Por ejemplo:
 
 ```java
+
+@Autowired
+private GlobalExceptionHanlder globalExcetionHandler;
+...
 try {
     // código que puede generar una excepción
 } catch (MiExcepcion e) {
-    GlobalExceptionHandler.catchException(e);
+    globalExcetionHandler.catchException(e);
 }
 ```
 
