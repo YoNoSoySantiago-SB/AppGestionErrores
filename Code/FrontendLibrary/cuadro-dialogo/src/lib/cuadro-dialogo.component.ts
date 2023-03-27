@@ -75,6 +75,7 @@ Creates a new instance of AlertDialog.
       description: descriptionSend,
       projectname: getnameKey(),
       parent: getnameParent(),
+      idError: this.idBackend,
     };
     //Mandar a JIRA
     sendJira(issue).subscribe(

@@ -18,9 +18,10 @@ export interface Issue {
   description: string;
   projectname: string;
   parent: string;
+  idError: string;
 }
 
 export interface UserInfo {
-  fullname : string;
+  fullname: string;
   email: string;
 }

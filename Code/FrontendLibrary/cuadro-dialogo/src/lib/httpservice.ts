@@ -59,7 +59,7 @@ Stores traceability and user actions for a specific application error.
       trazabilidadCodigoDto: trazabilidadError,
       accionesUsuarioDto: accionesUsuario,
     };
-
+    console.log(payload);
     return this.http.post(
       `${this.baseUrl}saveTrazabilitiyandUserevents/${idaplicacionError}`,
       payload

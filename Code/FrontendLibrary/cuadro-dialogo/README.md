@@ -40,6 +40,9 @@ E implementar en la clase OnInit
 dentro del metodo ngOnInit agregar:
 
     nameApp('Nombre de la aplicación');
+    nameKey('Clave del proyecto en JIRA');
+    nameKeyParent('clave del epic en JIRA');
+    userInfoKeys('savedEmail',undefined,true)
 
 Ejemplo:
 
@@ -47,32 +50,15 @@ Ejemplo:
       constructor(private router: Router, private routerEvents: RouterEvents) {}
 
       ngOnInit() {
-      nameApp('Tu nombre de aplicación');
+       nameApp('Aplicación prueba');
+       nameKey('TEC');
+       nameKeyParent('TEC-19');
+       userInfoKeys('savedEmail',undefined,true)
+
       }
       title = 'library';
       }
 
-5.Una vez que se complete este procedimiento, cualquier error que no sea de Http que ocurra en tu aplicación será capturado y se presentará un matDialog para informar o no informar del error, enviando la información necesaria sobre dicho error.
+5.Una vez que se complete este procedimiento, cualquier error presentado en angular será capturado y quedará en la autonomia del usuario reportar el problema a Jira
 
-6.Para usarlo en una respuesta http, haz lo siguiente:
-
-En el constructor de tu componente, ingresa los siguientes parámetros.
-
-    private matDialog: MatDialog,
-    private ngzone: NgZone
-
-En la sección de error de la respuesta http, agrega la línea.
-
-    crearCuadroError(matDialog,ngzone,Error(err).stack).handleError(err);
-
-Ejemplo:
-
-    this.serviceHttp.getUsuario().subscribe({
-    next: (resp) => {
-    console.log(resp);
-    },
-    error: (err) => {
-    //Este linea
-    crearCuadroError(this.matDialog,this.ngzone,Error(err).stack).handleError(err);
-    },
-    });
+6.Los errores HTTP detectados serán unicamente con status mayor a 500 (de servidor) y 0 (servidor no activo o no encontrado) y debe estar conectado a una API que contengo la libreria de backend

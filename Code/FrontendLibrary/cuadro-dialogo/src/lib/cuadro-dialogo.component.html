@@ -1,90 +1,66 @@
-<ng-template #noServiceError>
-  <ng-template #noAlert>
-    <ng-template #noError>
-      <div class="dialog-container">
-        <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
-          icon | lowercase
-        }}</mat-icon>
-        <h2 mat-dialog-title>
-          Ha ocurrido un error con identificación: {{ idBackend }}
-          ¿Desea notificarlo a mesa de ayuda?
-        </h2>
-        <mat-dialog-content>
-          <form>
-            <div class="form-group-dialog-errore">
-              <label for="name">Ingrese su Nombre:</label>
-              <input
-                [(ngModel)]="nombre"
-                type="text"
-                id="name-dialog-errores"
-                name="name"
-                placeholder="Ingrese el titulo"
-                required
-              />
-            </div>
-            <div class="form-group-dialog-errore">
-              <label for="description">Descripción de lo sucedido:</label>
-              <textarea
-                [(ngModel)]="descripcion"
-                id="description-dialog-errores"
-                name="description"
-                placeholder="Ingrese una descripción"
-                required
-              ></textarea>
-            </div>
-          </form>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-          <button
-            id="noreportar-dialog-errores"
-            mat-button
-            (click)="enviar()"
-            mat-raised-button
-            color="primary"
-          >
-            Enviar
-          </button>
 
-          <button
-            id="noreportar-dialog-errores"
-            mat-button
-            (click)="cerrar()"
-            mat-raised-button
-            color="primary"
-          >
-            Cerrar
-          </button>
-        </mat-dialog-actions>
-      </div>
-    </ng-template>
 
-    <div *ngIf="errorDialog; else noError" class="alert">
-      <div class="dialog-container">
-        <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
-          icon | lowercase
-        }}</mat-icon>
-        <h2 mat-dialog-title>Informe del reporte</h2>
 
-        <mat-dialog-content class="dialog-content">
-          <p>No se ha logrado registrar el error</p>
-          <p>Puede comunicarse con ayuda para obtener mas información</p>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-          <button
-            id="noreportar-dialog-errores"
-            mat-button
-            (click)="cerrar()"
-            mat-raised-button
-            color="primary"
-          >
-            Cerrar
-          </button>
-        </mat-dialog-actions>
-      </div>
+<ng-template #noAlert>
+  <ng-template #noError>
+    <div class="dialog-container">
+      <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
+        icon | lowercase
+      }}</mat-icon>
+      <h2 mat-dialog-title>
+        Ha ocurrido un error con identificación: {{ idBackend }}
+        ¿Desea notificarlo a mesa de ayuda?
+      </h2>
+      <mat-dialog-content>
+        <form>
+          <div class="form-group-dialog-errore">
+            <label for="name">Ingrese su Nombre:</label>
+            <input
+              [(ngModel)]="nombre"
+              type="text"
+              id="name-dialog-errores"
+              name="name"
+              placeholder="Ingrese su nombre"
+              required
+            />
+          </div>
+          <div class="form-group-dialog-errore">
+            <label for="description">Descripción de lo sucedido:</label>
+            <textarea
+              [(ngModel)]="descripcion"
+              id="description-dialog-errores"
+              name="description"
+              placeholder="Ingrese una descripción"
+              required
+            ></textarea>
+          </div>
+        </form>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button
+          id="noreportar-dialog-errores"
+          mat-button
+          (click)="enviar()"
+          mat-raised-button
+          color="primary"
+        >
+          Enviar
+        </button>
+
+        <button
+          id="noreportar-dialog-errores"
+          mat-button
+          (click)="cerrar()"
+          mat-raised-button
+          color="primary"
+        >
+          Cerrar
+        </button>
+      </mat-dialog-actions>
     </div>
   </ng-template>
 
-  <div *ngIf="showDialog; else noAlert" class="alert">
+  <div *ngIf="errorDialog; else noError" class="alert">
     <div class="dialog-container">
       <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
         icon | lowercase
@@ -92,10 +68,7 @@
       <h2 mat-dialog-title>Informe del reporte</h2>
 
       <mat-dialog-content class="dialog-content">
-        <p>Se ha registrado el error con identificación:</p>
-        <p>{{ idBackend }}</p>
-        <p>Su número de ticket es:</p>
-        <p>{{ ticket }}</p>
+        <p>No se ha logrado registrar el error</p>
         <p>Puede comunicarse con ayuda para obtener mas información</p>
       </mat-dialog-content>
       <mat-dialog-actions align="end">
@@ -113,7 +86,7 @@
   </div>
 </ng-template>
 
-<div *ngIf="errorService; else noServiceError" class="alert">
+<div *ngIf="showDialog; else noAlert" class="alert">
   <div class="dialog-container">
     <mat-icon *ngIf="icon" style="margin-right: 0.25em">{{
       icon | lowercase
@@ -121,7 +94,10 @@
     <h2 mat-dialog-title>Informe del reporte</h2>
 
     <mat-dialog-content class="dialog-content">
-      <p>No se ha logrado registrar el error</p>
+      <p>Se ha registrado el error con identificación:</p>
+      <p>{{ idBackend }}</p>
+      <p>Su número de ticket es:</p>
+      <p>{{ ticket }}</p>
       <p>Puede comunicarse con ayuda para obtener mas información</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
